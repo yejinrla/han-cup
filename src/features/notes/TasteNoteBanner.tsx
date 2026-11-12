@@ -41,6 +41,12 @@ export function TasteNoteBanner() {
       aria-label="한컵의 취향 노트"
       aria-roledescription="carousel"
     >
+      <div className="magazine-section-head">
+        <h2>한컵 매거진</h2>
+        <Link href="/notes" aria-label="매거진 전체 보기">
+          전체 보기 <ArrowUpRight size={14} aria-hidden="true" />
+        </Link>
+      </div>
       <div className="taste-note-track" ref={track} onScroll={syncPosition}>
         {tasteNotes.map((note, index) => (
           <Link

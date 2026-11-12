@@ -42,6 +42,9 @@ export default async function TasteNotePage({
       <Link href="/" className="taste-note-back">
         <ArrowLeft size={15} aria-hidden="true" /> 홈으로
       </Link>
+      <Link href="/notes" className="taste-note-back magazine-return">
+        <ArrowLeft size={15} aria-hidden="true" /> 매거진 전체 보기
+      </Link>
       <article>
         <header className="taste-note-title">
           <p className="taste-note-kicker">
