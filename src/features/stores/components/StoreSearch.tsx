@@ -1,6 +1,6 @@
 "use client";
-import { useState, useRef } from "react";
-import { MapPin, ArrowUpRight, Navigation } from "lucide-react";
+import { useState, useRef, useCallback } from "react";
+import { MapPin, ArrowUpRight, Navigation, Check } from "lucide-react";
 import { brands, type BrandId } from "@/features/catalog/types";
 import type { Store } from "../types";
 import { StoreMap } from "./StoreMap";
@@ -10,9 +10,19 @@ export function StoreSearch({ initialBrand }: { initialBrand: BrandId }) {
     [items, setItems] = useState<Store[]>([]),
     [message, setMessage] = useState(""),
     [pending, setPending] = useState(false),
-    [hasNext, setHasNext] = useState(false);
+    [hasNext, setHasNext] = useState(false),
+    [selectedId, setSelectedId] = useState<string | null>(null),
+    [searchId, setSearchId] = useState(0);
   const last = useRef<URLSearchParams | null>(null),
-    requestId = useRef(0);
+    requestId = useRef(0),
+    list = useRef<HTMLDivElement>(null);
+  // A pin tap brings its card into view; the card button keeps focus in place.
+  const selectFromMap = useCallback((id: string) => {
+    setSelectedId(id);
+    list.current
+      ?.querySelector(`[data-store-id="${CSS.escape(id)}"]`)
+      ?.scrollIntoView({ block: "nearest" });
+  }, []);
   const external =
     "https://map.kakao.com/?q=" +
     encodeURIComponent((region ? region + " " : "") + brands[brand]);
@@ -47,6 +57,10 @@ export function StoreSearch({ initialBrand }: { initialBrand: BrandId }) {
           : data.items,
       );
       setHasNext(data.hasNext);
+      if (!append) {
+        setSelectedId(null);
+        setSearchId((n) => n + 1);
+      }
       last.current = params;
       if (!data.items.length)
         setMessage(
@@ -55,6 +69,7 @@ export function StoreSearch({ initialBrand }: { initialBrand: BrandId }) {
     } catch (e) {
       if (id === requestId.current) {
         setItems([]);
+        setSelectedId(null);
         setMessage(
           e instanceof Error ? e.message : "매장 검색을 잠시 이용할 수 없어요.",
         );
@@ -110,6 +125,7 @@ export function StoreSearch({ initialBrand }: { initialBrand: BrandId }) {
             setPending(false);
             setBrand(e.target.value as BrandId);
             setItems([]);
+            setSelectedId(null);
             setHasNext(false);
             setMessage("지역명이나 현재 위치로 다시 검색해 주세요.");
           }}
@@ -153,13 +169,29 @@ export function StoreSearch({ initialBrand }: { initialBrand: BrandId }) {
         </p>
       )}
       <div className="store-grid" style={{ marginTop: 24 }}>
-        <StoreMap items={items} />
-        <div className="store-list">
+        <StoreMap
+          items={items}
+          searchId={searchId}
+          selectedId={selectedId}
+          onSelect={selectFromMap}
+        />
+        <div className="store-list" ref={list}>
           {items.map((s) => (
-            <article className="store-item" key={s.id}>
+            <article
+              className={
+                s.id === selectedId ? "store-item is-selected" : "store-item"
+              }
+              key={s.id}
+              data-store-id={s.id}
+            >
               <h3>
                 <MapPin size={13} /> {s.name}
               </h3>
+              {s.id === selectedId && (
+                <p className="store-selected">
+                  <Check size={12} aria-hidden="true" /> 선택됨
+                </p>
+              )}
               <p>{s.address}</p>
               {s.phone && <p>{s.phone}</p>}
               {s.distanceM !== null && (
@@ -170,13 +202,22 @@ export function StoreSearch({ initialBrand }: { initialBrand: BrandId }) {
                     : s.distanceM + "m"}
                 </p>
               )}
-              <a
-                href={`https://map.kakao.com/link/to/${encodeURIComponent(s.name)},${s.lat},${s.lng}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                카카오맵 길찾기 <ArrowUpRight size={13} />
-              </a>
+              <div className="store-item-actions">
+                <button
+                  type="button"
+                  aria-pressed={s.id === selectedId}
+                  onClick={() => setSelectedId(s.id)}
+                >
+                  <MapPin size={12} aria-hidden="true" /> 지도에서 보기
+                </button>
+                <a
+                  href={`https://map.kakao.com/link/to/${encodeURIComponent(s.name)},${s.lat},${s.lng}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  카카오맵 길찾기 <ArrowUpRight size={13} />
+                </a>
+              </div>
             </article>
           ))}
           {hasNext && (
