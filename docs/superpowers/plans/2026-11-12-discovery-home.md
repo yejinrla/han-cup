@@ -28,14 +28,20 @@ Files: src/app/search/page.tsx, src/app/page.tsx, CatalogFilters.tsx, AppNavigat
 - [x] Add browser tests for discovery sections, absent fake rankings, five tabs/search navigation and old query preservation. Update old catalog tests to enter /search, preserving test intent. Observe RED.
 - [x] Move catalog to /search and route all search actions/filters/pagination there; load independent catalog/summary/favorite reads concurrently. Redirect known root search queries to /search and retain values.
 - [x] Build home with short search CTA, curated cards and popularity component. RPC fetch errors/missing function cannot break entire home. API exposes only aggregate DTO with no-store and no caller-specified filters.
-- [ ] Refresh client popularity every300000ms plus visible/focus return; abort in-flight requests on unmount and avoid overlapping stale replies. Never invent fillers or report a sales ranking.
+- [x] Refresh client popularity every300000ms plus visible/focus return; abort in-flight requests on unmount and avoid overlapping stale replies. Never invent fillers or report a sales ranking.
 - [x] Add privacy/statistics note to record form and policy, keeping public star average rule unchanged. Five nav tabs: home/search/stores/likes/journal. Detail/compare catalog parents point to search.
 - [x] Extend actual-session browser test to demonstrate private record affects anonymous popularity while raw body remains absent. Apply new SQL to disposable auth DB only; no hosted DB writes.
 
 ### Task 3: Verification and release
-- [ ] Run unit/DB, anonymous and actual-session browser suites, lint/typecheck/build. Inspect home/search at320/390/1440 and error/empty states. Fresh independent review; one material-fix pass.
-- [ ] Document new-menu review registration and SQL migration instructions. Commit/push; verify live home/search and graceful pre-migration ranking state. Ask user to run supplied SQL Editor file to enable hosted popularity.
+- [x] Run unit/DB, anonymous and actual-session browser suites, lint/typecheck/build. Inspect home/search at320/390/1440 and error/empty states. Fresh independent review; one material-fix pass.
+- [x] Document new-menu review registration and SQL migration instructions. Commit/push; verify live home/search and graceful pre-migration ranking state. Ask user to run supplied SQL Editor file to enable hosted popularity.
 
 ## Usage-limit recovery checkpoint
 
 Current product code is preserved, not considered fully complete. Fresh lint, typecheck, all35 unit/DB tests and production build passed. Previously all5 real-session tests passed. The popularity five-minute virtual-clock browser regression remains unresolved; its last failure was absence of the expected refreshed ranking. Independent review stopped on the reviewer usage limit and did not complete. Hosted migration007 and reviewed real new-menu registration are also outstanding. See docs/operations/discovery-checkpoint.md for continuation steps.
+
+## Completion of recovery work
+
+The virtual-clock failure was isolated: production interval/fetch/card updates work; Playwright clock jumps needed resume() so asynchronous React rendering could commit. The same regression now passes. Independent review completed; fixed unresolved ranked products by refreshing catalog props without compressing ranks or showing false empty states. Also fixed duplicate-card favorite state with ephemeral same-window notifications and server refresh. Both findings have RED→GREEN unit coverage and browser behavior coverage. No deferred review findings.
+
+User explicitly approved the official-source Mega winter three-drink review on2026-11-12. Approved batch and curation are registered; local fallback now16 products/17 variants. Combined enable-discovery.sql adds the popularity RPC and these products, and passed two consecutive executions in a fresh disposable DB. Hosted DB execution remains a user-side setup action; source credentials are unavailable to this environment.

@@ -402,16 +402,14 @@ test("anonymous popularity includes private records but returns no private conte
   const id = created.data.user.id;
   const body = "PRIVATE POPULARITY MUST NOT LEAK";
   try {
-    const inserted = await admin
-      .from("reviews")
-      .insert({
-        user_id: id,
-        drink_id: drinkId,
-        rating: 2,
-        body,
-        consumed_on: "2026-11-12",
-        visibility: "private",
-      });
+    const inserted = await admin.from("reviews").insert({
+      user_id: id,
+      drink_id: drinkId,
+      rating: 2,
+      body,
+      consumed_on: "2026-11-12",
+      visibility: "private",
+    });
     expect(inserted.error).toBeNull();
     const response = await viewer.request.get(
       "http://localhost:3001/api/discovery/popular",
@@ -437,7 +435,11 @@ test("anonymous popularity includes private records but returns no private conte
     await expect(
       p.getByRole("heading", { name: "지금 많이 기록하는 음료", exact: true }),
     ).toBeVisible();
-    await expect(p.locator("[data-drink-card]")).toHaveCount(1);
+    await expect(
+      p
+        .getByRole("region", { name: "지금 많이 기록하는 음료" })
+        .locator("[data-drink-card]"),
+    ).toHaveCount(1);
     await expect(p.getByText(body, { exact: true })).toHaveCount(0);
     await admin.auth.admin.deleteUser(id);
     const removed = await (

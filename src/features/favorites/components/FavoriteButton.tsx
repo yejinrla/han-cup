@@ -1,6 +1,8 @@
 "use client";
 import { Heart } from "lucide-react";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { publishFavoriteChange, subscribeFavoriteChange } from "../events";
 import { toggleFavorite } from "../service";
 export function FavoriteButton({
   drinkId,
@@ -12,6 +14,8 @@ export function FavoriteButton({
   const [saved, setSaved] = useState(initial),
     [message, setMessage] = useState(""),
     [pending, start] = useTransition();
+  const router = useRouter();
+  useEffect(() => subscribeFavoriteChange(drinkId, setSaved), [drinkId]);
   return (
     <>
       <button
@@ -25,6 +29,8 @@ export function FavoriteButton({
             if (r.error) setMessage(r.error);
             else {
               setSaved(r.saved ?? false);
+              publishFavoriteChange(drinkId, r.saved ?? false);
+              router.refresh();
               setMessage(r.saved ? "찜에 저장했어요." : "찜을 해제했어요.");
             }
           })

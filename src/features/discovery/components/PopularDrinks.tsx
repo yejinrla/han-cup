@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { rankPopularity } from "../ranking";
 import { DrinkCard } from "@/features/catalog/components/DrinkCard";
 import type { CatalogItem } from "@/features/catalog/types";
 import { popularitySchema, type PopularitySnapshot } from "../popularity";
@@ -14,6 +16,7 @@ export function PopularDrinks({
   items: CatalogItem[];
   favoriteIds: string[];
 }) {
+  const router = useRouter();
   const [snapshot, setSnapshot] = useState(initial),
     [failed, setFailed] = useState(false);
   useEffect(() => {
@@ -32,6 +35,7 @@ export function PopularDrinks({
         const next = popularitySchema.parse(await response.json());
         if (!stopped) {
           setSnapshot(next);
+          if (rankPopularity(items, next.items).missing) router.refresh();
           setFailed(false);
         }
       } catch {
@@ -56,13 +60,8 @@ export function PopularDrinks({
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("focus", refresh);
     };
-  }, []);
-  const ranked = snapshot.items.flatMap((row) => {
-    const item = items.find(
-      (item) => item.id === row.drinkId && item.status === "active",
-    );
-    return item ? [{ item, recorders: row.recorders }] : [];
-  });
+  }, [items, router]);
+  const { ranked, missing } = rankPopularity(items, snapshot.items);
   return (
     <>
       <p className="discovery-refresh" aria-live="polite">
@@ -75,12 +74,17 @@ export function PopularDrinks({
           업데이트가 지연되고 있어요. 잠시 후 다시 확인할게요.
         </p>
       )}
+      {missing && (
+        <p className="status-box" role="status">
+          최신 음료 정보를 불러오고 있어요. 준비된 음료부터 표시합니다.
+        </p>
+      )}
       {ranked.length ? (
         <div className="drink-grid">
-          {ranked.map(({ item, recorders }, i) => (
+          {ranked.map(({ item, recorders, rank }, i) => (
             <div key={item.id}>
               <p className="discovery-rank">
-                <b>{i + 1}위</b>
+                <b>{rank}위</b>
                 <span>{recorders}명이 기록</span>
               </p>
               <DrinkCard
@@ -92,7 +96,7 @@ export function PopularDrinks({
             </div>
           ))}
         </div>
-      ) : (
+      ) : missing ? null : (
         <div className="discovery-empty">
           <p>
             {snapshot.available

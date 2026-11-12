@@ -116,6 +116,33 @@
       "category": "coffee",
       "status": "active",
       "defaultVariantId": "7c0b1e36-03dd-5898-8593-b6f7292e1c8b"
+    },
+    {
+      "id": "7fc2b97f-a6e5-5e04-aec7-ee5455e92149",
+      "brandId": "mega",
+      "slug": "mega-deep-chocolate-cherry-frappe",
+      "name": "딥 초코 체리 프라페",
+      "category": "smoothie",
+      "status": "active",
+      "defaultVariantId": "4d38a746-f011-57b1-8ac8-1ef24570d3e0"
+    },
+    {
+      "id": "118c6886-96de-5b9f-8d6e-995ecf37c569",
+      "brandId": "mega",
+      "slug": "mega-chewy-mochi-milk-tea",
+      "name": "쫀득 모찌 밀크티",
+      "category": "tea",
+      "status": "active",
+      "defaultVariantId": "dd614fda-8c27-56af-a258-ca71a1200bd7"
+    },
+    {
+      "id": "1d535975-8541-5b1c-bf5e-2e80067b2b1f",
+      "brandId": "mega",
+      "slug": "mega-green-plum-quince-tea",
+      "name": "매실 모과차",
+      "category": "tea",
+      "status": "active",
+      "defaultVariantId": "f5e388fd-01e2-55c5-b85b-f9c904911bd8"
     }
   ],
   "variants": [
@@ -384,6 +411,63 @@
         "checkedAt": "2026-11-12"
       },
       "imagePath": null
+    },
+    {
+      "id": "4d38a746-f011-57b1-8ac8-1ef24570d3e0",
+      "temperature": "iced",
+      "sizeLabel": "기본",
+      "cupMl": 591,
+      "nutritionBasisMl": null,
+      "nutrition": {
+        "caloriesKcal": 604,
+        "sugarG": 90.7,
+        "caffeineMg": 26
+      },
+      "priceKrw": null,
+      "source": {
+        "url": "https://www.mega-mgccoffee.com/menu/?menu_category1=1&menu_category2=1",
+        "checkedAt": "2026-11-12"
+      },
+      "imagePath": null,
+      "drinkId": "7fc2b97f-a6e5-5e04-aec7-ee5455e92149"
+    },
+    {
+      "id": "dd614fda-8c27-56af-a258-ca71a1200bd7",
+      "temperature": "iced",
+      "sizeLabel": "기본",
+      "cupMl": 591,
+      "nutritionBasisMl": null,
+      "nutrition": {
+        "caloriesKcal": 375.3,
+        "sugarG": 46.4,
+        "caffeineMg": 14.2
+      },
+      "priceKrw": null,
+      "source": {
+        "url": "https://www.mega-mgccoffee.com/menu/?menu_category1=1&menu_category2=1",
+        "checkedAt": "2026-11-12"
+      },
+      "imagePath": null,
+      "drinkId": "118c6886-96de-5b9f-8d6e-995ecf37c569"
+    },
+    {
+      "id": "f5e388fd-01e2-55c5-b85b-f9c904911bd8",
+      "temperature": "hot",
+      "sizeLabel": "기본",
+      "cupMl": 591,
+      "nutritionBasisMl": null,
+      "nutrition": {
+        "caloriesKcal": 276.6,
+        "sugarG": 54.9,
+        "caffeineMg": 0
+      },
+      "priceKrw": null,
+      "source": {
+        "url": "https://www.mega-mgccoffee.com/menu/?menu_category1=1&menu_category2=1",
+        "checkedAt": "2026-11-12"
+      },
+      "imagePath": null,
+      "drinkId": "1d535975-8541-5b1c-bf5e-2e80067b2b1f"
     }
   ]
 }
