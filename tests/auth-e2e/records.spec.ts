@@ -145,7 +145,7 @@ test("real sessions persist favorites and repeat records without leaking private
     .eq("body", "공개로 남긴 두 번째 한 잔")
     .single();
   expect(stored.data?.visibility).toBe("private");
-  await expect(page.getByRole("status")).toContainText("한 잔을 기록했어요.");
+  await expect(page.getByRole("status")).toContainText("기록을 수정했어요.");
   await publicPage.reload();
   await expect(
     publicPage.getByText("공개로 남긴 두 번째 한 잔", { exact: true }),
@@ -329,10 +329,11 @@ test("journal calendar defaults to today, filters dates, paginates and refreshes
     await expect(page).toHaveURL(/date=2024-02-29&edit=/);
     await page.getByLabel("마신 날짜").fill("2024-02-28");
     await page.getByRole("button", { name: "기록 수정하기" }).click();
-    await expect(page.getByRole("status")).toContainText("한 잔을 기록했어요.");
-    await page
-      .getByRole("link", { name: "2024년 2월 28일, 기록 있음", exact: true })
-      .click();
+    await expect(page.getByRole("status")).toContainText("기록을 수정했어요.");
+    await expect(page.locator(".journal-day.is-selected")).toHaveAttribute(
+      "href",
+      "/me/records?date=2024-02-28",
+    );
     await expect(page.locator("article.record")).toHaveCount(1);
     await page.getByRole("button", { name: "기록 삭제" }).click();
     await expect(
@@ -449,5 +450,79 @@ test("anonymous popularity includes private records but returns no private conte
   } finally {
     await admin.auth.admin.deleteUser(id);
     await viewer.close();
+  }
+});
+
+test("record editing stays inside its card, cancels without losing the page and follows a changed date", async ({
+  page,
+  context,
+}) => {
+  await authenticate(context);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.setViewportSize({ width: 390, height: 844 });
+  const date = "2024-05-10";
+  const inserted = await admin
+    .from("reviews")
+    .insert(
+      Array.from({ length: 22 }, (_, i) => ({
+        user_id: session.user.id,
+        drink_id: drinkId,
+        consumed_on: date,
+        body: `수정 흐름 확인 ${i}`,
+        rating: 3,
+        visibility: "private",
+      })),
+    )
+    .select("id");
+  if (inserted.error) throw inserted.error;
+  try {
+    await page.goto(`/me/records?date=${date}&cursor=20`);
+    await expect(page.locator("article.record")).toHaveCount(2);
+    const card = page.locator("article.record").last();
+    await card.getByRole("link", { name: "수정 / 공개 범위 변경" }).click();
+    await expect(card.getByLabel("한 잔의 기억")).toBeVisible();
+    await expect(page).toHaveURL(/cursor=20/);
+    await card.getByLabel("한 잔의 기억").fill("취소할 내용");
+    await card.getByRole("link", { name: "수정 취소", exact: true }).click();
+    await expect(page).not.toHaveURL(/edit=/);
+    await expect(page).toHaveURL(/cursor=20/);
+    await expect(page.getByLabel("한 잔의 기억")).toHaveCount(0);
+    await expect(page.getByText("취소할 내용", { exact: true })).toHaveCount(0);
+    await card.getByRole("link", { name: "수정 / 공개 범위 변경" }).click();
+    await card.getByLabel("한 잔의 기억").fill("같은 날짜의 수정 기록");
+    await page.screenshot({
+      path: "/tmp/hancup-inline-edit-mobile.png",
+      fullPage: true,
+    });
+    await card
+      .getByRole("button", { name: "기록 수정하기", exact: true })
+      .click();
+    await expect(page).toHaveURL(/cursor=20/);
+    await expect(page).not.toHaveURL(/edit=/);
+    await expect(
+      card.getByText("같은 날짜의 수정 기록", { exact: true }),
+    ).toBeVisible();
+    await card.getByRole("link", { name: "수정 / 공개 범위 변경" }).click();
+    await card.getByLabel("한 잔의 기억").fill("날짜를 바꾼 기록");
+    await card.getByLabel("마신 날짜").fill("2024-05-09");
+    await card
+      .getByRole("button", { name: "기록 수정하기", exact: true })
+      .click();
+    await expect(page).toHaveURL(/date=2024-05-09/);
+    await expect(page).not.toHaveURL(/edit=|cursor=20/);
+    await expect(page.getByRole("status")).toContainText("기록을 수정했어요.");
+    await expect(page.locator("article.record")).toHaveCount(1);
+    await expect(
+      page.getByText("날짜를 바꾼 기록", { exact: true }),
+    ).toBeVisible();
+    await expect(page.getByLabel("한 잔의 기억")).toHaveCount(0);
+  } finally {
+    await admin
+      .from("reviews")
+      .delete()
+      .in(
+        "id",
+        inserted.data.map((r) => r.id),
+      );
   }
 });

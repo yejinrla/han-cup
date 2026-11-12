@@ -2716,3 +2716,26 @@ body {
     animation: none;
   }
 }
+
+.record-edit-panel {
+  margin-top: 20px;
+  padding: 18px 0 0;
+  border-top: 1px solid var(--line);
+}
+.record-edit-panel h3 {
+  margin: 0 0 18px;
+  font-size: 16px;
+}
+.record-review-form {
+  scroll-margin-top: 88px;
+  scroll-margin-bottom: 100px;
+}
+.record-edit-cancel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+}
+.record[id] {
+  scroll-margin-top: 88px;
+}

@@ -22,6 +22,7 @@ export default async function Records({
     edit?: string | string[];
     cursor?: string | string[];
     date?: string | string[];
+    saved?: string | string[];
   }>;
 }) {
   const p = await searchParams;
@@ -82,7 +83,7 @@ export default async function Records({
         today={today}
         recordDates={recordDates}
       />
-      {selected && (
+      {selected && !p.edit && (
         <section className="panel">
           <h2>
             {selected.name} {editing ? "기록 수정" : "기록하기"}
@@ -91,23 +92,15 @@ export default async function Records({
             key={editing?.id ?? selected.id}
             drinkId={selected.id}
             variantId={variant?.id ?? null}
-            existing={
-              editing
-                ? {
-                    id: editing.id,
-                    drinkId: editing.drink_id,
-                    variantId: editing.variant_id,
-                    rating: editing.rating,
-                    body: editing.body,
-                    consumedOn: editing.consumed_on,
-                    visibility: editing.visibility,
-                  }
-                : undefined
-            }
           />
         </section>
       )}
       <section className="panel">
+        {p.saved === "1" && (
+          <p role="status" className="status-box">
+            기록을 수정했어요.
+          </p>
+        )}
         <h2>
           {Number(selectedDate.slice(5, 7))}월 {Number(selectedDate.slice(8))}
           일의 한 잔
@@ -119,7 +112,7 @@ export default async function Records({
           pageRows.map((r) => {
             const d = data.drinks.find((x) => x.id === r.drink_id);
             return (
-              <article className="record" key={r.id}>
+              <article className="record" id={"record-" + r.id} key={r.id}>
                 <div className="record-head">
                   <Link href={"/drinks/" + d?.slug}>
                     {d?.name ?? "음료 기록"}
@@ -141,18 +134,51 @@ export default async function Records({
                     운영자가 공개 노출을 숨긴 기록입니다. {r.moderation_reason}
                   </p>
                 )}
-                <div className="form-row">
-                  <Link
-                    className="text-button"
-                    href={journalHref(selectedDate, { edit: r.id })}
-                  >
-                    수정 / 공개 범위 변경
-                  </Link>
-                  <form action={deleteReview}>
-                    <input type="hidden" name="id" value={r.id} />
-                    <button className="text-button danger">기록 삭제</button>
-                  </form>
-                </div>
+                {editing?.id === r.id ? (
+                  <div className="record-edit-panel">
+                    <h3>이 기록 수정하기</h3>
+                    <ReviewForm
+                      key={r.id}
+                      drinkId={r.drink_id}
+                      variantId={r.variant_id}
+                      journalCursor={offset}
+                      cancelHref={
+                        journalHref(
+                          selectedDate,
+                          offset ? { cursor: String(offset) } : {},
+                        ) +
+                        "#record-" +
+                        r.id
+                      }
+                      existing={{
+                        id: r.id,
+                        drinkId: r.drink_id,
+                        variantId: r.variant_id,
+                        rating: r.rating,
+                        body: r.body,
+                        consumedOn: r.consumed_on,
+                        visibility: r.visibility,
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <div className="form-row">
+                    <Link
+                      className="text-button"
+                      scroll={false}
+                      href={journalHref(selectedDate, {
+                        ...(offset ? { cursor: String(offset) } : {}),
+                        edit: r.id,
+                      })}
+                    >
+                      수정 / 공개 범위 변경
+                    </Link>
+                    <form action={deleteReview}>
+                      <input type="hidden" name="id" value={r.id} />
+                      <button className="text-button danger">기록 삭제</button>
+                    </form>
+                  </div>
+                )}
               </article>
             );
           })

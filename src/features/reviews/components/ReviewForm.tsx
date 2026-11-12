@@ -1,26 +1,60 @@
 "use client";
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
+import Link from "next/link";
 import { saveReview, reportReview } from "../service";
 import { type ReviewInput, koreanDate } from "../schema";
 export function ReviewForm({
   drinkId,
   variantId,
   existing,
+  journalCursor = 0,
+  cancelHref,
 }: {
   drinkId: string;
   variantId: string | null;
   existing?: ReviewInput & { id: string };
+  journalCursor?: number;
+  cancelHref?: string;
 }) {
   const [state, action, pending] = useActionState(saveReview, {});
+  const formRef = useRef<HTMLFormElement>(null);
+  const editingId = existing?.id;
+  useEffect(() => {
+    if (!editingId) return;
+    const form = formRef.current;
+    form
+      ?.querySelector<HTMLSelectElement>('[name="rating"]')
+      ?.focus({ preventScroll: true });
+    form?.scrollIntoView({
+      block: "nearest",
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "instant"
+        : "smooth",
+    });
+  }, [editingId]);
   return (
-    <form action={action} className="form-stack">
+    <form
+      ref={formRef}
+      action={action}
+      className="form-stack record-review-form"
+    >
       <input type="hidden" name="drinkId" value={drinkId} />
       <input
         type="hidden"
         name="variantId"
         value={existing?.variantId ?? variantId ?? ""}
       />
-      {existing && <input type="hidden" name="id" value={existing.id} />}
+      {existing && (
+        <>
+          <input type="hidden" name="id" value={existing.id} />
+          <input
+            type="hidden"
+            name="originalDate"
+            value={existing.consumedOn}
+          />
+          <input type="hidden" name="journalCursor" value={journalCursor} />
+        </>
+      )}
       <div className="form-row">
         <label>
           별점
@@ -76,6 +110,15 @@ export function ReviewForm({
       <button className="primary-button" disabled={pending}>
         {pending ? "저장 중…" : existing ? "기록 수정하기" : "한 잔 기록하기"}
       </button>
+      {existing && cancelHref && (
+        <Link
+          href={cancelHref}
+          scroll={false}
+          className="text-button record-edit-cancel"
+        >
+          수정 취소
+        </Link>
+      )}
     </form>
   );
 }
