@@ -430,11 +430,11 @@ test("anonymous popularity includes private records but returns no private conte
     const p = await viewer.newPage();
     await p.goto("/");
     await expect(
-      p.getByRole("heading", { name: "지금 많이 기록하는 음료", exact: true }),
+      p.getByRole("heading", { name: "실시간 인기 메뉴", exact: true }),
     ).toBeVisible();
     await expect(
       p
-        .getByRole("region", { name: "지금 많이 기록하는 음료" })
+        .getByRole("region", { name: "실시간 인기 메뉴" })
         .locator("[data-drink-card]"),
     ).toHaveCount(1);
     await expect(p.getByText(body, { exact: true })).toHaveCount(0);

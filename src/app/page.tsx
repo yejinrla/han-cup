@@ -55,7 +55,7 @@ export default async function Home({
             <p className="eyebrow">
               <Sparkles size={12} aria-hidden="true" /> NEW SIPS
             </p>
-            <h2 id="new-drinks-title">새로 나온 한 잔</h2>
+            <h2 id="new-drinks-title">이번주 신메뉴</h2>
           </div>
           <Link href="/search">
             전체 음료 <ArrowUpRight size={13} />
@@ -98,7 +98,7 @@ export default async function Home({
             <p className="eyebrow">
               <TrendingUp size={13} aria-hidden="true" /> HANCUP NOW
             </p>
-            <h2 id="popular-drinks-title">지금 많이 기록하는 음료</h2>
+            <h2 id="popular-drinks-title">실시간 인기 메뉴</h2>
           </div>
         </div>
         <p className="discovery-section-note">

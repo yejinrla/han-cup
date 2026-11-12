@@ -4,19 +4,19 @@ test("home offers new menus and recording trends with search through the home se
 }) => {
   await page.goto("/");
   await expect(
-    page.getByRole("heading", { name: "새로 나온 한 잔", exact: true }),
+    page.getByRole("heading", { name: "이번주 신메뉴", exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "지금 많이 기록하는 음료", exact: true }),
+    page.getByRole("heading", { name: "실시간 인기 메뉴", exact: true }),
   ).toBeVisible();
   await expect(
     page
-      .getByRole("region", { name: "새로 나온 한 잔" })
+      .getByRole("region", { name: "이번주 신메뉴" })
       .getByRole("link", { name: "딥 초코 체리 프라페 상세 보기" }),
   ).toBeVisible();
   await expect(
     page
-      .getByRole("region", { name: "새로 나온 한 잔" })
+      .getByRole("region", { name: "이번주 신메뉴" })
       .locator("[data-drink-card]"),
   ).toHaveCount(3);
   const nav = page.getByRole("navigation", { name: "주 메뉴" });
@@ -138,7 +138,7 @@ test("fresh rankings do not renumber or hide unresolved catalog entries", async 
   await page.clock.runFor(1000);
   await page.clock.fastForward(300000);
   await page.clock.resume();
-  const region = page.getByRole("region", { name: "지금 많이 기록하는 음료" });
+  const region = page.getByRole("region", { name: "실시간 인기 메뉴" });
   await expect(region.getByText("2위", { exact: true })).toBeVisible();
   await expect(region.getByText("1위", { exact: true })).toHaveCount(0);
   await expect(
