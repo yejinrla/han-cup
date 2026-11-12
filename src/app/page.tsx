@@ -1,182 +1,123 @@
-import { getFavoriteIds } from "@/features/favorites/repository";
 import Link from "next/link";
-import {
-  ArrowDown,
-  ArrowUpRight,
-  Leaf,
-  Sparkles,
-  BookOpen,
-} from "lucide-react";
-import { CupArt } from "@/components/CupArt";
-import {
-  CatalogFilters,
-  BasisToggle,
-  SortControl,
-  queryLink,
-} from "@/features/catalog/components/CatalogFilters";
-import { DrinkCard } from "@/features/catalog/components/DrinkCard";
-import {
-  getCatalog,
-  joinCatalog,
-  parseCatalogQuery,
-} from "@/features/catalog/repository";
-import { queryCatalog } from "@/features/catalog/query";
+import { redirect } from "next/navigation";
+import { Search, ArrowUpRight, Sparkles, TrendingUp } from "lucide-react";
+import { getCatalog, joinCatalog } from "@/features/catalog/repository";
 import { getSummaries } from "@/features/reviews/repository";
-import { configured } from "@/lib/supabase/server";
+import { getFavoriteIds } from "@/features/favorites/repository";
+import { DrinkCard } from "@/features/catalog/components/DrinkCard";
+import { koreanDate } from "@/features/reviews/schema";
+import {
+  legacySearchUrl,
+  selectNewArrivals,
+} from "@/features/discovery/curation";
+import { getPopularity } from "@/features/discovery/repository";
+import { unavailablePopularity } from "@/features/discovery/popularity";
+import { PopularDrinks } from "@/features/discovery/components/PopularDrinks";
+import curated from "../../data/catalog/new-arrivals.json";
+export const dynamic = "force-dynamic";
 export default async function Home({
   searchParams,
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const params = await searchParams;
-  const p = new URLSearchParams(
-    Object.entries(params).filter(([, v]) => typeof v === "string") as [
-      string,
-      string,
-    ][],
-  );
-  const q = parseCatalogQuery(p);
-  const data = await getCatalog();
-  const summaries = await getSummaries();
-  const favorites = await getFavoriteIds();
-  const result = queryCatalog(
-    joinCatalog(data, q.temperature).map((x) => ({
-      ...x,
-      rating: summaries[x.id] ?? x.rating,
-    })),
-    q,
-  );
+  const legacy = legacySearchUrl(await searchParams);
+  if (legacy) redirect(legacy);
+  const [data, summaries, favorites, popularity] = await Promise.all([
+    getCatalog(),
+    getSummaries(),
+    getFavoriteIds(),
+    getPopularity().catch(() => unavailablePopularity()),
+  ]);
+  const arrivals = selectNewArrivals(data, curated, koreanDate());
+  const items = joinCatalog(data).map((item) => ({
+    ...item,
+    rating: summaries[item.id] ?? item.rating,
+  }));
   return (
-    <main id="main">
-      <section className="hero">
-        <div className="hero-copy">
-          <p className="eyebrow">
-            <span /> A LITTLE CUP OF DISCOVERY
-          </p>
-          <h1>
-            취향을 발견하고,
-            <br />
-            <span>한 잔을 기록해요.</span>
-          </h1>
-          <p className="hero-description">
-            카페마다 흩어진 음료를 한곳에.
-            <br />
-            나에게 맞는 한 잔을 찾는 작은 즐거움.
-          </p>
-          <a className="hero-link" href="#collection">
-            나의 다음 한 잔 찾기 <ArrowDown size={14} />
-          </a>
-        </div>
-        <div className="hero-art" aria-hidden="true">
-          <div className="hero-circle" />
-          <div className="hero-cup">
-            <CupArt name="한 잔" large />
-          </div>
-          <div className="floating-note note-top">
-            <Leaf size={14} /> 오늘의 새로운 취향
-          </div>
-          <div className="floating-note note-bottom">
-            <Sparkles size={14} /> 한 잔에 담긴 작은 발견
-          </div>
-          <span className="art-caption">YOUR NEXT FAVORITE CUP</span>
-        </div>
-        <span className="hero-index">VOL. 01 — EVERYDAY DISCOVERIES</span>
+    <main id="main" className="discovery-home">
+      <section className="discovery-welcome">
+        <p className="eyebrow">A LITTLE CUP OF DISCOVERY</p>
+        <h1>
+          오늘은 어떤 한 잔을
+          <br />
+          <span>발견해 볼까요?</span>
+        </h1>
+        <p>새로운 맛부터 지금 많이 기록하는 음료까지.</p>
+        <Link href="/search" className="discovery-search">
+          <Search size={19} aria-hidden="true" />
+          <span>음료명이나 브랜드로 찾아보세요</span>
+          <ArrowUpRight size={17} aria-hidden="true" />
+        </Link>
       </section>
-      <section className="collection" id="collection">
-        <div className="collection-heading">
+      <section className="discovery-section" aria-labelledby="new-drinks-title">
+        <div className="discovery-section-head">
           <div>
-            <p className="eyebrow">THE DRINK COLLECTION</p>
-            <h2>
-              한눈에 보는 음료 도감<span>한 잔씩, 취향을 넓혀보세요.</span>
-            </h2>
+            <p className="eyebrow">
+              <Sparkles size={12} aria-hidden="true" /> NEW SIPS
+            </p>
+            <h2 id="new-drinks-title">새로 나온 한 잔</h2>
           </div>
-          <span className="collection-count">
-            <BookOpen size={16} />
-            6개 브랜드 탐색
-          </span>
+          <Link href="/search">
+            전체 음료 <ArrowUpRight size={13} />
+          </Link>
         </div>
-        <CatalogFilters q={q} />
-        <div className="results-bar">
-          <p>
-            총 <b>{result.total}</b>개의 음료{" "}
-            <span>· 가격과 영양정보를 비교해 보세요</span>
-          </p>
-          <div>
-            <BasisToggle q={q} />
-            <SortControl q={q} />
-          </div>
-        </div>
-        {!configured() && (
-          <p className="data-notice">
-            공식 자료를 확인한 초기 음료 {data.drinks.length}종을 미리 볼 수
-            있어요. 나머지 브랜드·가격·제공량 기준은 확인 중이며, 제품 사진 대신
-            공통 일러스트를 사용합니다.
-          </p>
-        )}
-        {q.basis === "100ml" && (
-          <p className="data-notice">
-            100ml 수치는 공식 영양 제공량을 확인한 경우에만 계산합니다. 컵
-            용량만 알려진 음료는 ‘미제공’으로 표시해요.
-          </p>
-        )}
-        {result.items.length ? (
+        {arrivals.length ? (
           <div className="drink-grid">
-            {result.items.map((item, i) => (
-              <DrinkCard
-                key={item.id}
-                item={item}
-                isFavorite={favorites.includes(item.id)}
-                index={q.offset + i}
-                basis={q.basis}
-              />
+            {arrivals.map(({ item, releasedOn, sourceUrl }, i) => (
+              <div key={item.id}>
+                <p className="discovery-release">
+                  {releasedOn} 출시 ·{" "}
+                  <a href={sourceUrl} target="_blank" rel="noreferrer">
+                    공식 출시 정보
+                  </a>
+                </p>
+                <DrinkCard
+                  item={{ ...item, rating: summaries[item.id] ?? item.rating }}
+                  index={i}
+                  basis="serving"
+                  isFavorite={favorites.includes(item.id)}
+                />
+              </div>
             ))}
           </div>
         ) : (
-          <div className="empty-state">
-            <Leaf size={32} />
-            <h3>조건에 맞는 음료가 없어요</h3>
-            <p>
-              아직 공식 정보를 확인 중인 브랜드일 수 있어요.
-              <br />
-              조건을 줄여 다른 한 잔을 찾아보세요.
-            </p>
-            <Link className="primary-button" href="/">
-              조건 초기화
+          <div className="discovery-empty">
+            <p>공식 출시 정보를 확인한 신메뉴를 준비하고 있어요.</p>
+            <Link href="/search" className="text-button">
+              전체 음료 둘러보기 →
             </Link>
           </div>
         )}
-        {result.nextCursor && (
-          <Link
-            className="load-more"
-            href={queryLink(q, { cursor: result.nextCursor })}
-          >
-            다음 음료 보기 <ArrowUpRight size={15} />
-          </Link>
-        )}
-        <div className="collection-footnote">
-          <span>
-            영양정보는 기본 레시피 기준이며, 실제 제공량에 따라 달라질 수
-            있어요.
-          </span>
-          <Link href="/about">
-            한컵의 데이터 이야기 <ArrowUpRight size={12} />
-          </Link>
-        </div>
       </section>
-      <section className="journal-banner">
-        <div>
-          <p className="eyebrow">YOUR LITTLE CUP JOURNAL</p>
-          <h2>오늘 마신 한 잔, 어땠나요?</h2>
-          <p>
-            좋았던 맛도, 다음엔 다른 걸 고르고 싶은 마음도.
-            <br />
-            나의 한컵에 차곡차곡 기록해 보세요.
-          </p>
+      <section
+        className="discovery-section"
+        aria-labelledby="popular-drinks-title"
+      >
+        <div className="discovery-section-head">
+          <div>
+            <p className="eyebrow">
+              <TrendingUp size={13} aria-hidden="true" /> HANCUP NOW
+            </p>
+            <h2 id="popular-drinks-title">지금 많이 기록하는 음료</h2>
+          </div>
         </div>
-        <Link href="/me/records" className="primary-button">
-          나의 한컵 시작하기 <ArrowUpRight size={16} />
-        </Link>
+        <p className="discovery-section-note">
+          최근 24시간 · 공개·나만 보기 기록 포함 · 음료별 1인 1회 집계
+        </p>
+        <PopularDrinks
+          initial={popularity}
+          items={items}
+          favoriteIds={favorites}
+        />
       </section>
+      <Link href="/me/records" className="discovery-journal">
+        <span>
+          오늘 마신 한 잔도
+          <br />
+          <b>나의 한컵에 남겨보세요.</b>
+        </span>
+        <ArrowUpRight size={20} />
+      </Link>
     </main>
   );
 }

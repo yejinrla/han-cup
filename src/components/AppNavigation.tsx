@@ -2,16 +2,23 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, MapPin, Heart, CalendarDays } from "lucide-react";
+import { House, Search, MapPin, Heart, CalendarDays } from "lucide-react";
 
 const tabs = [
   {
     href: "/",
-    label: "도감",
-    accessibleLabel: "음료 도감",
-    icon: BookOpen,
+    label: "홈",
+    accessibleLabel: "홈",
+    icon: House,
+    matches: (path: string) => path === "/",
+  },
+  {
+    href: "/search",
+    label: "검색",
+    accessibleLabel: "음료 검색",
+    icon: Search,
     matches: (path: string) =>
-      path === "/" || path.startsWith("/drinks/") || path === "/compare",
+      path === "/search" || path.startsWith("/drinks/") || path === "/compare",
   },
   {
     href: "/stores",

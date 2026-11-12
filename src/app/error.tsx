@@ -9,7 +9,7 @@ export default function ErrorPage({ reset }: { reset: () => void }) {
         <button className="primary-button" onClick={reset}>
           다시 시도
         </button>
-        <Link className="text-button" style={{ marginLeft: 20 }} href="/">
+        <Link className="text-button" style={{ marginLeft: 20 }} href="/search">
           도감으로 돌아가기
         </Link>
       </div>

@@ -2,10 +2,8 @@ import { test, expect } from "@playwright/test";
 test("browse, filter, compare and preserve anonymous selection", async ({
   page,
 }) => {
-  await page.goto("/");
-  await expect(
-    page.getByRole("heading", { name: "취향을 발견하고, 한 잔을 기록해요." }),
-  ).toBeVisible();
+  await page.goto("/search");
+  await expect(page.getByRole("heading", { name: "음료 검색" })).toBeVisible();
   expect(await page.locator("[data-drink-card]").count()).toBeGreaterThan(2);
   await page.getByLabel("당류 상한").fill("10");
   await page.getByRole("button", { name: "필터 적용" }).click();
@@ -43,7 +41,7 @@ test("mobile catalog does not overflow and missing brand has honest empty state"
 test("users can choose calorie sorting from the catalog controls", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/search");
   await page.getByLabel("음료 정렬").selectOption("calories");
   await page.getByRole("button", { name: "정렬 적용" }).click();
   await expect(

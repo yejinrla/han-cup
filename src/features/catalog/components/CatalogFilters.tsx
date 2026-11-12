@@ -5,7 +5,7 @@ import type { CatalogQuery } from "../query";
 export function CatalogFilters({ q }: { q: CatalogQuery }) {
   return (
     <>
-      <form className="catalog-form" action="/" id="catalog-search">
+      <form className="catalog-form" action="/search" id="catalog-search">
         <div className="search-box">
           <Search size={20} />
           <input
@@ -94,7 +94,7 @@ export function CatalogFilters({ q }: { q: CatalogQuery }) {
             {label}
           </Link>
         ))}
-        <Link className="reset-link" href="/">
+        <Link className="reset-link" href="/search">
           조건 초기화
         </Link>
       </div>
@@ -121,7 +121,7 @@ export function queryLink(q: CatalogQuery, changes: Record<string, string>) {
     ...changes,
   });
   for (const [k, v] of p) if (!v) p.delete(k);
-  return "/?" + p;
+  return "/search?" + p;
 }
 export function BasisToggle({ q }: { q: CatalogQuery }) {
   return (
@@ -147,7 +147,7 @@ export function BasisToggle({ q }: { q: CatalogQuery }) {
 export function SortControl({ q }: { q: CatalogQuery }) {
   const p = new URLSearchParams(queryLink(q, {}).split("?")[1]);
   return (
-    <form action="/" className="sort-control">
+    <form action="/search" className="sort-control">
       {[...p.entries()]
         .filter(([k]) => k !== "sort" && k !== "cursor")
         .map(([name, value]) => (

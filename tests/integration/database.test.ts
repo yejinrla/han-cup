@@ -44,6 +44,9 @@ beforeAll(async () => {
     await readFile("supabase/migrations/006_account_deletion.sql", "utf8"),
   );
   await db.query(
+    await readFile("supabase/migrations/007_home_popularity.sql", "utf8"),
+  );
+  await db.query(
     `insert into auth.users values ($1),($2) on conflict do nothing`,
     [a, b],
   );
@@ -350,4 +353,53 @@ test("review fix: rollback rejects variant additions without claiming a complete
       ])
     ).rows[0].reverted,
   ).toBe(false);
+});
+
+test("popularity includes private/public distinct recorders without exposing private review data", async () => {
+  await db.query("truncate reviews cascade");
+  await db.query(
+    "insert into auth.users(id) values($1),($2) on conflict do nothing",
+    [a, b],
+  );
+  await db.query(
+    "insert into profiles(id,nickname) values($1,'기록자A'),($2,'기록자B') on conflict do nothing",
+    [a, b],
+  );
+  const other = "10000000-0000-4000-8000-000000000099";
+  const ended = "10000000-0000-4000-8000-000000000098";
+  await db.query(
+    "insert into drinks(id,brand_id,slug,name,category,status) values($1,'ediya','popular-other','다른 음료','coffee','active'),($2,'ediya','popular-ended','종료 음료','coffee','discontinued')",
+    [other, ended],
+  );
+  await db.query(
+    `insert into reviews(user_id,drink_id,rating,body,consumed_on,visibility,moderation_status,created_at) values
+    ($1,$3,4,'PRIVATE BODY',current_date,'private','visible',now()-interval '1 hour'),
+    ($1,$3,5,'repeat',current_date,'public','visible',now()-interval '2 hour'),
+    ($2,$3,3,'public',current_date,'public','visible',now()-interval '3 hour'),
+    ($1,$4,5,'other private',current_date,'private','visible',now()-interval '4 hour'),
+    ($2,$4,5,'old',current_date,'private','visible',now()-interval '25 hour'),
+    ($2,$4,5,'hidden',current_date,'public','hidden',now()-interval '1 hour'),
+    ($2,$4,5,'future',current_date,'public','visible',now()+interval '1 hour'),
+    ($1,$5,5,'ended',current_date,'private','visible',now()-interval '1 hour')`,
+    [a, b, d, other, ended],
+  );
+  const result = await as(null, "select * from popular_drinks()");
+  expect(result.rows).toEqual([
+    { drink_id: d, recorders: "2" },
+    { drink_id: other, recorders: "1" },
+  ]);
+  expect(result.fields.map((f) => f.name)).toEqual(["drink_id", "recorders"]);
+  expect(JSON.stringify(result.rows)).not.toContain("PRIVATE BODY");
+  expect(
+    (await as(null, "select * from reviews where visibility='private'")).rows,
+  ).toHaveLength(0);
+  const firstPrivate = await db.query(
+    "select id from reviews where body='PRIVATE BODY'",
+  );
+  await as(a, "delete from reviews where user_id=$1 and drink_id=$2", [a, d]);
+  expect(firstPrivate.rows).toHaveLength(1);
+  expect(
+    (await as(null, "select * from popular_drinks() where drink_id=$1", [d]))
+      .rows,
+  ).toEqual([{ drink_id: d, recorders: "1" }]);
 });

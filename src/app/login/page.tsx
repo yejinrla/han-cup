@@ -57,7 +57,7 @@ export default async function Login({
           <br />
           기록은 기본적으로 나만 볼 수 있어요.
         </p>
-        <Link className="text-button" style={{ marginTop: 25 }} href="/">
+        <Link className="text-button" style={{ marginTop: 25 }} href="/search">
           로그인 없이 둘러보기 →
         </Link>
       </div>

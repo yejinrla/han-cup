@@ -229,12 +229,10 @@ test("review fix: history restoration never shows a withdrawn cached review whil
     await expect(p.getByText(body, { exact: true })).toBeVisible();
     await p
       .getByRole("navigation", { name: "주 메뉴" })
-      .getByRole("link", { name: "음료 도감", exact: true })
+      .getByRole("link", { name: "음료 검색", exact: true })
       .click();
-    await expect(p).toHaveURL("http://localhost:3001/");
-    await expect(
-      p.getByRole("heading", { name: "취향을 발견하고, 한 잔을 기록해요." }),
-    ).toBeVisible();
+    await expect(p).toHaveURL("http://localhost:3001/search");
+    await expect(p.getByRole("heading", { name: "음료 검색" })).toBeVisible();
     const changed = await writer
       .from("reviews")
       .update({ visibility: "private" })
@@ -381,5 +379,76 @@ test("journal calendar defaults to today, filters dates, paginates and refreshes
         "id",
         inserted.data.map((r) => r.id),
       );
+  }
+});
+
+test("anonymous popularity includes private records but returns no private content or identity", async ({
+  browser,
+}) => {
+  const viewer = await browser.newContext();
+  const before = await (
+    await viewer.request.get("http://localhost:3001/api/discovery/popular")
+  ).json();
+  expect(before.available).toBe(true);
+  const baseline =
+    before.items.find((r: { drinkId: string }) => r.drinkId === drinkId)
+      ?.recorders ?? 0;
+  const created = await admin.auth.admin.createUser({
+    email: `ranking-${Date.now()}@local.test`,
+    email_confirm: true,
+  });
+  if (created.error || !created.data.user)
+    throw new Error("fixture user failed");
+  const id = created.data.user.id;
+  const body = "PRIVATE POPULARITY MUST NOT LEAK";
+  try {
+    const inserted = await admin
+      .from("reviews")
+      .insert({
+        user_id: id,
+        drink_id: drinkId,
+        rating: 2,
+        body,
+        consumed_on: "2026-11-12",
+        visibility: "private",
+      });
+    expect(inserted.error).toBeNull();
+    const response = await viewer.request.get(
+      "http://localhost:3001/api/discovery/popular",
+    );
+    const snapshot = await response.json();
+    expect(
+      snapshot.items.find((r: { drinkId: string }) => r.drinkId === drinkId)
+        ?.recorders,
+    ).toBe(baseline + 1);
+    expect(Object.keys(snapshot.items[0]).sort()).toEqual([
+      "drinkId",
+      "recorders",
+    ]);
+    expect(JSON.stringify(snapshot)).not.toContain(body);
+    expect(JSON.stringify(snapshot)).not.toContain(id);
+    const anonymous = createClient(conf.url, conf.anonKey, {
+      auth: { persistSession: false },
+    });
+    const raw = await anonymous.from("reviews").select("*").eq("user_id", id);
+    expect(raw.data).toEqual([]);
+    const p = await viewer.newPage();
+    await p.goto("/");
+    await expect(
+      p.getByRole("heading", { name: "지금 많이 기록하는 음료", exact: true }),
+    ).toBeVisible();
+    await expect(p.locator("[data-drink-card]")).toHaveCount(1);
+    await expect(p.getByText(body, { exact: true })).toHaveCount(0);
+    await admin.auth.admin.deleteUser(id);
+    const removed = await (
+      await viewer.request.get("http://localhost:3001/api/discovery/popular")
+    ).json();
+    expect(
+      removed.items.find((r: { drinkId: string }) => r.drinkId === drinkId)
+        ?.recorders ?? 0,
+    ).toBe(baseline);
+  } finally {
+    await admin.auth.admin.deleteUser(id);
+    await viewer.close();
   }
 });

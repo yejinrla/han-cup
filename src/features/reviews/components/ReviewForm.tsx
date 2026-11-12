@@ -65,6 +65,10 @@ export function ReviewForm({
       <p className="muted">
         공개 별점은 이 음료에 남긴 내 최신 공개 기록 하나만 평균에 반영돼요.
       </p>
+      <p className="muted">
+        나만 보기 기록도 인기 음료 통계에 포함돼요. 내용과 작성자는 공개하지
+        않으며, 집계에는 최대 5분 뒤 반영돼요.
+      </p>
       <div role="status" aria-live="polite">
         {state.error && <p className="inline-error">{state.error}</p>}
         {state.success && <p className="status-box">{state.success}</p>}

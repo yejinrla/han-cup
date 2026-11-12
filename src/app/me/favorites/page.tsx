@@ -62,7 +62,7 @@ export default async function Favorites({
         <div className="empty-state">
           <h2>아직 좋아요한 음료가 없어요</h2>
           <p>도감에서 하트를 눌러 다음 한 잔을 골라보세요.</p>
-          <Link className="primary-button" href="/">
+          <Link className="primary-button" href="/search">
             음료 둘러보기
           </Link>
         </div>

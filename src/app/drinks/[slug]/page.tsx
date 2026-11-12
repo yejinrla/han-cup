@@ -44,7 +44,7 @@ export default async function Detail({
   return (
     <main id="main" className="page-wrap">
       <div className="breadcrumb">
-        <Link href="/">
+        <Link href="/search">
           <ArrowLeft size={14} /> 음료 도감
         </Link>
         <span>/</span>

@@ -168,7 +168,7 @@ export default async function Records({
                 ? "아래의 이전 기록 보기로 돌아가 주세요."
                 : "음료를 둘러보고 한 잔의 기억을 남겨보세요."}
             </p>
-            <Link className="primary-button" href="/">
+            <Link className="primary-button" href="/search">
               음료 둘러보기
             </Link>
           </div>

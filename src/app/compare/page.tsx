@@ -47,7 +47,7 @@ export default async function Compare({
         <div className="empty-state">
           <h2>비교할 음료를 더 담아주세요</h2>
           <p>두 잔부터 나란히 비교할 수 있어요.</p>
-          <Link className="primary-button" href="/">
+          <Link className="primary-button" href="/search">
             음료 둘러보기
           </Link>
         </div>
