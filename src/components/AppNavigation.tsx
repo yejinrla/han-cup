@@ -14,6 +14,7 @@ const tabs = [
       path === "/" ||
       path === "/search" ||
       path.startsWith("/drinks/") ||
+      path.startsWith("/notes/") ||
       path === "/compare",
   },
   {

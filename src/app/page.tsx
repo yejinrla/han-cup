@@ -13,6 +13,7 @@ import {
 import { getPopularity } from "@/features/discovery/repository";
 import { unavailablePopularity } from "@/features/discovery/popularity";
 import { PopularDrinks } from "@/features/discovery/components/PopularDrinks";
+import { TasteNoteBanner } from "@/features/notes/TasteNoteBanner";
 import curated from "../../data/catalog/new-arrivals.json";
 export const dynamic = "force-dynamic";
 export default async function Home({
@@ -48,6 +49,7 @@ export default async function Home({
           <span>음료명이나 브랜드로 찾아보세요</span>
           <ArrowUpRight size={17} aria-hidden="true" />
         </Link>
+        <TasteNoteBanner />
       </section>
       <section className="discovery-section" aria-labelledby="new-drinks-title">
         <div className="discovery-section-head">
