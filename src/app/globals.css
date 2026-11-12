@@ -2588,3 +2588,131 @@ body {
 .magazine-return {
   margin-left: 20px;
 }
+
+/* Route loading placeholders share the app frame and never intercept tabs. */
+.page-skeleton {
+  min-height: 65vh;
+}
+.skeleton-content {
+  min-width: 0;
+}
+.skeleton-block {
+  display: block;
+  background: #e7ebdf;
+  border-radius: 8px;
+  animation: skeleton-pulse 1.8s ease-in-out infinite;
+}
+.skeleton-heading {
+  margin-bottom: 28px;
+}
+.skeleton-eyebrow {
+  width: 35%;
+  height: 9px;
+  margin-bottom: 20px;
+}
+.skeleton-title {
+  width: 66%;
+  height: 32px;
+  margin-bottom: 16px;
+}
+.skeleton-description {
+  width: 86%;
+  height: 13px;
+}
+.skeleton-home .skeleton-title {
+  height: 72px;
+}
+.skeleton-search {
+  height: 52px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+}
+.skeleton-banner {
+  height: 240px;
+  border-radius: 18px;
+  margin: 28px 0 48px;
+}
+.skeleton-section-title {
+  width: 48%;
+  height: 24px;
+  margin-bottom: 24px;
+}
+.skeleton-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.skeleton-tabs > span {
+  width: 28%;
+  height: 32px;
+}
+.skeleton-card {
+  min-width: 0;
+}
+.skeleton-drink-image {
+  aspect-ratio: 1 / 1.15;
+  border-radius: 18px;
+  margin-bottom: 14px;
+}
+.skeleton-card-brand {
+  width: 40%;
+  height: 10px;
+  margin-bottom: 10px;
+}
+.skeleton-card-title {
+  width: 82%;
+  height: 18px;
+  margin-bottom: 12px;
+}
+.skeleton-card-info {
+  width: 94%;
+  height: 32px;
+}
+.skeleton-calendar {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  margin-bottom: 24px;
+}
+.skeleton-month {
+  width: 38%;
+  height: 26px;
+  margin-bottom: 26px;
+}
+.skeleton-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+}
+.skeleton-calendar-grid > span {
+  aspect-ratio: 1;
+  border-radius: 10px;
+}
+.skeleton-calendar-grid > span:nth-child(-n + 7) {
+  height: 10px;
+  aspect-ratio: auto;
+  margin-bottom: 8px;
+}
+.skeleton-map {
+  height: 300px;
+  border-radius: 18px;
+  margin-bottom: 24px;
+}
+.skeleton-record {
+  height: 130px;
+  border-radius: 18px;
+}
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-block {
+    animation: none;
+  }
+}
