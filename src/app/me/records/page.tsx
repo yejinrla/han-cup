@@ -74,7 +74,7 @@ export default async function Records({
       <p className="page-intro">좋았던 한 모금도, 새로운 발견도 차곡차곡.</p>
       <nav className="personal-tabs">
         <Link href="/me/records">마신 기록</Link>
-        <Link href="/me/favorites">찜한 음료</Link>
+        <Link href="/me/favorites">좋아요한 음료</Link>
         <Link href="/me/settings">계정 설정</Link>
       </nav>
       <JournalCalendar

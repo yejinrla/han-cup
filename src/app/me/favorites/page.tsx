@@ -5,7 +5,7 @@ import { getCatalog, joinCatalog } from "@/features/catalog/repository";
 import { DrinkCard } from "@/features/catalog/components/DrinkCard";
 import { setFavorite } from "@/features/favorites/service";
 export const metadata = {
-  title: "찜한 음료",
+  title: "좋아요한 음료",
   robots: { index: false, follow: false },
 };
 export const dynamic = "force-dynamic";
@@ -23,7 +23,7 @@ export default async function Favorites({
     .from("favorites")
     .select("drink_id")
     .eq("user_id", user.id);
-  if (error) throw new Error("찜 목록을 불러오지 못했어요.");
+  if (error) throw new Error("좋아요 목록을 불러오지 못했어요.");
   const ids = new Set((data ?? []).map((x) => x.drink_id));
   const items = joinCatalog(await getCatalog()).filter((x) => ids.has(x.id));
   async function add(form: FormData) {
@@ -33,18 +33,18 @@ export default async function Favorites({
   return (
     <main id="main" className="page-wrap">
       <p className="eyebrow">MY LITTLE COLLECTION</p>
-      <h1 className="page-heading">마셔보고 싶은 한 잔</h1>
-      <p className="page-intro">다음에 만날 나의 취향을 모아두세요.</p>
+      <h1 className="page-heading">좋아요한 음료</h1>
+      <p className="page-intro">하트를 누른 음료를 한곳에서 다시 만나보세요.</p>
       <nav className="personal-tabs">
         <Link href="/me/records">마신 기록</Link>
-        <Link href="/me/favorites">찜한 음료</Link>
+        <Link href="/me/favorites">좋아요한 음료</Link>
         <Link href="/me/settings">계정 설정</Link>
       </nav>
       {p.add && !ids.has(p.add) && (
         <form action={add} className="status-box">
           <input type="hidden" name="drinkId" value={p.add} />
-          <p>선택한 음료를 찜 목록에 저장할까요?</p>
-          <button className="primary-button">찜 저장하기</button>
+          <p>선택한 음료를 좋아요 목록에 저장할까요?</p>
+          <button className="primary-button">좋아요하기</button>
         </form>
       )}
       {items.length ? (
@@ -60,7 +60,7 @@ export default async function Favorites({
         </div>
       ) : (
         <div className="empty-state">
-          <h2>아직 찜한 음료가 없어요</h2>
+          <h2>아직 좋아요한 음료가 없어요</h2>
           <p>도감에서 하트를 눌러 다음 한 잔을 골라보세요.</p>
           <Link className="primary-button" href="/">
             음료 둘러보기

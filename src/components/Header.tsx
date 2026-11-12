@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { BookOpen, MapPin, Heart, ArrowUpRight } from "lucide-react";
+import {
+  BookOpen,
+  MapPin,
+  Heart,
+  CalendarDays,
+  ArrowUpRight,
+} from "lucide-react";
 export function Header() {
   return (
     <>
@@ -20,8 +26,12 @@ export function Header() {
             <MapPin size={16} />
             주변 매장
           </Link>
-          <Link href="/me/records">
+          <Link href="/me/favorites">
             <Heart size={16} />
+            좋아요한 음료
+          </Link>
+          <Link href="/me/records">
+            <CalendarDays size={16} />
             나의 한컵
           </Link>
         </nav>

@@ -23,7 +23,7 @@ export default async function Settings() {
       <h1 className="page-heading">계정 설정</h1>
       <nav className="personal-tabs">
         <Link href="/me/records">마신 기록</Link>
-        <Link href="/me/favorites">찜한 음료</Link>
+        <Link href="/me/favorites">좋아요한 음료</Link>
         <Link href="/me/settings">계정 설정</Link>
       </nav>
       <SettingsForm nickname={data.nickname} />

@@ -1230,8 +1230,11 @@ th small {
 }
 @media (max-width: 700px) {
   .site-header {
-    height: 72px;
-    padding: 0 20px;
+    height: auto;
+    min-height: 72px;
+    padding: 16px 20px;
+    flex-wrap: wrap;
+    gap: 12px;
   }
   .wordmark {
     font-size: 26px;
@@ -1241,13 +1244,16 @@ th small {
     margin-left: 7px;
   }
   .site-header nav {
-    gap: 15px;
-    font-size: 10px;
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 11px;
+  }
+  .site-header nav a {
+    min-height: 36px;
+    white-space: nowrap;
   }
   .site-header nav svg {
-    display: none;
-  }
-  .site-header nav a:last-child {
     display: none;
   }
   .login-link {
