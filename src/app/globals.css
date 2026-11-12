@@ -1157,447 +1157,375 @@ th small {
   font-size: 11px;
   color: #a26842;
 }
-@media (min-width: 1600px) {
-  .hero,
-  .collection,
-  .journal-banner {
-    max-width: 1360px;
-  }
+
+.site-header {
+  height: auto;
+  min-height: 72px;
+  padding: 16px 20px;
+  flex-wrap: wrap;
+  gap: 12px;
 }
-@media (max-width: 1450px) {
-  .hero,
-  .collection,
-  .journal-banner {
-    margin-left: 5.4%;
-    margin-right: 5.4%;
-  }
-  .hero {
-    padding: 42px 50px;
-  }
-  .drink-visual {
-    height: 210px;
-  }
-  .drink-grid {
-    gap: 22px 18px;
-  }
-  .drink-info {
-    padding: 15px 13px 10px;
-  }
-  .brand-name > span {
-    font-size: 7px;
-  }
-  .nutrition-strip b {
-    font-size: 11px;
-  }
+.wordmark {
+  font-size: 26px;
 }
-@media (max-width: 1050px) {
-  .site-header nav {
-    gap: 20px;
-  }
-  .hero h1 {
-    font-size: 36px;
-  }
-  .hero {
-    padding: 35px;
-  }
-  .note-top {
-    left: 0;
-  }
-  .note-bottom {
-    right: -10px;
-  }
-  .collection-heading h2 span {
-    display: none;
-  }
-  .drink-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .drink-visual {
-    height: 220px;
-  }
-  .results-bar p > span {
-    display: none;
-  }
-  .filter-separator {
-    display: none;
-  }
-  .detail-grid {
-    gap: 28px;
-  }
-  .site-footer p {
-    display: none;
-  }
+.wordmark small {
+  font-size: 7px;
+  margin-left: 7px;
 }
-@media (max-width: 700px) {
-  .site-header {
-    height: auto;
-    min-height: 72px;
-    padding: 16px 20px;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .wordmark {
-    font-size: 26px;
-  }
-  .wordmark small {
-    font-size: 7px;
-    margin-left: 7px;
-  }
-  .site-header nav {
-    width: 100%;
-    justify-content: space-between;
-    gap: 8px;
-    font-size: 11px;
-  }
-  .site-header nav a {
-    min-height: 36px;
-    white-space: nowrap;
-  }
-  .site-header nav svg {
-    display: none;
-  }
-  .login-link {
-    display: none;
-  }
-  .hero {
-    margin: 20px 18px 0;
-    min-height: 330px;
-    grid-template-columns: 1fr 0.6fr;
-    padding: 28px 23px;
-  }
-  .hero h1 {
-    font-size: 29px;
-    letter-spacing: -1.7px;
-    margin-top: 18px;
-    white-space: nowrap;
-  }
-  .eyebrow {
-    font-size: 7px;
-    letter-spacing: 1.4px;
-  }
-  .hero-description {
-    font-size: 10px;
-  }
-  .hero-art {
-    align-self: center;
-    height: 230px;
-    transform: translateX(27px);
-  }
-  .hero-circle {
-    height: 155px;
-    width: 155px;
-  }
-  .cup-art.large {
-    width: 150px;
-    height: 192px;
-  }
-  .floating-note {
-    display: none;
-  }
-  .art-caption {
-    font-size: 5px;
-    letter-spacing: 1px;
-    bottom: 0;
-    white-space: nowrap;
-  }
-  .hero-index {
-    display: none;
-  }
-  .hero-link {
-    font-size: 9px;
-    gap: 14px;
-  }
-  .collection {
-    margin: 38px 18px 0;
-  }
-  .collection-heading {
-    margin-bottom: 19px;
-  }
-  .collection-heading h2 {
-    font-size: 21px;
-  }
-  .collection-count {
-    font-size: 8px;
-    gap: 4px;
-  }
-  .collection-count svg {
-    width: 12px;
-  }
-  .search-box {
-    padding: 11px 12px;
-    gap: 8px;
-  }
-  .search-box input {
-    font-size: 10px;
-    min-width: 0;
-    width: 0;
-  }
-  .search-box svg {
-    width: 17px;
-  }
-  .filter-main {
-    gap: 6px;
-    padding: 12px 0;
-  }
-  .filter-main > label {
-    padding: 6px;
-    font-size: 9px;
-  }
-  .filter-main select {
-    font-size: 9px;
-    max-width: 90px;
-  }
-  .number-filter input {
-    width: 33px;
-    font-size: 9px;
-  }
-  .number-filter small {
-    font-size: 8px;
-  }
-  .apply-button {
-    font-size: 9px;
-    padding: 7px 9px;
-  }
-  .category-tabs {
-    gap: 16px;
-    font-size: 10px;
-    padding-top: 17px;
-  }
-  .category-tabs > a {
-    padding-bottom: 12px;
-  }
-  .category-tabs .reset-link {
-    font-size: 8px;
-  }
-  .results-bar {
-    padding: 18px 0 14px;
-    font-size: 10px;
-  }
-  .results-bar > div {
-    gap: 8px;
-  }
-  .basis-toggle {
-    font-size: 8px;
-  }
-  .basis-toggle a {
-    padding: 4px 7px;
-  }
-  .sort-link {
-    font-size: 8px;
-    gap: 2px;
-  }
-  .data-notice {
-    font-size: 8px;
-    padding: 8px 10px;
-  }
-  .drink-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px 10px;
-  }
-  .drink-visual {
-    height: 170px;
-  }
-  .cup-art {
-    width: 127px;
-    height: 151px;
-  }
-  .collection-number {
-    font-size: 6px;
-    left: 10px;
-    top: 11px;
-  }
-  .favorite-button {
-    right: 4px;
-    top: 4px;
-  }
-  .favorite-button svg {
-    width: 15px;
-  }
-  .temp-badge {
-    font-size: 6px;
-    left: 9px;
-    bottom: 9px;
-  }
-  .drink-info {
-    padding: 12px 9px 9px;
-  }
-  .brand-name {
-    font-size: 8px;
-    gap: 4px;
-    flex-wrap: wrap;
-    min-height: 27px;
-  }
-  .brand-name > span {
-    width: 100%;
-    margin-left: 0;
-    font-size: 7px;
-  }
-  .drink-title {
-    font-size: 12px;
-    margin: 5px 0 11px;
-    letter-spacing: -0.6px;
-    min-height: 38px;
-    align-items: start;
-  }
-  .drink-title svg {
-    width: 12px;
-    min-width: 12px;
-    margin-top: 3px;
-  }
-  .nutrition-strip {
-    padding: 7px 4px;
-  }
-  .nutrition-strip > div {
-    padding-left: 4px;
-  }
-  .nutrition-strip small {
-    font-size: 7px;
-  }
-  .nutrition-strip b {
-    font-size: 10px;
-  }
-  .nutrition-strip em {
-    font-size: 6px;
-    margin-left: 1px;
-  }
-  .card-bottom {
-    margin-top: 10px;
-  }
-  .rating {
-    font-size: 7px;
-    gap: 2px;
-  }
-  .rating svg {
-    width: 10px;
-  }
-  .compare-button {
-    font-size: 8px;
-    padding: 3px 5px;
-    gap: 2px;
-  }
-  .compare-button svg {
-    width: 11px;
-  }
-  .price-note {
-    font-size: 7px;
-    gap: 4px;
-  }
-  .price-note span {
-    display: none;
-  }
-  .collection-footnote {
-    font-size: 8px;
-    display: block;
-    line-height: 1.9;
-  }
-  .collection-footnote a {
-    margin-top: 6px;
-  }
-  .journal-banner {
-    margin: 35px 18px;
-    padding: 25px;
-    display: block;
-  }
-  .journal-banner h2 {
-    font-size: 21px;
-  }
-  .journal-banner p:not(.eyebrow) {
-    font-size: 10px;
-  }
-  .journal-banner .primary-button {
-    margin-top: 20px;
-    font-size: 10px;
-  }
-  .site-footer {
-    padding: 25px 20px 80px;
-    display: block;
-  }
-  .site-footer > div:last-child {
-    margin-top: 16px;
-    gap: 14px;
-  }
-  .compare-tray {
-    min-width: 0;
-    width: calc(100% - 30px);
-    gap: 10px;
-    padding: 8px 8px 8px 12px;
-    bottom: 12px;
-  }
-  .compare-tray > span {
-    font-size: 10px;
-  }
-  .compare-tray small {
-    display: none;
-  }
-  .compare-tray > div {
-    gap: 8px;
-  }
-  .compare-tray a {
-    font-size: 10px;
-    padding: 9px 13px;
-    gap: 12px;
-  }
-  .page-wrap {
-    margin: 28px auto 50px;
-    padding: 0 18px;
-  }
-  .page-heading {
-    font-size: 25px;
-  }
-  .page-intro {
-    font-size: 11px;
-  }
-  .detail-grid {
-    grid-template-columns: 1fr;
-    gap: 25px;
-  }
-  .detail-visual {
-    min-height: 300px;
-  }
-  .detail-visual .cup-art {
-    width: 220px;
-    height: 264px;
-  }
-  .detail-title {
-    font-size: 25px;
-  }
-  .panel {
-    padding: 18px;
-  }
-  .comparison-scroll th,
-  .comparison-scroll td {
-    min-width: 150px;
-    padding: 15px 10px;
-  }
-  .comparison-scroll th:first-child,
-  .comparison-scroll td:first-child {
-    min-width: 95px;
-  }
-  .store-grid {
-    grid-template-columns: 1fr;
-  }
-  .store-map {
-    height: 300px;
-  }
-  .store-controls input {
-    max-width: 100%;
-    width: 100%;
-  }
-  .store-controls select {
-    flex: 1;
-  }
-  .auth-card {
-    margin: 25px auto;
-    padding: 30px 23px;
-  }
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-  .personal-tabs {
-    gap: 15px;
-    font-size: 11px;
-  }
+.site-header nav {
+  width: 100%;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11px;
+}
+.site-header nav a {
+  min-height: 36px;
+  white-space: nowrap;
+}
+.site-header nav svg {
+  display: none;
+}
+.login-link {
+  display: none;
+}
+.hero {
+  margin: 20px 18px 0;
+  min-height: 330px;
+  grid-template-columns: 1fr 0.6fr;
+  padding: 28px 23px;
+}
+.hero h1 {
+  font-size: 29px;
+  letter-spacing: -1.7px;
+  margin-top: 18px;
+  white-space: nowrap;
+}
+.eyebrow {
+  font-size: 7px;
+  letter-spacing: 1.4px;
+}
+.hero-description {
+  font-size: 10px;
+}
+.hero-art {
+  align-self: center;
+  height: 230px;
+  transform: translateX(27px);
+}
+.hero-circle {
+  height: 155px;
+  width: 155px;
+}
+.cup-art.large {
+  width: 150px;
+  height: 192px;
+}
+.floating-note {
+  display: none;
+}
+.art-caption {
+  font-size: 5px;
+  letter-spacing: 1px;
+  bottom: 0;
+  white-space: nowrap;
+}
+.hero-index {
+  display: none;
+}
+.hero-link {
+  font-size: 9px;
+  gap: 14px;
+}
+.collection {
+  margin: 38px 18px 0;
+}
+.collection-heading {
+  margin-bottom: 19px;
+}
+.collection-heading h2 {
+  font-size: 21px;
+}
+.collection-count {
+  font-size: 8px;
+  gap: 4px;
+}
+.collection-count svg {
+  width: 12px;
+}
+.search-box {
+  padding: 11px 12px;
+  gap: 8px;
+}
+.search-box input {
+  font-size: 10px;
+  min-width: 0;
+  width: 0;
+}
+.search-box svg {
+  width: 17px;
+}
+.filter-main {
+  gap: 6px;
+  padding: 12px 0;
+}
+.filter-main > label {
+  padding: 6px;
+  font-size: 9px;
+}
+.filter-main select {
+  font-size: 9px;
+  max-width: 90px;
+}
+.number-filter input {
+  width: 33px;
+  font-size: 9px;
+}
+.number-filter small {
+  font-size: 8px;
+}
+.apply-button {
+  font-size: 9px;
+  padding: 7px 9px;
+}
+.category-tabs {
+  gap: 16px;
+  font-size: 10px;
+  padding-top: 17px;
+}
+.category-tabs > a {
+  padding-bottom: 12px;
+}
+.category-tabs .reset-link {
+  font-size: 8px;
+}
+.results-bar {
+  padding: 18px 0 14px;
+  font-size: 10px;
+}
+.results-bar > div {
+  gap: 8px;
+}
+.basis-toggle {
+  font-size: 8px;
+}
+.basis-toggle a {
+  padding: 4px 7px;
+}
+.sort-link {
+  font-size: 8px;
+  gap: 2px;
+}
+.data-notice {
+  font-size: 8px;
+  padding: 8px 10px;
+}
+.drink-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 10px;
+}
+.drink-visual {
+  height: 170px;
+}
+.cup-art {
+  width: 127px;
+  height: 151px;
+}
+.collection-number {
+  font-size: 6px;
+  left: 10px;
+  top: 11px;
+}
+.favorite-button {
+  right: 4px;
+  top: 4px;
+}
+.favorite-button svg {
+  width: 15px;
+}
+.temp-badge {
+  font-size: 6px;
+  left: 9px;
+  bottom: 9px;
+}
+.drink-info {
+  padding: 12px 9px 9px;
+}
+.brand-name {
+  font-size: 8px;
+  gap: 4px;
+  flex-wrap: wrap;
+  min-height: 27px;
+}
+.brand-name > span {
+  width: 100%;
+  margin-left: 0;
+  font-size: 7px;
+}
+.drink-title {
+  font-size: 12px;
+  margin: 5px 0 11px;
+  letter-spacing: -0.6px;
+  min-height: 38px;
+  align-items: start;
+}
+.drink-title svg {
+  width: 12px;
+  min-width: 12px;
+  margin-top: 3px;
+}
+.nutrition-strip {
+  padding: 7px 4px;
+}
+.nutrition-strip > div {
+  padding-left: 4px;
+}
+.nutrition-strip small {
+  font-size: 7px;
+}
+.nutrition-strip b {
+  font-size: 10px;
+}
+.nutrition-strip em {
+  font-size: 6px;
+  margin-left: 1px;
+}
+.card-bottom {
+  margin-top: 10px;
+}
+.rating {
+  font-size: 7px;
+  gap: 2px;
+}
+.rating svg {
+  width: 10px;
+}
+.compare-button {
+  font-size: 8px;
+  padding: 3px 5px;
+  gap: 2px;
+}
+.compare-button svg {
+  width: 11px;
+}
+.price-note {
+  font-size: 7px;
+  gap: 4px;
+}
+.price-note span {
+  display: none;
+}
+.collection-footnote {
+  font-size: 8px;
+  display: block;
+  line-height: 1.9;
+}
+.collection-footnote a {
+  margin-top: 6px;
+}
+.journal-banner {
+  margin: 35px 18px;
+  padding: 25px;
+  display: block;
+}
+.journal-banner h2 {
+  font-size: 21px;
+}
+.journal-banner p:not(.eyebrow) {
+  font-size: 10px;
+}
+.journal-banner .primary-button {
+  margin-top: 20px;
+  font-size: 10px;
+}
+.site-footer {
+  padding: 25px 20px 80px;
+  display: block;
+}
+.site-footer > div:last-child {
+  margin-top: 16px;
+  gap: 14px;
+}
+.compare-tray {
+  min-width: 0;
+  width: calc(100% - 30px);
+  gap: 10px;
+  padding: 8px 8px 8px 12px;
+  bottom: 12px;
+}
+.compare-tray > span {
+  font-size: 10px;
+}
+.compare-tray small {
+  display: none;
+}
+.compare-tray > div {
+  gap: 8px;
+}
+.compare-tray a {
+  font-size: 10px;
+  padding: 9px 13px;
+  gap: 12px;
+}
+.page-wrap {
+  margin: 28px auto 50px;
+  padding: 0 18px;
+}
+.page-heading {
+  font-size: 25px;
+}
+.page-intro {
+  font-size: 11px;
+}
+.detail-grid {
+  grid-template-columns: 1fr;
+  gap: 25px;
+}
+.detail-visual {
+  min-height: 300px;
+}
+.detail-visual .cup-art {
+  width: 220px;
+  height: 264px;
+}
+.detail-title {
+  font-size: 25px;
+}
+.panel {
+  padding: 18px;
+}
+.comparison-scroll th,
+.comparison-scroll td {
+  min-width: 150px;
+  padding: 15px 10px;
+}
+.comparison-scroll th:first-child,
+.comparison-scroll td:first-child {
+  min-width: 95px;
+}
+.store-grid {
+  grid-template-columns: 1fr;
+}
+.store-map {
+  height: 300px;
+}
+.store-controls input {
+  max-width: 100%;
+  width: 100%;
+}
+.store-controls select {
+  flex: 1;
+}
+.auth-card {
+  margin: 25px auto;
+  padding: 30px 23px;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+.personal-tabs {
+  gap: 15px;
+  font-size: 11px;
 }
 
 .sort-control {
@@ -1619,15 +1547,14 @@ th small {
   font-size: 9px;
   color: #536e43;
 }
-@media (max-width: 700px) {
-  .sort-control select {
-    font-size: 8px;
-    max-width: 90px;
-  }
-  .sort-control button {
-    font-size: 8px;
-    padding: 3px 5px;
-  }
+
+.sort-control select {
+  font-size: 8px;
+  max-width: 90px;
+}
+.sort-control button {
+  font-size: 8px;
+  padding: 3px 5px;
 }
 
 .journal-calendar {
@@ -1722,21 +1649,370 @@ th small {
 .journal-day-caption {
   margin: 8px 0 20px;
 }
-@media (max-width: 700px) {
-  .journal-weekdays,
-  .journal-days {
-    gap: 2px;
-  }
-  .journal-day {
-    min-height: 48px;
-    border-radius: 10px;
-    font-size: 14px;
-  }
-  .journal-calendar-toolbar {
-    margin-bottom: 16px;
-  }
-  .journal-calendar-legend {
-    font-size: 10px;
-    line-height: 1.6;
-  }
+
+.journal-weekdays,
+.journal-days {
+  gap: 2px;
+}
+.journal-day {
+  min-height: 48px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+.journal-calendar-toolbar {
+  margin-bottom: 16px;
+}
+.journal-calendar-legend {
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+/* One app-sized surface, shared by mobile browsers and desktop. */
+:root {
+  --app-width: 480px;
+  --tab-height: 76px;
+}
+html {
+  scroll-padding-top: 88px;
+  scroll-padding-bottom: calc(
+    var(--tab-height) + env(safe-area-inset-bottom) + 90px
+  );
+}
+body {
+  background: #e9ede5;
+}
+.app-shell {
+  width: min(100%, var(--app-width));
+  min-height: 100dvh;
+  margin: 0 auto;
+  background: var(--paper);
+  box-shadow: 0 0 70px #2b422015;
+  padding-bottom: calc(var(--tab-height) + env(safe-area-inset-bottom) + 90px);
+}
+.app-shell > main {
+  min-width: 0;
+}
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  min-height: 64px;
+  height: 64px;
+  padding: 0 20px;
+  flex-wrap: nowrap;
+  gap: 12px;
+  background: #fafbf7f5;
+  backdrop-filter: blur(16px);
+}
+.site-header .wordmark {
+  font-size: 26px;
+  white-space: nowrap;
+}
+.site-header .wordmark small {
+  display: none;
+}
+.app-header-note {
+  color: #7b8a76;
+  font-size: 11px;
+  margin-right: auto;
+}
+.site-header .login-link {
+  display: inline-flex;
+  gap: 5px;
+  padding: 8px 10px;
+  min-height: 36px;
+  flex-shrink: 0;
+  border-radius: 20px;
+  font-size: 11px;
+  background: #fff;
+}
+.app-bottom-nav {
+  position: fixed;
+  z-index: 40;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(100%, var(--app-width));
+  height: calc(var(--tab-height) + env(safe-area-inset-bottom));
+  padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  background: #fdfefb;
+  border-top: 1px solid #dfe6d9;
+  box-shadow: 0 -5px 24px #35492c06;
+}
+.app-bottom-nav a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: 52px;
+  border-radius: 12px;
+  font-size: 11px;
+  color: #5e6e59;
+}
+.app-tab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 29px;
+  border-radius: 16px;
+}
+.app-bottom-nav a[aria-current="page"] {
+  color: var(--green);
+  font-weight: 700;
+}
+.app-bottom-nav a[aria-current="page"] .app-tab-icon {
+  background: #e9efdf;
+}
+.app-bottom-nav a:hover {
+  background: #f1f5eb;
+}
+.compare-tray {
+  width: min(448px, calc(100% - 24px));
+  min-width: 0;
+  bottom: calc(var(--tab-height) + env(safe-area-inset-bottom) + 12px);
+  border-radius: 16px;
+  gap: 8px;
+  padding: 9px 10px 9px 14px;
+}
+.compare-tray > span {
+  font-size: 11px;
+}
+.compare-tray a {
+  min-height: 40px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+.compare-tray button {
+  min-width: 36px;
+  min-height: 36px;
+  justify-content: center;
+}
+.hero {
+  display: block;
+  min-height: 270px;
+  margin: 18px 18px 0;
+  padding: 26px 22px;
+  border-radius: 22px;
+  isolation: isolate;
+}
+.hero-copy {
+  position: relative;
+  z-index: 2;
+}
+.hero h1 {
+  font-size: 27px;
+  margin-top: 16px;
+}
+.hero-description {
+  font-size: 12px;
+}
+.hero-link {
+  font-size: 11px;
+  min-height: 44px;
+}
+.hero-art {
+  position: absolute;
+  right: -36px;
+  top: 26px;
+  width: 170px;
+  height: 230px;
+  transform: none;
+  opacity: 0.5;
+  z-index: 0;
+}
+.eyebrow {
+  font-size: 9px;
+  letter-spacing: 1.2px;
+}
+.art-caption {
+  display: none;
+}
+.collection {
+  margin-top: 28px;
+}
+.collection-heading h2 {
+  font-size: 21px;
+}
+.collection-heading h2 span {
+  display: none;
+}
+.collection-count {
+  font-size: 9px;
+}
+.search-box {
+  border-radius: 14px;
+  min-height: 48px;
+}
+.search-box input {
+  font-size: 16px;
+}
+.filter-main > label {
+  font-size: 11px;
+  border-radius: 9px;
+  min-height: 42px;
+}
+.filter-main select {
+  font-size: 16px;
+  max-width: 118px;
+}
+.number-filter input {
+  font-size: 16px;
+  width: 42px;
+}
+.number-filter small {
+  font-size: 10px;
+}
+.apply-button {
+  font-size: 12px;
+  min-height: 42px;
+  border-radius: 9px;
+}
+.category-tabs {
+  gap: 17px;
+  overflow-x: auto;
+  font-size: 12px;
+}
+.category-tabs > a {
+  white-space: nowrap;
+}
+.results-bar {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+.results-bar > div {
+  width: 100%;
+  justify-content: space-between;
+}
+.results-bar p > span {
+  display: none;
+}
+.basis-toggle {
+  font-size: 10px;
+}
+.basis-toggle a {
+  padding: 7px 9px;
+}
+.sort-control {
+  font-size: 11px;
+}
+.sort-control select {
+  font-size: 12px;
+  max-width: 120px;
+  min-height: 36px;
+}
+.sort-control button {
+  font-size: 11px;
+  min-height: 36px;
+}
+.data-notice {
+  font-size: 11px;
+}
+.drink-card {
+  border-radius: 17px;
+}
+.drink-visual {
+  height: 178px;
+}
+.favorite-button {
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.favorite-button svg {
+  width: 18px;
+}
+.drink-info {
+  padding: 13px 10px;
+}
+.brand-name {
+  font-size: 10px;
+}
+.brand-name > span {
+  font-size: 9px;
+}
+.drink-title {
+  font-size: 14px;
+  min-height: 44px;
+  line-height: 1.5;
+}
+.nutrition-strip {
+  padding: 9px 2px;
+}
+.nutrition-strip small {
+  font-size: 9px;
+}
+.nutrition-strip b {
+  font-size: 12px;
+}
+.nutrition-strip em {
+  font-size: 8px;
+}
+.rating {
+  font-size: 9px;
+}
+.compare-button {
+  min-height: 36px;
+  font-size: 10px;
+}
+.price-note {
+  font-size: 9px;
+}
+.collection-footnote {
+  font-size: 10px;
+}
+.journal-banner {
+  border-radius: 18px;
+}
+.site-footer {
+  margin-top: 32px;
+  padding: 24px 20px 28px;
+}
+.site-footer .wordmark,
+.site-footer p {
+  display: none;
+}
+.site-footer > div:last-child {
+  margin: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: 10px;
+}
+.page-wrap {
+  margin: 24px auto 36px;
+}
+.panel {
+  border-radius: 18px;
+}
+.primary-button {
+  border-radius: 12px;
+  min-height: 44px;
+}
+.empty-state {
+  border-radius: 18px;
+}
+.form-stack input,
+.form-stack select,
+.form-stack textarea,
+.store-controls input,
+.store-controls select {
+  font-size: 16px;
+}
+.personal-tabs {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 16px;
+}
+.store-map {
+  border-radius: 18px;
+}
+.auth-card {
+  border-radius: 20px;
 }

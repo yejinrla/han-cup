@@ -1,11 +1,5 @@
 import Link from "next/link";
-import {
-  BookOpen,
-  MapPin,
-  Heart,
-  CalendarDays,
-  ArrowUpRight,
-} from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 export function Header() {
   return (
     <>
@@ -17,26 +11,13 @@ export function Header() {
           한컵<span>.</span>
           <small>HANCUP</small>
         </Link>
-        <nav aria-label="주 메뉴">
-          <Link href="/" className="nav-catalog">
-            <BookOpen size={16} />
-            음료 도감
-          </Link>
-          <Link href="/stores">
-            <MapPin size={16} />
-            주변 매장
-          </Link>
-          <Link href="/me/favorites">
-            <Heart size={16} />
-            좋아요한 음료
-          </Link>
-          <Link href="/me/records">
-            <CalendarDays size={16} />
-            나의 한컵
-          </Link>
-        </nav>
-        <Link href="/login" className="login-link">
-          카카오로 시작하기 <ArrowUpRight size={14} />
+        <span className="app-header-note">한 잔씩, 나의 취향</span>
+        <Link
+          href="/login"
+          className="login-link"
+          aria-label="로그인 · 카카오로 시작하기"
+        >
+          로그인 <ArrowUpRight size={13} aria-hidden="true" />
         </Link>
       </header>
     </>
