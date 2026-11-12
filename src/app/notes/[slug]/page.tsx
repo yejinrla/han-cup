@@ -52,10 +52,11 @@ export default async function TasteNotePage({
         </header>
         <div className="taste-note-cover" aria-hidden="true">
           <span>
-            잠깐의 여유,
-            <br />차 한 잔의 계절
+            {note.coverLines[0]}
+            <br />
+            {note.coverLines[1]}
           </span>
-          <CupArt name="차 한 잔" kind="tea" />
+          <CupArt name="음료 한 잔" kind={note.illustrationKind} />
         </div>
         <div className="taste-note-prose">
           {note.paragraphs.map((section) => (
@@ -92,10 +93,13 @@ export default async function TasteNotePage({
         </section>
         <p className="taste-note-footnote">
           음료 정보와 판매 여부는 브랜드·매장 사정에 따라 달라질 수 있어요.
-          취향에 맞는 다른 차도 검색에서 찾아보세요.
+          취향에 맞는 다른 음료도 검색에서 찾아보세요.
         </p>
-        <Link href="/search?category=tea" className="primary-button">
-          다른 차 메뉴 둘러보기
+        <Link
+          href={"/search?category=" + note.searchCategory}
+          className="primary-button"
+        >
+          다른 {note.searchCategory === "tea" ? "차" : "커피"} 메뉴 둘러보기
         </Link>
       </article>
     </main>
