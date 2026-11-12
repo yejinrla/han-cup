@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-test("home offers new menus and recording trends while search is a separate bottom tab", async ({
+test("home offers new menus and recording trends with search through the home search box", async ({
   page,
 }) => {
   await page.goto("/");
@@ -20,8 +20,13 @@ test("home offers new menus and recording trends while search is a separate bott
       .locator("[data-drink-card]"),
   ).toHaveCount(3);
   const nav = page.getByRole("navigation", { name: "주 메뉴" });
-  await expect(nav.getByRole("link")).toHaveCount(5);
-  await nav.getByRole("link", { name: "음료 검색", exact: true }).click();
+  await expect(nav.getByRole("link")).toHaveCount(4);
+  await expect(
+    nav.getByRole("link", { name: "음료 검색", exact: true }),
+  ).toHaveCount(0);
+  await page
+    .getByRole("link", { name: "음료명이나 브랜드로 찾아보세요", exact: true })
+    .click();
   await expect(page).toHaveURL(/\/search$/);
   await expect(page.getByLabel("음료명 또는 브랜드 검색")).toBeVisible();
   await page.getByLabel("당류 상한").fill("10");
@@ -29,7 +34,7 @@ test("home offers new menus and recording trends while search is a separate bott
   await expect(page).toHaveURL(/\/search\?/);
   await expect(page.locator("[data-drink-card]")).toHaveCount(2);
   await expect(
-    nav.getByRole("link", { name: "음료 검색", exact: true }),
+    nav.getByRole("link", { name: "홈", exact: true }),
   ).toHaveAttribute("aria-current", "page");
   await nav.getByRole("link", { name: "홈", exact: true }).click();
   await expect(page).toHaveURL("http://127.0.0.1:3000/");

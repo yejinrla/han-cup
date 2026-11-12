@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { House, Search, MapPin, Heart, CalendarDays } from "lucide-react";
+import { House, MapPin, Heart, CalendarDays } from "lucide-react";
 
 const tabs = [
   {
@@ -10,15 +10,11 @@ const tabs = [
     label: "홈",
     accessibleLabel: "홈",
     icon: House,
-    matches: (path: string) => path === "/",
-  },
-  {
-    href: "/search",
-    label: "검색",
-    accessibleLabel: "음료 검색",
-    icon: Search,
     matches: (path: string) =>
-      path === "/search" || path.startsWith("/drinks/") || path === "/compare",
+      path === "/" ||
+      path === "/search" ||
+      path.startsWith("/drinks/") ||
+      path === "/compare",
   },
   {
     href: "/stores",

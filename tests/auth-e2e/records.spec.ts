@@ -227,10 +227,7 @@ test("review fix: history restoration never shows a withdrawn cached review whil
       .eq("id", inserted.data.id);
     await p.evaluate(() => window.dispatchEvent(new Event("focus")));
     await expect(p.getByText(body, { exact: true })).toBeVisible();
-    await p
-      .getByRole("navigation", { name: "주 메뉴" })
-      .getByRole("link", { name: "음료 검색", exact: true })
-      .click();
+    await p.getByRole("link", { name: "음료 도감", exact: true }).click();
     await expect(p).toHaveURL("http://localhost:3001/search");
     await expect(p.getByRole("heading", { name: "음료 검색" })).toBeVisible();
     const changed = await writer

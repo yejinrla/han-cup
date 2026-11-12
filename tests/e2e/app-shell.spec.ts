@@ -11,7 +11,7 @@ test("desktop and mobile share a centered app frame and persistent accessible ta
   expect(frame!.width).toBe(480);
   expect(frame!.x).toBe(480);
   const nav = page.getByRole("navigation", { name: "주 메뉴" });
-  await expect(nav.getByRole("link")).toHaveCount(5);
+  await expect(nav.getByRole("link")).toHaveCount(4);
   await expect(
     nav.getByRole("link", { name: "홈", exact: true }),
   ).toHaveAttribute("aria-current", "page");
@@ -76,7 +76,7 @@ test("comparison tray stays above app tabs and comparison scroll remains inside 
     ),
   ).toBe(true);
   await expect(
-    nav.getByRole("link", { name: "음료 검색", exact: true }),
+    nav.getByRole("link", { name: "홈", exact: true }),
   ).toHaveAttribute("aria-current", "page");
 });
 

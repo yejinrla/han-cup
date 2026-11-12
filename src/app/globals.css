@@ -1736,7 +1736,7 @@ body {
   height: calc(var(--tab-height) + env(safe-area-inset-bottom));
   padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   background: #fdfefb;
   border-top: 1px solid #dfe6d9;
   box-shadow: 0 -5px 24px #35492c06;
@@ -2019,7 +2019,7 @@ body {
 
 /* Discovery home and dedicated catalog search. */
 .app-bottom-nav {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   padding-left: 6px;
   padding-right: 6px;
 }
