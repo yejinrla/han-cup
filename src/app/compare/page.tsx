@@ -5,14 +5,15 @@ import { getNutrition, fmt } from "@/features/catalog/nutrition";
 import { brands, type Basis } from "@/features/catalog/types";
 import { getSummaries } from "@/features/reviews/repository";
 import { RemoveCompare } from "@/features/compare/components/CompareControls";
+import { normalizeComparisonIds } from "@/features/compare/selection";
 export const metadata = { title: "음료 비교" };
 export default async function Compare({
   searchParams,
 }: {
-  searchParams: Promise<{ ids?: string; basis?: string }>;
+  searchParams: Promise<{ ids?: string | string[]; basis?: string | string[] }>;
 }) {
   const p = await searchParams;
-  const ids = (p.ids ?? "").split(",").filter(Boolean);
+  const ids = normalizeComparisonIds(p.ids);
   const { items, unavailableIds } = await resolveComparison(ids);
   const basis: Basis = p.basis === "100ml" ? "100ml" : "serving";
   const summaries = await getSummaries();

@@ -85,13 +85,11 @@ export async function DELETE(request: Request) {
         if (!res.ok) throw new Error("연결 해제 실패");
       },
       markUnlinked: async (id) => {
-        const { error } = await admin
-          .from("account_deletions")
-          .upsert({
-            user_id: id,
-            unlink_completed: true,
-            updated_at: new Date().toISOString(),
-          });
+        const { error } = await admin.from("account_deletions").upsert({
+          user_id: id,
+          unlink_completed: true,
+          updated_at: new Date().toISOString(),
+        });
         if (error) throw error;
       },
       remove: async (id) => {

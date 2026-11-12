@@ -86,7 +86,11 @@ export const batchSchema = z
   .refine(
     (b) => new Set(b.changes.map((c) => c.id)).size === b.changes.length,
     "제품 ID 중복",
-  );
+  )
+  .refine((b) => {
+    const ids = b.changes.flatMap((c) => c.variants.map((v) => v.id));
+    return new Set(ids).size === ids.length;
+  }, "전체 검수 묶음에 변형 ID 중복");
 export type ApprovedCatalogBatch = z.infer<typeof batchSchema>;
 export function validateCatalog(input: unknown) {
   const r = batchSchema.safeParse(input);

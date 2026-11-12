@@ -10,6 +10,6 @@
 4. 사진은 로컬 `public/images/drinks`에 최적화해 넣고 imageSourceUrl/imagePermission을 기록한다. 확인하지 못하면 imagePath=null로 둔다.
 5. **사람이 검수한 뒤에만** reviewer/reviewedAt를 채우고 `data/catalog/approved/`로 이동한다. `npm run catalog:validate -- path.json`은 형식 검사이지 사람의 검수를 대신하지 않는다.
 6. 운영 연결은 환경 설정의 DATABASE_URL로만 제공한다. `npm run catalog:publish -- approved/path.json`은 트랜잭션으로 발행하고 releaseId를 반환한다. 이후 revision과 출처를 표본 점검한다.
-7. 잘못된 수정 발행은 `npm run catalog:rollback -- releaseUUID`로 복구한다. 이후 발행이 있으면 바로 복구하지 않고 새 검수 변경으로 정정한다. 신규 제품은 참조 보존을 위해 강제 삭제 대신 판매 종료로 정정한다.
+7. 잘못된 수정 발행은 `npm run catalog:rollback -- releaseUUID`로 복구한다. 이후 발행이 있으면 바로 복구하지 않고 새 검수 변경으로 정정한다. 신규 제품은 참조 보존을 위해 강제 삭제 대신 판매 종료로 정정한다. 기존 제품에 새 변형이 추가된 발행도 자동 롤백을 거부한다. 이 경우 필요하면 제품 전체를 판매 종료로 돌리고 잘못된 변형을 운영자가 검수·정정해야 하며, 자동 복구 성공으로 표시하지 않는다.
 
 초안/승인 파일에는 사용자 개인 기록·운영 키를 포함하지 않는다. 초기 데이터 반영과 실제 출시 승인은 별도다.

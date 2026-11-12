@@ -61,3 +61,11 @@ test("requires https official source and valid date and assigned default variant
   bad.changes[0].defaultVariantId = "20000000-0000-4000-8000-000000000099";
   expect(validateCatalog(bad).ok).toBe(false);
 });
+test("review fix: repeated variant identifiers across products are rejected", () => {
+  const second = structuredClone(base.changes[0]);
+  second.id = "10000000-0000-4000-8000-000000000002";
+  second.slug = "another";
+  expect(
+    validateCatalog({ ...base, changes: [base.changes[0], second] }).ok,
+  ).toBe(false);
+});

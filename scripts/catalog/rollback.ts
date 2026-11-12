@@ -21,6 +21,17 @@ export async function rollbackCatalog(releaseId: string, db: Client) {
         throw new Error("신규 제품은 삭제 대신 판매 종료로 별도 검수하세요.");
       if (current.rows[0]?.revision !== previous.revision + 1)
         throw new Error("이후 발행이 있어 바로 복구할 수 없습니다.");
+      const nowVariants = await db.query(
+        "select id from drink_variants where drink_id=$1",
+        [row.drink_id],
+      );
+      const previousIds = new Set(
+        row.previous.variants.map((v: { id: string }) => v.id),
+      );
+      if (nowVariants.rows.some((v) => !previousIds.has(v.id)))
+        throw new Error(
+          "새 변형이 추가된 발행은 자동 복구하지 않습니다. 판매 종료 또는 검수 후 정정 발행이 필요합니다.",
+        );
       await db.query(
         "update drinks set name=$2,category=$3,status=$4,default_variant_id=$5,revision=revision+1 where id=$1",
         [

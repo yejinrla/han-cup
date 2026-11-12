@@ -13,3 +13,16 @@ export function readComparison(raw: string | null) {
     return [];
   }
 }
+export function normalizeComparisonIds(value: string | string[] | undefined) {
+  const fields = Array.isArray(value) ? value : value ? [value] : [];
+  return [
+    ...new Set(
+      fields.flatMap((field) =>
+        field
+          .split(",")
+          .map((id) => id.trim())
+          .filter(Boolean),
+      ),
+    ),
+  ].slice(0, 3);
+}

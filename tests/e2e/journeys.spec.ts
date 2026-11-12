@@ -53,3 +53,15 @@ test("mobile detail, compare and stores keep page within viewport", async ({
     ).toBe(true);
   }
 });
+test("repeated URL parameters recover without a server exception", async ({
+  page,
+}) => {
+  await page.goto("/compare?ids=a&ids=b");
+  await expect(
+    page.getByRole("heading", { name: "비교할 음료를 더 담아주세요" }),
+  ).toBeVisible();
+  await page.goto("/login?next=a&next=b");
+  await expect(
+    page.getByRole("heading", { name: "나의 한 잔을 모으는 곳" }),
+  ).toBeVisible();
+});

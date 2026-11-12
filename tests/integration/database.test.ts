@@ -221,3 +221,133 @@ test("map budget is shared and not callable by the public", async () => {
     as(null, "select reserve_map_request($1,2)", [c]),
   ).rejects.toThrow();
 });
+
+test("review fix: importer rejects another product variant and changed identity atomically", async () => {
+  const owner = "30000000-0000-4000-8000-000000000001",
+    foreign = "40000000-0000-4000-8000-000000000001";
+  const id = "50000000-0000-4000-8000-000000000001",
+    vid = "60000000-0000-4000-8000-000000000001";
+  const v = {
+    id: vid,
+    temperature: "hot",
+    sizeLabel: "톨",
+    cupMl: 355,
+    nutritionBasisMl: 355,
+    nutrition: { caloriesKcal: 50, sugarG: 0, caffeineMg: null },
+    priceKrw: null,
+    source: {
+      url: "https://www.starbucks.co.kr/menu/drink_list.do",
+      checkedAt: "2026-11-12",
+    },
+    imagePath: null,
+  };
+  const input = {
+    schemaVersion: 1,
+    reviewer: "test",
+    reviewedAt: "2026-11-12",
+    changes: [
+      {
+        id,
+        expectedRevision: 0,
+        brandId: "starbucks",
+        slug: "ownership-check",
+        name: "소유권 테스트",
+        category: "coffee",
+        status: "active",
+        defaultVariantId: vid,
+        variants: [
+          v,
+          {
+            ...v,
+            id: foreign,
+            sizeLabel: "큰 사이즈",
+            nutrition: { ...v.nutrition, caloriesKcal: 999 },
+          },
+        ],
+      },
+    ],
+  };
+  const r = validateCatalog(input);
+  if (!r.ok) throw new Error(r.errors.join(","));
+  await expect(publishCatalog(r.batch, db)).rejects.toThrow();
+  expect(
+    Number(
+      (
+        await db.query("select calories_kcal from drink_variants where id=$1", [
+          foreign,
+        ])
+      ).rows[0].calories_kcal,
+    ),
+  ).toBe(100);
+  expect(
+    (await db.query("select * from drinks where id=$1", [id])).rows,
+  ).toHaveLength(0);
+  const row = await db.query("select * from drinks where id=$1", [owner]);
+  const identityChange = {
+    ...r.batch,
+    changes: [
+      {
+        ...r.batch.changes[0],
+        id: owner,
+        slug: "import-test",
+        expectedRevision: row.rows[0].revision,
+        defaultVariantId: foreign,
+        variants: [{ ...v, id: foreign, temperature: "iced" as const }],
+      },
+    ],
+  };
+  await expect(publishCatalog(identityChange, db)).rejects.toThrow();
+});
+
+test("review fix: rollback rejects variant additions without claiming a completed restoration", async () => {
+  const id = "30000000-0000-4000-8000-000000000001",
+    oldId = "40000000-0000-4000-8000-000000000001",
+    addedId = "70000000-0000-4000-8000-000000000001";
+  const revision = (
+    await db.query("select revision from drinks where id=$1", [id])
+  ).rows[0].revision;
+  const v = {
+    id: oldId,
+    temperature: "hot",
+    sizeLabel: "톨",
+    cupMl: 355,
+    nutritionBasisMl: 355,
+    nutrition: { caloriesKcal: 100, sugarG: 0, caffeineMg: null },
+    priceKrw: null,
+    source: {
+      url: "https://www.starbucks.co.kr/menu/drink_list.do",
+      checkedAt: "2026-11-12",
+    },
+    imagePath: null,
+  };
+  const r = validateCatalog({
+    schemaVersion: 1,
+    reviewer: "test",
+    reviewedAt: "2026-11-12",
+    changes: [
+      {
+        id,
+        expectedRevision: revision,
+        brandId: "starbucks",
+        slug: "import-test",
+        name: "발행 테스트",
+        category: "coffee",
+        status: "active",
+        defaultVariantId: oldId,
+        variants: [v, { ...v, id: addedId, sizeLabel: "그란데" }],
+      },
+    ],
+  });
+  if (!r.ok) throw new Error(r.errors.join(","));
+  const release = await publishCatalog(r.batch, db);
+  await expect(rollbackCatalog(release.releaseId, db)).rejects.toThrow(
+    "새 변형",
+  );
+  expect(
+    (
+      await db.query("select reverted from catalog_releases where id=$1", [
+        release.releaseId,
+      ])
+    ).rows[0].reverted,
+  ).toBe(false);
+});

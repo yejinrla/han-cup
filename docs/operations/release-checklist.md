@@ -4,9 +4,9 @@
 
 ## 로컬 검증
 
-- [x] `npm test`: 21개 단위·실제 PostgreSQL 통합 테스트 통과.
-- [x] `npm run test:e2e`: 익명 탐색·필터·정렬·비교·상세·인증 진입·모바일·지도 실패 처리 9개 통과.
-- [x] `npx playwright test --config playwright.auth.config.ts`: 실제 GoTrue 세션/REST/DB로 찜·반복 후기·공개/비공개 전환 2개 통과.
+- [x] `npm test`: 25개 단위·실제 PostgreSQL 통합 테스트 통과.
+- [x] `npm run test:e2e`: 익명 탐색·필터·정렬·비교·상세·인증 진입·모바일·지도 실패 처리·공유 비교·중복 URL 11개 통과.
+- [x] `npx playwright test --config playwright.auth.config.ts`: 실제 GoTrue 세션/REST/DB로 찜·반복 후기·공개/비공개 전환·이력 캐시 철회 3개 통과.
 - [x] `npm run typecheck`, `npm run lint` 통과.
 - [x] Next.js 프로덕션 빌드 통과(최종 리뷰 수정 후 재실행).
 - [x] 로컬 pg_dump → 새 hancup_restore_check DB pg_restore, 음료 13종 복원 확인.
@@ -30,3 +30,7 @@
 - [ ] 실제 도메인 배포 후 핵심 여정 최종 확인.
 
 이 항목이 남아 있으므로 현재 상태를 ‘실서비스 배포 완료’라고 표현하지 않는다. 초기 공개 미리보기는 4개 브랜드 13개 제품/14개 변형이며, 6개 브랜드 전체 데이터나 실시간 판매를 보장하지 않는다.
+
+## 독립 리뷰 후 회귀 검증
+
+공개 후기의 브라우저 이력 복원, 다른 제품 변형 UUID 덮어쓰기, 새 변형을 남기는 롤백, 중복 비교 URL, 공유 비교의 항목 제거 문제를 재현한 뒤 수정했다. 최종 검증은 단위·DB 25개, 익명 브라우저 11개, 실제 로컬 세션 브라우저 3개다. 지도 SDK 초기화 타임아웃과 마커/목록 선택 연동은 후속 개선으로 남겼다. 상세 결정은 implementation-status.md에 있다.

@@ -173,3 +173,83 @@ test("saved favorite shows selected state after reopening detail", async ({
     page.getByRole("button", { name: "음료 찜 해제" }),
   ).toHaveAttribute("aria-pressed", "true");
 });
+
+test("review fix: history restoration never shows a withdrawn cached review while fresh read waits", async ({
+  browser,
+}) => {
+  const writer = createClient(conf.url, conf.anonKey, {
+    auth: { persistSession: false },
+  });
+  await writer.auth.setSession({
+    access_token: session.access_token,
+    refresh_token: session.refresh_token,
+  });
+  const body = "브라우저 이력에서 사라져야 하는 후기";
+  const inserted = await writer
+    .from("reviews")
+    .insert({
+      user_id: session.user.id,
+      drink_id: drinkId,
+      rating: 5,
+      body,
+      consumed_on: "2026-11-12",
+      visibility: "public",
+    })
+    .select("id")
+    .single();
+  if (inserted.error) throw inserted.error;
+  const viewer = await browser.newContext();
+  const p = await viewer.newPage();
+  let block = false;
+  let release = () => {};
+  const gate = new Promise<void>((r) => {
+    release = r;
+  });
+  await p.route("**/api/drinks/*/reviews*", async (route) => {
+    if (block) await gate;
+    await route.continue();
+  });
+  try {
+    const html = await p.request.get("/drinks/" + slug);
+    expect(await html.text()).not.toContain(body);
+    await p.goto("/drinks/" + slug);
+    await expect(p.getByText(body, { exact: true })).toBeVisible();
+    const hidden = await writer
+      .from("reviews")
+      .update({ visibility: "private" })
+      .eq("id", inserted.data.id);
+    expect(hidden.error).toBeNull();
+    await p.evaluate(() => window.dispatchEvent(new Event("focus")));
+    await expect(p.getByText(body, { exact: true })).toHaveCount(0);
+    await writer
+      .from("reviews")
+      .update({ visibility: "public" })
+      .eq("id", inserted.data.id);
+    await p.evaluate(() => window.dispatchEvent(new Event("focus")));
+    await expect(p.getByText(body, { exact: true })).toBeVisible();
+    await p
+      .getByRole("navigation", { name: "주 메뉴" })
+      .getByRole("link", { name: "음료 도감", exact: true })
+      .click();
+    await expect(p).toHaveURL("http://localhost:3001/");
+    await expect(
+      p.getByRole("heading", { name: "취향을 발견하고, 한 잔을 기록해요." }),
+    ).toBeVisible();
+    const changed = await writer
+      .from("reviews")
+      .update({ visibility: "private" })
+      .eq("id", inserted.data.id);
+    expect(changed.error).toBeNull();
+    block = true;
+    await p.goBack();
+    await expect(p).toHaveURL(new RegExp("/drinks/" + slug));
+    await expect(p.getByText(body, { exact: true })).toHaveCount(0);
+    release();
+    await expect(
+      p.getByText("아직 공개 평가가 없어요. 첫 한 잔을 기록해 보세요."),
+    ).toBeVisible();
+  } finally {
+    release();
+    await viewer.close();
+  }
+});

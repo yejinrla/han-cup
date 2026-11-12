@@ -53,3 +53,20 @@ test("users can choose calorie sorting from the catalog controls", async ({
       .getByRole("link", { name: "헛개리카노 상세 보기" }),
   ).toBeVisible();
 });
+test("removing one shared comparison preserves the remaining URL selections", async ({
+  page,
+}) => {
+  const catalog = JSON.parse(
+    await (
+      await import("node:fs/promises")
+    ).readFile("data/catalog/initial.json", "utf8"),
+  );
+  const ids = catalog.variants.slice(0, 3).map((x: { id: string }) => x.id);
+  await page.goto("/compare?ids=" + ids.join(","));
+  await expect(page.getByRole("columnheader")).toHaveCount(4);
+  await page.getByRole("button", { name: "빼기", exact: true }).first().click();
+  await expect(page.getByRole("columnheader")).toHaveCount(3);
+  expect(new URL(page.url()).searchParams.get("ids")?.split(",")).toEqual(
+    ids.slice(1),
+  );
+});

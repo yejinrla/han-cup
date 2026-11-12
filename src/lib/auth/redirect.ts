@@ -1,5 +1,6 @@
-export function safeReturnTo(value: string | null) {
+export function safeReturnTo(value: unknown) {
   if (
+    typeof value !== "string" ||
     !value ||
     !value.startsWith("/") ||
     value.startsWith("//") ||

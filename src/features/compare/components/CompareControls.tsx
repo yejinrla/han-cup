@@ -3,7 +3,11 @@ import { useRouter } from "next/navigation";
 import { useSyncExternalStore, useState } from "react";
 import Link from "next/link";
 import { Plus, Check, X, ArrowRight, Scale } from "lucide-react";
-import { addToComparison, readComparison } from "../selection";
+import {
+  addToComparison,
+  readComparison,
+  normalizeComparisonIds,
+} from "../selection";
 const empty: string[] = [];
 let cachedRaw: string | null = null,
   cached = empty;
@@ -104,17 +108,17 @@ export function CompareTray() {
 }
 export function RemoveCompare({ id }: { id: string }) {
   const router = useRouter();
-  const { remove } = useCompare();
   return (
     <button
       className="text-button"
       onClick={() => {
-        remove(id);
         const p = new URLSearchParams(location.search);
-        p.set(
-          "ids",
-          readComparison(localStorage.getItem("hancup.compare.v1")).join(","),
+        const remaining = normalizeComparisonIds(p.getAll("ids")).filter(
+          (value) => value !== id,
         );
+        save(remaining);
+        p.delete("ids");
+        if (remaining.length) p.set("ids", remaining.join(","));
         router.push("/compare?" + p);
       }}
     >
