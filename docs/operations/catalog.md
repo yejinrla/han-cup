@@ -1,0 +1,15 @@
+# 공식 데이터 검수와 발행
+
+`data/catalog/initial.json`은 원문 대조한 제한된 초기 미리보기다. 자동으로 운영 DB에 발행하지 않는다. 현재 4개 브랜드 13개 제품/14개 변형. 투썸·컴포즈는 공식 자료 접근 경로 확보가 필요하며 전체 6개 브랜드 출시 조건을 충족하지 않았다. 모든 가격은 미확인으로 null이다. 영양 제공량은 Tall 355ml가 명시된 스타벅스 2종만 검증되어 100ml 환산이 가능하다. 나머지는 컵 용량만 저장하고 환산하지 않는다. 공통 일러스트는 한컵 자체 작성 자산이다.
+
+## 주 1회 운영
+
+1. 공식 메뉴·영양정보·가격 출처를 직접 대조한다. 자동 접근이 차단되면 우회하지 않고 허용된 공식 경로를 확보한다.
+2. 초안에 제품·온도·사이즈별 수치를 입력한다. 미제공은 null, 확인된 0만 0. 가격은 브랜드 공식 가격 근거가 있어야 하며 매장 가격을 브랜드 공통 가격으로 추정하지 않는다.
+3. `expectedRevision`을 현재 제품 revision으로 지정한다. 새 제품은 0. 제외된 제품은 자동 삭제되지 않는다. 종료는 `status: discontinued`를 명시한다.
+4. 사진은 로컬 `public/images/drinks`에 최적화해 넣고 imageSourceUrl/imagePermission을 기록한다. 확인하지 못하면 imagePath=null로 둔다.
+5. **사람이 검수한 뒤에만** reviewer/reviewedAt를 채우고 `data/catalog/approved/`로 이동한다. `npm run catalog:validate -- path.json`은 형식 검사이지 사람의 검수를 대신하지 않는다.
+6. 운영 연결은 환경 설정의 DATABASE_URL로만 제공한다. `npm run catalog:publish -- approved/path.json`은 트랜잭션으로 발행하고 releaseId를 반환한다. 이후 revision과 출처를 표본 점검한다.
+7. 잘못된 수정 발행은 `npm run catalog:rollback -- releaseUUID`로 복구한다. 이후 발행이 있으면 바로 복구하지 않고 새 검수 변경으로 정정한다. 신규 제품은 참조 보존을 위해 강제 삭제 대신 판매 종료로 정정한다.
+
+초안/승인 파일에는 사용자 개인 기록·운영 키를 포함하지 않는다. 초기 데이터 반영과 실제 출시 승인은 별도다.

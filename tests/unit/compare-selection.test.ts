@@ -1,2 +1,12 @@
-import {test,expect} from 'vitest';import {addToComparison,readComparison} from '@/features/compare/selection';
-test('at most three unique variants and malformed stored data is safe',()=>{expect(addToComparison(['a','b','c'],'d')).toEqual({ids:['a','b','c'],reason:'full'});expect(addToComparison(['a'],'a').reason).toBe('duplicate');expect(addToComparison(['a'],'b').ids).toEqual(['a','b']);expect(readComparison('{broken')).toEqual([]);expect(readComparison('[1,null]')).toEqual([]);});
+import { test, expect } from "vitest";
+import { addToComparison, readComparison } from "@/features/compare/selection";
+test("at most three unique variants and malformed stored data is safe", () => {
+  expect(addToComparison(["a", "b", "c"], "d")).toEqual({
+    ids: ["a", "b", "c"],
+    reason: "full",
+  });
+  expect(addToComparison(["a"], "a").reason).toBe("duplicate");
+  expect(addToComparison(["a"], "b").ids).toEqual(["a", "b"]);
+  expect(readComparison("{broken")).toEqual([]);
+  expect(readComparison("[1,null]")).toEqual([]);
+});

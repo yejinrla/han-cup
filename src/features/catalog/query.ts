@@ -1,5 +1,91 @@
-import {brands,type Basis,type BrandId,type CatalogItem} from './types';
-import {getNutrition} from './nutrition';
-export type CatalogQuery={q:string;brandIds:BrandId[];category:string;temperature:string;basis:Basis;maxCalories:number|null;maxSugar:number|null;maxCaffeine:number|null;sort:string;offset:number};
-export function parseCatalogQuery(p:URLSearchParams):CatalogQuery{const num=(k:string)=>{const s=p.get(k);if(!s?.trim())return null;const n=Number(s);return Number.isFinite(n)&&n>=0?n:null;};const offset=num('cursor');return{q:(p.get('q')??'').trim().slice(0,100),brandIds:(p.get('brand')??'').split(',').filter((x):x is BrandId=>x in brands),category:p.get('category')??'',temperature:p.get('temperature')??'',basis:p.get('basis')==='100ml'?'100ml':'serving',maxCalories:num('maxCalories'),maxSugar:num('maxSugar'),maxCaffeine:num('maxCaffeine'),sort:['price','calories','sugar','caffeine'].includes(p.get('sort')??'')?p.get('sort')!:'name',offset:offset!==null&&Number.isInteger(offset)?Math.min(offset,10000):0};}
-export function queryCatalog(items:CatalogItem[],q:CatalogQuery){const keys={calories:'caloriesKcal',sugar:'sugarG',caffeine:'caffeineMg'} as const;const filtered=items.filter(x=>{const n=getNutrition(x.variant,q.basis);return x.status==='active'&&(!q.q||(brands[x.brandId]+' '+x.name).includes(q.q))&&(!q.brandIds.length||q.brandIds.includes(x.brandId))&&(!q.category||q.category===x.category)&&(!q.temperature||q.temperature===x.variant.temperature)&&([[q.maxCalories,n.caloriesKcal],[q.maxSugar,n.sugarG],[q.maxCaffeine,n.caffeineMg]] as const).every(([max,v])=>max===null||(v!==null&&v<=max));}).sort((a,b)=>{if(q.sort==='name')return a.name.localeCompare(b.name,'ko')||a.id.localeCompare(b.id);const value=(x:CatalogItem)=>q.sort==='price'?x.variant.priceKrw:getNutrition(x.variant,q.basis)[keys[q.sort as keyof typeof keys]];const av=value(a),bv=value(b);return (av===null&&bv===null?0:av===null?1:bv===null?-1:av-bv)||a.name.localeCompare(b.name,'ko');});return{items:filtered.slice(q.offset,q.offset+24),total:filtered.length,nextCursor:filtered.length>q.offset+24?String(q.offset+24):null};}
+import { brands, type Basis, type BrandId, type CatalogItem } from "./types";
+import { getNutrition } from "./nutrition";
+export type CatalogQuery = {
+  q: string;
+  brandIds: BrandId[];
+  category: string;
+  temperature: string;
+  basis: Basis;
+  maxCalories: number | null;
+  maxSugar: number | null;
+  maxCaffeine: number | null;
+  sort: string;
+  offset: number;
+};
+export function parseCatalogQuery(p: URLSearchParams): CatalogQuery {
+  const num = (k: string) => {
+    const s = p.get(k);
+    if (!s?.trim()) return null;
+    const n = Number(s);
+    return Number.isFinite(n) && n >= 0 ? n : null;
+  };
+  const offset = num("cursor");
+  return {
+    q: (p.get("q") ?? "").trim().slice(0, 100),
+    brandIds: (p.get("brand") ?? "")
+      .split(",")
+      .filter((x): x is BrandId => x in brands),
+    category: p.get("category") ?? "",
+    temperature: p.get("temperature") ?? "",
+    basis: p.get("basis") === "100ml" ? "100ml" : "serving",
+    maxCalories: num("maxCalories"),
+    maxSugar: num("maxSugar"),
+    maxCaffeine: num("maxCaffeine"),
+    sort: ["price", "calories", "sugar", "caffeine"].includes(
+      p.get("sort") ?? "",
+    )
+      ? p.get("sort")!
+      : "name",
+    offset:
+      offset !== null && Number.isInteger(offset) ? Math.min(offset, 10000) : 0,
+  };
+}
+export function queryCatalog(items: CatalogItem[], q: CatalogQuery) {
+  const keys = {
+    calories: "caloriesKcal",
+    sugar: "sugarG",
+    caffeine: "caffeineMg",
+  } as const;
+  const filtered = items
+    .filter((x) => {
+      const n = getNutrition(x.variant, q.basis);
+      return (
+        x.status === "active" &&
+        (!q.q || (brands[x.brandId] + " " + x.name).includes(q.q)) &&
+        (!q.brandIds.length || q.brandIds.includes(x.brandId)) &&
+        (!q.category || q.category === x.category) &&
+        (!q.temperature || q.temperature === x.variant.temperature) &&
+        (
+          [
+            [q.maxCalories, n.caloriesKcal],
+            [q.maxSugar, n.sugarG],
+            [q.maxCaffeine, n.caffeineMg],
+          ] as const
+        ).every(([max, v]) => max === null || (v !== null && v <= max))
+      );
+    })
+    .sort((a, b) => {
+      if (q.sort === "name")
+        return a.name.localeCompare(b.name, "ko") || a.id.localeCompare(b.id);
+      const value = (x: CatalogItem) =>
+        q.sort === "price"
+          ? x.variant.priceKrw
+          : getNutrition(x.variant, q.basis)[keys[q.sort as keyof typeof keys]];
+      const av = value(a),
+        bv = value(b);
+      return (
+        (av === null && bv === null
+          ? 0
+          : av === null
+            ? 1
+            : bv === null
+              ? -1
+              : av - bv) || a.name.localeCompare(b.name, "ko")
+      );
+    });
+  return {
+    items: filtered.slice(q.offset, q.offset + 24),
+    total: filtered.length,
+    nextCursor: filtered.length > q.offset + 24 ? String(q.offset + 24) : null,
+  };
+}

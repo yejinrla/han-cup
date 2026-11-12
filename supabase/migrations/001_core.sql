@@ -13,6 +13,7 @@ create table catalog_releases(id uuid primary key default gen_random_uuid(),revi
 create table catalog_release_items(release_id uuid not null references catalog_releases(id),drink_id uuid not null,previous jsonb not null,primary key(release_id,drink_id));
 do $$declare t text;begin foreach t in array array['brands','drinks','drink_variants','profiles','reviews','favorites','operator_roles','review_reports','catalog_releases','catalog_release_items'] loop execute format('alter table %I enable row level security',t);end loop;end$$;
 grant usage on schema public to anon,authenticated;
+revoke all on brands,drinks,drink_variants,profiles,reviews,favorites,operator_roles,review_reports,catalog_releases,catalog_release_items from anon,authenticated;
 grant select on brands,drinks,drink_variants to anon,authenticated;
 create policy public_brands on brands for select using(true);
 create policy public_drinks on drinks for select using(true);

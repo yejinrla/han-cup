@@ -1,3 +1,27 @@
-import {test,expect} from 'vitest';import {getNutrition} from '@/features/catalog/nutrition';import type {DrinkVariant} from '@/features/catalog/types';
-const v={nutrition:{caloriesKcal:200,sugarG:20,caffeineMg:100},nutritionBasisMl:500} as DrinkVariant;
-test('converts only verified serving amount and preserves missing values',()=>{expect(getNutrition(v,'100ml')).toEqual({caloriesKcal:40,sugarG:4,caffeineMg:20});expect(getNutrition({...v,nutritionBasisMl:null},'100ml')).toEqual({caloriesKcal:null,sugarG:null,caffeineMg:null});expect(getNutrition({...v,nutrition:{...v.nutrition,sugarG:null}},'100ml').sugarG).toBeNull();expect(getNutrition({...v,nutrition:{...v.nutrition,sugarG:0}},'100ml').sugarG).toBe(0);});
+import { test, expect } from "vitest";
+import { getNutrition } from "@/features/catalog/nutrition";
+import type { DrinkVariant } from "@/features/catalog/types";
+const v = {
+  nutrition: { caloriesKcal: 200, sugarG: 20, caffeineMg: 100 },
+  nutritionBasisMl: 500,
+} as DrinkVariant;
+test("converts only verified serving amount and preserves missing values", () => {
+  expect(getNutrition(v, "100ml")).toEqual({
+    caloriesKcal: 40,
+    sugarG: 4,
+    caffeineMg: 20,
+  });
+  expect(getNutrition({ ...v, nutritionBasisMl: null }, "100ml")).toEqual({
+    caloriesKcal: null,
+    sugarG: null,
+    caffeineMg: null,
+  });
+  expect(
+    getNutrition({ ...v, nutrition: { ...v.nutrition, sugarG: null } }, "100ml")
+      .sugarG,
+  ).toBeNull();
+  expect(
+    getNutrition({ ...v, nutrition: { ...v.nutrition, sugarG: 0 } }, "100ml")
+      .sugarG,
+  ).toBe(0);
+});

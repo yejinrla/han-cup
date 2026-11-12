@@ -1,0 +1,389 @@
+{
+  "drinks": [
+    {
+      "id": "6445b937-f69e-5e0d-a4b1-ede68c889597",
+      "slug": "ediya-1",
+      "brandId": "ediya",
+      "name": "청도홍시주스",
+      "category": "smoothie",
+      "status": "active",
+      "defaultVariantId": "1ca2ff55-559b-54be-83c2-e3a619eea066"
+    },
+    {
+      "id": "020a2add-33e8-51a9-84af-571c57484ade",
+      "slug": "ediya-3",
+      "brandId": "ediya",
+      "name": "연유 콜드브루",
+      "category": "coffee",
+      "status": "active",
+      "defaultVariantId": "f44dd04c-4dec-5455-a5a5-bf64e46e0f03"
+    },
+    {
+      "id": "b07b78a1-3b65-59cf-bfb7-6c45111cea48",
+      "slug": "ediya-4",
+      "brandId": "ediya",
+      "name": "디카페인 연유 콜드브루",
+      "category": "coffee",
+      "status": "active",
+      "defaultVariantId": "0d3a7064-a7fb-5d51-9330-191eda0a8c9c"
+    },
+    {
+      "id": "17414b85-280a-5cf6-b7a9-e905107e8692",
+      "slug": "ediya-5",
+      "brandId": "ediya",
+      "name": "가나 시그니처 초콜릿",
+      "category": "other",
+      "status": "active",
+      "defaultVariantId": "8eb852a9-b927-577c-94ee-9a3e9b2ae88d"
+    },
+    {
+      "id": "98099811-954d-5657-abd9-8ba6788255c1",
+      "slug": "paik-6",
+      "brandId": "paik",
+      "name": "원조커피",
+      "category": "coffee",
+      "status": "active",
+      "defaultVariantId": "3eca86dc-cd48-55ba-8e76-59189c2808e3"
+    },
+    {
+      "id": "8e32ac9a-6b5e-5e6c-a2b5-3869499474ea",
+      "slug": "paik-7",
+      "brandId": "paik",
+      "name": "아이스티 샷 추가",
+      "category": "tea",
+      "status": "active",
+      "defaultVariantId": "898dfcc7-400b-59a1-908a-c2df71599385"
+    },
+    {
+      "id": "ad8cd402-cbbe-5b5c-8a8a-4caf70d3645b",
+      "slug": "paik-8",
+      "brandId": "paik",
+      "name": "바닐라라떼",
+      "category": "coffee",
+      "status": "active",
+      "defaultVariantId": "65234c2a-54fc-54b7-acb6-ded7e4f8b80d"
+    },
+    {
+      "id": "fed6564a-e4c0-531d-b5e1-69daf77bf980",
+      "slug": "paik-9",
+      "brandId": "paik",
+      "name": "시그니처 딥크림라떼",
+      "category": "coffee",
+      "status": "active",
+      "defaultVariantId": "b8c5d662-d811-5932-8bd8-79e26b30e10b"
+    },
+    {
+      "id": "7e285d40-03f8-503d-bbdd-54345251e6de",
+      "slug": "mega-10",
+      "brandId": "mega",
+      "name": "바닐라아메리카노",
+      "category": "coffee",
+      "status": "active",
+      "defaultVariantId": "f2dbb206-a71d-5033-a45f-515fe0e078ef"
+    },
+    {
+      "id": "430c7552-2628-589d-bd5f-fd2402912659",
+      "slug": "mega-11",
+      "brandId": "mega",
+      "name": "상큼 리치티",
+      "category": "tea",
+      "status": "active",
+      "defaultVariantId": "97f47460-06cb-5d68-9d0d-d8fed9bdda3d"
+    },
+    {
+      "id": "c78b6a8f-6a99-59a0-aa43-263451d6467e",
+      "slug": "mega-12",
+      "brandId": "mega",
+      "name": "헛개리카노",
+      "category": "coffee",
+      "status": "active",
+      "defaultVariantId": "ecf477f8-0fb7-5616-8f93-9d51a3089396"
+    },
+    {
+      "id": "c0bac52f-d3a3-56b4-9a38-bbef6a78870b",
+      "slug": "starbucks-1",
+      "brandId": "starbucks",
+      "name": "카페 라떼",
+      "category": "coffee",
+      "status": "active",
+      "defaultVariantId": "cc6db3cb-79fb-561b-b001-82c3e3592556"
+    },
+    {
+      "id": "46ac416b-858e-52af-8c4e-0036a4e76610",
+      "slug": "starbucks-2",
+      "brandId": "starbucks",
+      "name": "1/2디카페인 카페 라떼",
+      "category": "coffee",
+      "status": "active",
+      "defaultVariantId": "7c0b1e36-03dd-5898-8593-b6f7292e1c8b"
+    }
+  ],
+  "variants": [
+    {
+      "id": "1ca2ff55-559b-54be-83c2-e3a619eea066",
+      "drinkId": "6445b937-f69e-5e0d-a4b1-ede68c889597",
+      "temperature": "iced",
+      "sizeLabel": "L",
+      "cupMl": 520,
+      "nutritionBasisMl": null,
+      "nutrition": {
+        "caloriesKcal": 244,
+        "sugarG": 46,
+        "caffeineMg": 0
+      },
+      "priceKrw": null,
+      "source": {
+        "url": "https://www.ediya.com/contents/drink.html",
+        "checkedAt": "2026-11-12"
+      },
+      "imagePath": null
+    },
+    {
+      "id": "c07146ee-387f-5964-9820-3aba34f6f479",
+      "drinkId": "6445b937-f69e-5e0d-a4b1-ede68c889597",
+      "temperature": "iced",
+      "sizeLabel": "EX",
+      "cupMl": 670,
+      "nutritionBasisMl": null,
+      "nutrition": {
+        "caloriesKcal": 319,
+        "sugarG": 60,
+        "caffeineMg": 0
+      },
+      "priceKrw": null,
+      "source": {
+        "url": "https://www.ediya.com/contents/drink.html",
+        "checkedAt": "2026-11-12"
+      },
+      "imagePath": null
+    },
+    {
+      "id": "f44dd04c-4dec-5455-a5a5-bf64e46e0f03",
+      "drinkId": "020a2add-33e8-51a9-84af-571c57484ade",
+      "temperature": "iced",
+      "sizeLabel": "L",
+      "cupMl": 520,
+      "nutritionBasisMl": null,
+      "nutrition": {
+        "caloriesKcal": 313,
+        "sugarG": 41,
+        "caffeineMg": 181
+      },
+      "priceKrw": null,
+      "source": {
+        "url": "https://www.ediya.com/contents/drink.html",
+        "checkedAt": "2026-11-12"
+      },
+      "imagePath": null
+    },
+    {
+      "id": "0d3a7064-a7fb-5d51-9330-191eda0a8c9c",
+      "drinkId": "b07b78a1-3b65-59cf-bfb7-6c45111cea48",
+      "temperature": "iced",
+      "sizeLabel": "L",
+      "cupMl": 520,
+      "nutritionBasisMl": null,
+      "nutrition": {
+        "caloriesKcal": 313,
+        "sugarG": 41,
+        "caffeineMg": 12
+      },
+      "priceKrw": null,
+      "source": {
+        "url": "https://www.ediya.com/contents/drink.html",
+        "checkedAt": "2026-11-12"
+      },
+      "imagePath": null
+    },
+    {
+      "id": "8eb852a9-b927-577c-94ee-9a3e9b2ae88d",
+      "drinkId": "17414b85-280a-5cf6-b7a9-e905107e8692",
+      "temperature": "iced",
+      "sizeLabel": "L",
+      "cupMl": 520,
+      "nutritionBasisMl": null,
+      "nutrition": {
+        "caloriesKcal": 437,
+        "sugarG": 38,
+        "caffeineMg": 6
+      },
+      "priceKrw": null,
+      "source": {
+        "url": "https://www.ediya.com/contents/drink.html",
+        "checkedAt": "2026-11-12"
+      },
+      "imagePath": null
+    },
+    {
+      "id": "3eca86dc-cd48-55ba-8e76-59189c2808e3",
+      "drinkId": "98099811-954d-5657-abd9-8ba6788255c1",
+      "temperature": "iced",
+      "sizeLabel": "기본",
+      "cupMl": 660,
+      "nutritionBasisMl": null,
+      "nutrition": {
+        "caloriesKcal": 633.8,
+        "sugarG": 68.1,
+        "caffeineMg": 346
+      },
+      "priceKrw": null,
+      "source": {
+        "url": "https://paikdabang.com/menu/menu_coffee/",
+        "checkedAt": "2026-11-12"
+      },
+      "imagePath": null
+    },
+    {
+      "id": "898dfcc7-400b-59a1-908a-c2df71599385",
+      "drinkId": "8e32ac9a-6b5e-5e6c-a2b5-3869499474ea",
+      "temperature": "iced",
+      "sizeLabel": "기본",
+      "cupMl": 660,
+      "nutritionBasisMl": null,
+      "nutrition": {
+        "caloriesKcal": 272,
+        "sugarG": 63,
+        "caffeineMg": 100
+      },
+      "priceKrw": null,
+      "source": {
+        "url": "https://paikdabang.com/menu/menu_coffee/",
+        "checkedAt": "2026-11-12"
+      },
+      "imagePath": null
+    },
+    {
+      "id": "65234c2a-54fc-54b7-acb6-ded7e4f8b80d",
+      "drinkId": "ad8cd402-cbbe-5b5c-8a8a-4caf70d3645b",
+      "temperature": "iced",
+      "sizeLabel": "기본",
+      "cupMl": 660,
+      "nutritionBasisMl": null,
+      "nutrition": {
+        "caloriesKcal": 372,
+        "sugarG": 29,
+        "caffeineMg": 156
+      },
+      "priceKrw": null,
+      "source": {
+        "url": "https://paikdabang.com/menu/menu_coffee/",
+        "checkedAt": "2026-11-12"
+      },
+      "imagePath": null
+    },
+    {
+      "id": "b8c5d662-d811-5932-8bd8-79e26b30e10b",
+      "drinkId": "fed6564a-e4c0-531d-b5e1-69daf77bf980",
+      "temperature": "iced",
+      "sizeLabel": "기본",
+      "cupMl": 660,
+      "nutritionBasisMl": null,
+      "nutrition": {
+        "caloriesKcal": 420,
+        "sugarG": 12.6,
+        "caffeineMg": 193.4
+      },
+      "priceKrw": null,
+      "source": {
+        "url": "https://paikdabang.com/menu/menu_coffee/",
+        "checkedAt": "2026-11-12"
+      },
+      "imagePath": null
+    },
+    {
+      "id": "f2dbb206-a71d-5033-a45f-515fe0e078ef",
+      "drinkId": "7e285d40-03f8-503d-bbdd-54345251e6de",
+      "temperature": "iced",
+      "sizeLabel": "기본",
+      "cupMl": 710,
+      "nutritionBasisMl": null,
+      "nutrition": {
+        "caloriesKcal": 111.2,
+        "sugarG": 23.5,
+        "caffeineMg": 236
+      },
+      "priceKrw": null,
+      "source": {
+        "url": "https://www.mega-mgccoffee.com/menu/menu.php?page=6",
+        "checkedAt": "2026-11-12"
+      },
+      "imagePath": null
+    },
+    {
+      "id": "97f47460-06cb-5d68-9d0d-d8fed9bdda3d",
+      "drinkId": "430c7552-2628-589d-bd5f-fd2402912659",
+      "temperature": "iced",
+      "sizeLabel": "기본",
+      "cupMl": 710,
+      "nutritionBasisMl": null,
+      "nutrition": {
+        "caloriesKcal": 265.7,
+        "sugarG": 59.4,
+        "caffeineMg": 0
+      },
+      "priceKrw": null,
+      "source": {
+        "url": "https://www.mega-mgccoffee.com/menu/menu.php?category=2&menu_category1=1&menu_category2=1&page=1",
+        "checkedAt": "2026-11-12"
+      },
+      "imagePath": null
+    },
+    {
+      "id": "ecf477f8-0fb7-5616-8f93-9d51a3089396",
+      "drinkId": "c78b6a8f-6a99-59a0-aa43-263451d6467e",
+      "temperature": "iced",
+      "sizeLabel": "기본",
+      "cupMl": 710,
+      "nutritionBasisMl": null,
+      "nutrition": {
+        "caloriesKcal": 34.7,
+        "sugarG": 0,
+        "caffeineMg": 181.2
+      },
+      "priceKrw": null,
+      "source": {
+        "url": "https://www.mega-mgccoffee.com/menu/menu.php",
+        "checkedAt": "2026-11-12"
+      },
+      "imagePath": null
+    },
+    {
+      "id": "cc6db3cb-79fb-561b-b001-82c3e3592556",
+      "drinkId": "c0bac52f-d3a3-56b4-9a38-bbef6a78870b",
+      "temperature": "hot",
+      "sizeLabel": "Tall",
+      "cupMl": 355,
+      "nutritionBasisMl": 355,
+      "nutrition": {
+        "caloriesKcal": 180,
+        "sugarG": 13,
+        "caffeineMg": 75
+      },
+      "priceKrw": null,
+      "source": {
+        "url": "https://www.starbucks.co.kr/menu/drink_view.do?product_cd=41",
+        "checkedAt": "2026-11-12"
+      },
+      "imagePath": null
+    },
+    {
+      "id": "7c0b1e36-03dd-5898-8593-b6f7292e1c8b",
+      "drinkId": "46ac416b-858e-52af-8c4e-0036a4e76610",
+      "temperature": "iced",
+      "sizeLabel": "Tall",
+      "cupMl": 355,
+      "nutritionBasisMl": 355,
+      "nutrition": {
+        "caloriesKcal": 110,
+        "sugarG": 8,
+        "caffeineMg": 40
+      },
+      "priceKrw": null,
+      "source": {
+        "url": "https://www.starbucks.co.kr/menu/drink_view.do?product_cd=9200000001158",
+        "checkedAt": "2026-11-12"
+      },
+      "imagePath": null
+    }
+  ]
+}
