@@ -14,6 +14,14 @@
 
 인증 테스트에서 발견한 찜 재방문 표시 누락을 수정했다. 공개→비공개 검증은 DB 직접 조회와 익명 RPC·브라우저 재조회 모두로 확인했다. Supabase 기본 자동 GRANT를 재현하여 일반 사용자의 운영 숨김 필드 수정이 차단되는지도 테스트했다. 브라우저 테스트의 지도 upstream 응답은 제어된 테스트 응답이며 실제 Kakao API 검증을 의미하지 않는다.
 
+## 최신 기록 (취향 노트 반영 시점, e297a67)
+
+위 수치는 MVP 1차 검증 기록이다. 이후 달력·앱 화면·발견 홈·취향 노트를 추가하며 늘어난 최신 기록은 다음과 같다.
+
+- 단위·실제 PostgreSQL 38개, 익명 브라우저 20개 통과, lint·build 통과 — `docs/superpowers/plans/2026-11-12-taste-note.md`.
+- 실제 로컬 세션 브라우저 5개 통과 — `docs/operations/discovery-checkpoint.md`.
+- 2026-11-12 Claude Code 인계 재확인: e297a67에서 lint·typecheck·단위·실제 DB 38개 통과(로컬 PostgreSQL 16 사용, CI 기준은 17). 익명·세션 브라우저 테스트와 build는 이 인계 확인에서 재실행하지 않았다.
+
 ## 외부 설정이 필요한 출시 게이트
 
 - [ ] 사용자 소유 Supabase Free 프로젝트·키·마이그레이션 연결.
