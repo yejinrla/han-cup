@@ -18,6 +18,8 @@ export default defineConfig({
     command: "npm run dev",
     url: "http://127.0.0.1:3000",
     reuseExistingServer: !process.env.CI,
+    // Non-secret placeholder so the stores map path runs against the fake SDK.
+    env: { NEXT_PUBLIC_KAKAO_MAP_KEY: "e2e-placeholder-map-key" },
   },
   reporter: "list",
 });

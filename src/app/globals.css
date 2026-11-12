@@ -1137,6 +1137,71 @@ th small {
   color: #537443;
   margin-top: 12px;
 }
+/* Map status overlay sits on the Kakao canvas; selection links pins and cards. */
+.store-map {
+  position: relative;
+  overflow: hidden;
+}
+.store-map-canvas {
+  position: absolute;
+  inset: 0;
+}
+.store-map-status {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px;
+  background: #eaf0e4;
+  color: #56694a;
+  text-align: center;
+}
+.store-map-status .apply-button {
+  background: #fff;
+  border: 1px solid #b9c9ac;
+  color: var(--green);
+  font-weight: 600;
+}
+.store-item.is-selected {
+  border-color: var(--green);
+  background: #f3f7ee;
+  box-shadow: inset 0 0 0 1px var(--green);
+}
+.store-item .store-selected {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: -2px 0 6px;
+  font-weight: 700;
+  color: var(--green);
+}
+.store-item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 18px;
+  margin-top: 8px;
+}
+.store-item .store-item-actions a {
+  margin-top: 0;
+}
+.store-item-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  color: #537443;
+  cursor: pointer;
+}
 .prose {
   max-width: 740px;
   line-height: 2;

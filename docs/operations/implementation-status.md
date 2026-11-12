@@ -27,13 +27,22 @@ Critical 없음. Important 4개와 상향한 기능 결함 1개를 회귀 테스
 
 ## 후속 개선으로 남긴 Minor
 
-- 지도 SDK가 응답 없이 지연되거나 글로벌 객체 없이 load되는 경우의 초기화 타임아웃·재시도. 매장 목록과 외부 지도 연결은 이용 가능하다.
-- 지도 마커와 매장 목록의 선택·중앙 이동 연동. 현재는 지도 핀과 목록을 함께 제공한다.
+- (해결, 2026-11-12) 지도 SDK 초기화 10초 제한·수동 재시도, 지도 마커와 매장 목록의 선택·중앙 이동 연동. `docs/superpowers/specs/2026-11-12-store-map-reliability-design.md`, `docs/superpowers/plans/2026-11-12-store-map-reliability.md`.
 
 ## 리뷰에서 별도 판단한 범위
 
 - 실제 hosted 인증·지도·탈퇴·배포, 6개 브랜드 생산 데이터, 정식 개인정보 처리방침은 출시 게이트다. 로컬 테스트로 완료 처리하지 않는다. 잘못 넘기면 실제 서비스 연결이나 데이터 신뢰성이 깨지므로 release-checklist가 막는다.
 - 리뷰어는 DB를 변경하는 전체 테스트를 재실행하지 않았다. 작성자가 로컬 실제 DB·브라우저 명령을 재실행해 증거를 기록한다. 비용: 독립 리뷰는 코드 검토이며 테스트 실행 주체는 작성자다.
 - 이미 공개됐을 때 사용자가 따로 복사하거나 캡처한 내용까지 회수하지 않는다. 앱이 철회된 내용을 자체 캐시에서 다시 보여주는 문제는 수정한다. 비용: 이미 전달된 사본은 회수할 수 없다.
+
+## MVP 이후 추가 기능
+
+이 문서의 결정 기록은 MVP 1차 구현 기준이다. 이후 기능은 각 설계·계획·운영 문서에 기록돼 있다.
+
+- 나의 한컵 달력·조회 성능: `docs/superpowers/specs/2026-11-12-journal-calendar-design.md`, `docs/superpowers/plans/2026-11-12-journal-performance.md`
+- 480px 앱 화면과 하단 탭: `docs/superpowers/specs/2026-11-12-app-shell-design.md`
+- 발견 홈·검색 분리·인기 집계·신메뉴: `docs/superpowers/specs/2026-11-12-discovery-home-design.md`, `docs/operations/discovery-checkpoint.md`
+- 취향 노트(/notes/autumn-tea): `docs/superpowers/specs/2026-11-12-taste-note-design.md`
+- 주변 매장 지도 안정성·목록 연동: `docs/superpowers/specs/2026-11-12-store-map-reliability-design.md`
 
 현재는 실서비스 공개 배포 완료 상태가 아니다. 실제 계정 설정과 공식 6개 브랜드 데이터 검수, 정식 개인정보 처리방침을 완료한 뒤 사용자 승인으로 배포한다.
