@@ -3,6 +3,13 @@ import { requireUser } from "@/lib/auth/session";
 import { serverClient } from "@/lib/supabase/server";
 import { getCatalog } from "@/features/catalog/repository";
 import { ReviewForm } from "@/features/reviews/components/ReviewForm";
+import { JournalCalendar } from "@/features/reviews/components/JournalCalendar";
+import {
+  journalHref,
+  monthRange,
+  resolveJournalDate,
+} from "@/features/reviews/calendar";
+import { koreanDate } from "@/features/reviews/schema";
 import { deleteReview } from "@/features/reviews/service";
 export const metadata = {
   title: "마신 기록",
@@ -13,10 +20,11 @@ export default async function Records({
   searchParams,
 }: {
   searchParams: Promise<{
-    drink?: string;
-    variant?: string;
-    edit?: string;
-    cursor?: string;
+    drink?: string | string[];
+    variant?: string | string[];
+    edit?: string | string[];
+    cursor?: string | string[];
+    date?: string | string[];
   }>;
 }) {
   const p = await searchParams;
@@ -31,27 +39,52 @@ export default async function Records({
   const user = await requireUser(returnTo);
   const db = await serverClient();
   const data = await getCatalog();
-  const offset = /^\d+$/.test(p.cursor ?? "")
-    ? Math.min(Number(p.cursor), 10000)
-    : 0;
+  const editing =
+    typeof p.edit === "string"
+      ? (
+          await db
+            .from("reviews")
+            .select("*")
+            .eq("user_id", user.id)
+            .eq("id", p.edit)
+            .maybeSingle()
+        ).data
+      : null;
+  const today = koreanDate();
+  const selectedDate = resolveJournalDate(
+    p.date ?? editing?.consumed_on,
+    today,
+  );
+  const { start, end } = monthRange(selectedDate);
+  const offset =
+    typeof p.cursor === "string" && /^\d+$/.test(p.cursor)
+      ? Math.min(Number(p.cursor), 10000)
+      : 0;
   const { data: rows, error } = await db
     .from("reviews")
     .select("*")
     .eq("user_id", user.id)
-    .order("consumed_on", { ascending: false })
+    .eq("consumed_on", selectedDate)
     .order("created_at", { ascending: false })
-    .range(offset, offset + 19);
+    .order("id", { ascending: false })
+    .range(offset, offset + 20);
   if (error) throw new Error("기록을 불러오지 못했어요.");
-  const editing = p.edit
-    ? (
-        await db
-          .from("reviews")
-          .select("*")
-          .eq("user_id", user.id)
-          .eq("id", p.edit)
-          .maybeSingle()
-      ).data
-    : null;
+  const pageRows = rows?.slice(0, 20) ?? [];
+  const recordDates: string[] = [];
+  // Fetch dates only, in pages: PostgREST caps rows returned per request.
+  for (let from = 0; ; from += 500) {
+    const result = await db
+      .from("reviews")
+      .select("consumed_on")
+      .eq("user_id", user.id)
+      .gte("consumed_on", start)
+      .lte("consumed_on", end)
+      .order("id", { ascending: true })
+      .range(from, from + 499);
+    if (result.error) throw new Error("달력 기록을 불러오지 못했어요.");
+    recordDates.push(...(result.data ?? []).map((r) => r.consumed_on));
+    if (!result.data || result.data.length < 500) break;
+  }
   const selected = data.drinks.find(
     (d) => d.id === (editing?.drink_id ?? p.drink),
   );
@@ -68,6 +101,11 @@ export default async function Records({
         <Link href="/me/favorites">찜한 음료</Link>
         <Link href="/me/settings">계정 설정</Link>
       </nav>
+      <JournalCalendar
+        selectedDate={selectedDate}
+        today={today}
+        recordDates={recordDates}
+      />
       {selected && (
         <section className="panel">
           <h2>
@@ -94,9 +132,15 @@ export default async function Records({
         </section>
       )}
       <section className="panel">
-        <h2>마신 음료 {rows?.length ?? 0}개</h2>
-        {rows?.length ? (
-          rows.map((r) => {
+        <h2>
+          {Number(selectedDate.slice(5, 7))}월 {Number(selectedDate.slice(8))}
+          일의 한 잔
+        </h2>
+        <p className="muted journal-day-caption">
+          {selectedDate} · 마신 날짜 기준
+        </p>
+        {pageRows.length ? (
+          pageRows.map((r) => {
             const d = data.drinks.find((x) => x.id === r.drink_id);
             return (
               <article className="record" key={r.id}>
@@ -124,7 +168,7 @@ export default async function Records({
                 <div className="form-row">
                   <Link
                     className="text-button"
-                    href={"/me/records?edit=" + r.id}
+                    href={journalHref(selectedDate, { edit: r.id })}
                   >
                     수정 / 공개 범위 변경
                   </Link>
@@ -138,15 +182,35 @@ export default async function Records({
           })
         ) : (
           <div className="empty-state">
-            <h3>첫 한 잔을 기다리고 있어요</h3>
-            <p>음료 상세에서 ‘한 잔 기록하기’를 눌러보세요.</p>
+            <h3>
+              {offset > 0
+                ? "이 페이지에는 기록이 없어요"
+                : "이날은 아직 기록이 없어요"}
+            </h3>
+            <p>
+              {offset > 0
+                ? "아래의 이전 기록 보기로 돌아가 주세요."
+                : "음료를 둘러보고 한 잔의 기억을 남겨보세요."}
+            </p>
             <Link className="primary-button" href="/">
               음료 둘러보기
             </Link>
           </div>
         )}
-        {rows?.length === 20 && (
-          <Link href={"/me/records?cursor=" + (offset + 20)}>
+        {offset > 0 && (
+          <Link
+            className="text-button"
+            href={journalHref(selectedDate, {
+              cursor: String(Math.max(0, offset - 20)),
+            })}
+          >
+            ← 이전 기록 보기
+          </Link>
+        )}
+        {(rows?.length ?? 0) > 20 && offset < 10000 && (
+          <Link
+            href={journalHref(selectedDate, { cursor: String(offset + 20) })}
+          >
             다음 기록 보기 →
           </Link>
         )}

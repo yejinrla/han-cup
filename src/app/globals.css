@@ -1623,3 +1623,114 @@ th small {
     padding: 3px 5px;
   }
 }
+
+.journal-calendar {
+  margin-bottom: 24px;
+}
+.journal-calendar-toolbar,
+.journal-month-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.journal-calendar-toolbar {
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.journal-calendar-toolbar h2 {
+  margin: 0;
+}
+.journal-month-button,
+.journal-today-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid #dde4d4;
+  border-radius: 12px;
+}
+.journal-today-button {
+  padding: 0 14px;
+  font-size: 13px;
+}
+.journal-weekdays,
+.journal-days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+}
+.journal-weekdays {
+  color: #687461;
+  font-size: 12px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.journal-weekdays span {
+  padding: 8px 0;
+}
+.journal-day {
+  min-height: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  font-size: 15px;
+}
+.journal-day:hover {
+  background: #f0f4eb;
+}
+.journal-day.is-today {
+  border-color: #748c65;
+  font-weight: 700;
+}
+.journal-day.is-selected {
+  background: #254d38;
+  color: #fff;
+}
+.journal-record-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: transparent;
+  flex-shrink: 0;
+}
+.journal-record-dot.has-record {
+  background: #6e865d;
+}
+.journal-day.is-selected .has-record {
+  background: #e2edce;
+}
+.journal-calendar-legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #687461;
+  font-size: 12px;
+  margin: 20px 0 0;
+}
+.journal-day-caption {
+  margin: 8px 0 20px;
+}
+@media (max-width: 700px) {
+  .journal-weekdays,
+  .journal-days {
+    gap: 2px;
+  }
+  .journal-day {
+    min-height: 48px;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+  .journal-calendar-toolbar {
+    margin-bottom: 16px;
+  }
+  .journal-calendar-legend {
+    font-size: 10px;
+    line-height: 1.6;
+  }
+}

@@ -253,3 +253,133 @@ test("review fix: history restoration never shows a withdrawn cached review whil
     await viewer.close();
   }
 });
+
+test("journal calendar defaults to today, filters dates, paginates and refreshes markers after edits and deletion", async ({
+  page,
+  context,
+}) => {
+  await authenticate(context);
+  const make = (date: string, body: string) => ({
+    user_id: session.user.id,
+    drink_id: drinkId,
+    consumed_on: date,
+    body,
+    rating: 4,
+    visibility: "private",
+  });
+  const inserted = await admin
+    .from("reviews")
+    .insert([
+      ...Array.from({ length: 501 }, (_, i) => ({
+        ...make("2024-02-10", `달력 많은 기록 ${i}`),
+        id: `00000000-0000-4000-8000-${String(i + 1).padStart(12, "0")}`,
+      })),
+      ...Array.from({ length: 21 }, (_, i) => ({
+        ...make("2024-02-29", `윤년 기록 ${i}`),
+        id: `10000000-0000-4000-8000-${String(i + 1).padStart(12, "0")}`,
+      })),
+      {
+        ...make("2024-02-11", "다른 날의 한 잔"),
+        id: "ffffffff-ffff-4fff-8fff-ffffffffffff",
+      },
+    ])
+    .select("id");
+  if (inserted.error) throw inserted.error;
+  try {
+    await page.goto("/me/records");
+    const today = new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Asia/Seoul",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(new Date());
+    await expect(page.locator(".journal-day.is-selected")).toHaveAttribute(
+      "href",
+      "/me/records?date=" + today,
+    );
+    await page.goto("/me/records?date=2024-02-29");
+    await expect(
+      page.getByRole("heading", { name: "2024년 2월" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("link", {
+        name: "2024년 2월 10일, 기록 있음",
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("link", {
+        name: "2024년 2월 11일, 기록 있음",
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(page.locator("article.record")).toHaveCount(20);
+    await expect(
+      page.getByText("다른 날의 한 잔", { exact: true }),
+    ).toHaveCount(0);
+    await page.getByRole("link", { name: "다음 기록 보기 →" }).click();
+    await expect(page).toHaveURL(/date=2024-02-29&cursor=20/);
+    await expect(page.locator("article.record")).toHaveCount(1);
+    await page.getByRole("button", { name: "기록 삭제" }).click();
+    await expect(
+      page.getByRole("heading", { name: "이 페이지에는 기록이 없어요" }),
+    ).toBeVisible();
+    await page.getByRole("link", { name: "← 이전 기록 보기" }).click();
+    await expect(page.locator("article.record")).toHaveCount(20);
+
+    await page
+      .getByRole("link", { name: "수정 / 공개 범위 변경" })
+      .first()
+      .click();
+    await expect(page).toHaveURL(/date=2024-02-29&edit=/);
+    await page.getByLabel("마신 날짜").fill("2024-02-28");
+    await page.getByRole("button", { name: "기록 수정하기" }).click();
+    await expect(page.getByRole("status")).toContainText("한 잔을 기록했어요.");
+    await page
+      .getByRole("link", { name: "2024년 2월 28일, 기록 있음", exact: true })
+      .click();
+    await expect(page.locator("article.record")).toHaveCount(1);
+    await page.getByRole("button", { name: "기록 삭제" }).click();
+    await expect(
+      page.getByRole("heading", { name: "이날은 아직 기록이 없어요" }),
+    ).toBeVisible();
+    await expect(
+      page.locator(".journal-day.is-selected .has-record"),
+    ).toHaveCount(0);
+    await page.screenshot({
+      path: "/tmp/hancup-calendar-desktop.png",
+      fullPage: true,
+    });
+    await page.setViewportSize({ width: 390, height: 844 });
+    await expect(page.locator(".journal-calendar")).toBeVisible();
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+    await page.screenshot({
+      path: "/tmp/hancup-calendar-mobile.png",
+      fullPage: true,
+    });
+    await page.getByRole("link", { name: "다음 달", exact: true }).click();
+    await expect(page).toHaveURL(/date=2024-03-28/);
+    await page.getByRole("link", { name: "오늘", exact: true }).click();
+    await expect(page.locator(".journal-day.is-selected")).toHaveAttribute(
+      "href",
+      "/me/records?date=" + today,
+    );
+    await page.goto("/me/records?date=2024-02-30&date=bad");
+    await expect(page.locator(".journal-day.is-selected")).toHaveAttribute(
+      "href",
+      "/me/records?date=" + today,
+    );
+  } finally {
+    await admin
+      .from("reviews")
+      .delete()
+      .in(
+        "id",
+        inserted.data.map((r) => r.id),
+      );
+  }
+});
