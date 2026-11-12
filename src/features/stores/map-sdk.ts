@@ -29,6 +29,8 @@ export function createKakaoMapsLoader<M extends MapsNamespace>(
         script.onload = null;
         script.onerror = null;
         script.remove();
+        // Detaching handlers and this guard each keep a stale attempt from
+        // clearing a newer one; either alone is enough, both are kept on purpose.
         if (pending === attempt) pending = undefined;
         reject(new Error("지도 연결 실패"));
       };

@@ -65,11 +65,13 @@ export function StoreMap({
   items,
   searchId,
   selectedId,
+  panRequest,
   onSelect,
 }: {
   items: Store[];
   searchId: number;
   selectedId: string | null;
+  panRequest: number;
   onSelect: (id: string) => void;
 }) {
   const key = process.env.NEXT_PUBLIC_KAKAO_MAP_KEY;
@@ -77,6 +79,7 @@ export function StoreMap({
   const map = useRef<KakaoMap | null>(null);
   const markers = useRef(new Map<string, KakaoMarker>());
   const select = useRef(onSelect);
+  const focusMapOnLoad = useRef(false);
   const [kakao, setKakao] = useState<KakaoMaps | null>(null);
   const [failed, setFailed] = useState(false);
   const [retrying, setRetrying] = useState(false);
@@ -95,11 +98,15 @@ export function StoreMap({
         setKakao(maps);
         setFailed(false);
         setRetrying(false);
+        // The focused retry button disappears on success; hand focus to the map.
+        if (focusMapOnLoad.current) canvas.current?.focus();
+        focusMapOnLoad.current = false;
       })
       .catch(() => {
         if (!active) return;
         setFailed(true);
         setRetrying(false);
+        focusMapOnLoad.current = false;
       });
     return () => {
       active = false;
@@ -144,28 +151,31 @@ export function StoreMap({
   useEffect(() => {
     if (kakao && map.current && selected)
       map.current.panTo(new kakao.LatLng(selected.lat, selected.lng));
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- only when the selection changes
-  }, [kakao, selectedId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- only on a new selection or pan request
+  }, [kakao, selectedId, panRequest]);
+  // With no results there is nothing to map, so a search hint replaces retry.
   const status = !key
     ? "지도 연결을 준비하고 있어요."
-    : failed
-      ? retrying
-        ? "지도를 다시 불러오고 있어요."
-        : "지도를 불러오지 못했어요. 아래 매장 목록을 이용해 주세요."
-      : !hasItems
-        ? "지역을 검색하면 가까운 매장이 표시돼요."
+    : !hasItems
+      ? "지역을 검색하면 가까운 매장이 표시돼요."
+      : failed
+        ? retrying
+          ? "지도를 다시 불러오고 있어요."
+          : "지도를 불러오지 못했어요. 아래 매장 목록을 이용해 주세요."
         : "";
   return (
     <div className="store-map">
       <div
         ref={canvas}
         className="store-map-canvas"
+        role="region"
         aria-label="주변 매장 지도"
+        tabIndex={-1}
       />
       {status && (
         <div className="store-map-status">
           <p>{status}</p>
-          {failed && (
+          {failed && hasItems && (
             <button
               type="button"
               className="apply-button"
@@ -174,6 +184,7 @@ export function StoreMap({
               onClick={() => {
                 if (retrying) return;
                 setRetrying(true);
+                focusMapOnLoad.current = true;
                 setAttempt((n) => n + 1);
               }}
             >

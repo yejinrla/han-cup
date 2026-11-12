@@ -27,8 +27,7 @@ Critical 없음. Important 4개와 상향한 기능 결함 1개를 회귀 테스
 
 ## 후속 개선으로 남긴 Minor
 
-- 지도 SDK가 응답 없이 지연되거나 글로벌 객체 없이 load되는 경우의 초기화 타임아웃·재시도. 매장 목록과 외부 지도 연결은 이용 가능하다.
-- 지도 마커와 매장 목록의 선택·중앙 이동 연동. 현재는 지도 핀과 목록을 함께 제공한다.
+- (해결, 2026-11-12) 지도 SDK 초기화 10초 제한·수동 재시도, 지도 마커와 매장 목록의 선택·중앙 이동 연동. `docs/superpowers/specs/2026-11-12-store-map-reliability-design.md`, `docs/superpowers/plans/2026-11-12-store-map-reliability.md`.
 
 ## 리뷰에서 별도 판단한 범위
 
@@ -44,5 +43,6 @@ Critical 없음. Important 4개와 상향한 기능 결함 1개를 회귀 테스
 - 480px 앱 화면과 하단 탭: `docs/superpowers/specs/2026-11-12-app-shell-design.md`
 - 발견 홈·검색 분리·인기 집계·신메뉴: `docs/superpowers/specs/2026-11-12-discovery-home-design.md`, `docs/operations/discovery-checkpoint.md`
 - 취향 노트(/notes/autumn-tea): `docs/superpowers/specs/2026-11-12-taste-note-design.md`
+- 주변 매장 지도 안정성·목록 연동: `docs/superpowers/specs/2026-11-12-store-map-reliability-design.md`
 
 현재는 실서비스 공개 배포 완료 상태가 아니다. 실제 계정 설정과 공식 6개 브랜드 데이터 검수, 정식 개인정보 처리방침을 완료한 뒤 사용자 승인으로 배포한다.

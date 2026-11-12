@@ -18,14 +18,22 @@
 
 ### Task 1: SDK loader
 Files: src/features/stores/map-sdk.ts, tests/unit/map-sdk.test.ts, src/features/stores/components/StoreMap.tsx.
-- [ ] RED→GREEN per behavior: timeout rejects; script error rejects; loaded without `kakao.maps` rejects; after a failure the next call appends a new script and can resolve; a successful load is reused without a new script.
-- [ ] Use the loader from StoreMap; show retry button on failure.
+- [x] RED→GREEN per behavior: timeout rejects; script error rejects; loaded without `kakao.maps` rejects; after a failure the next call appends a new script and can resolve; a successful load is reused without a new script.
+- [x] Use the loader from StoreMap; show retry button on failure.
 
 ### Task 2: Map/list selection
 Files: StoreMap.tsx, StoreSearch.tsx, globals.css, playwright.config.ts, tests/e2e/stores.spec.ts.
-- [ ] RED: browser test for SDK failure → retry → map shown.
-- [ ] RED: browser test for pin click selecting card, "지도에서 보기" centering, reset on new search, kept on more, single map instance.
-- [ ] GREEN: single map instance with marker redraw, selection state, card button with `aria-pressed` and "선택됨" text, selected-pin distinction, scroll into view. UI per frontend-design within existing tokens.
+- [x] RED: browser test for SDK failure → retry → map shown.
+- [x] RED: browser test for pin click selecting card, "지도에서 보기" centering, reset on new search, kept on more, single map instance.
+- [x] GREEN: single map instance with marker redraw, selection state, card button with `aria-pressed` and "선택됨" text, selected-pin distinction, scroll into view. UI per frontend-design within existing tokens.
 
 ### Task 3: Verification
-- [ ] Lint, typecheck, unit/DB, full anonymous browser suite, build. Screens at 320/390/1440 via agent-browser. Independent review, one fix pass. Update implementation-status.md (remove the two deferred Minors) and plan checkboxes. Commit and push.
+- [x] Lint, typecheck, unit/DB, full anonymous browser suite, build. Screens at 320/390/1440 via agent-browser. Independent review, one fix pass. Update implementation-status.md (remove the two deferred Minors) and plan checkboxes. Commit and push.
+
+## Verification and review
+
+Seams were confirmed by the user before tests were written. Each slice went RED for the intended reason before GREEN. Loader: 8 unit tests (timeout, script error, missing global, `maps.load` never calling back, success reuse, retry with failed-script removal, stale attempt isolation). Browser: 3 new stores tests with a scoped fake SDK; the SDK host is aborted by default. Mutation checks: recreating the map and recentering on append are both caught; the first append assertion was too weak (selected store equal to the first store) and was strengthened before acceptance. Handler detachment and the attempt guard are redundant defences; removing both is caught.
+
+Full run: lint, typecheck, prettier, unit/DB 46, anonymous browser 23, production build passed. agent-browser screens at 320/390/1440: no horizontal overflow, selected card and pins in sync; failure state checked at 390 (retry button restyled for contrast on the map tint). Real-session browser suite was not rerun (no stores coverage there).
+
+Independent review: no Critical. Fixed Important — pressing "지도에서 보기" on the already selected store did not recenter (pan request counter). Fixed Minor — retry offered with an empty list after a brand change (search hint now precedes failure), focus dropped after a successful retry (focus moves to the map region), missing `maps.load` timeout coverage. Unmount-during-load is handled by the effect's active flag and was not given a dedicated test. Real Kakao rendering of the SVG data-URI marker image is unverified and added to the release gate.

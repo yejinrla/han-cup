@@ -125,3 +125,13 @@ test("a late answer from a timed-out script cannot disturb the retry in flight",
   scripts[1].onload?.();
   await expect(retry).resolves.toBe(maps);
 });
+
+test("a loaded SDK whose maps.load never calls back still fails at the time limit", async () => {
+  const { loader, scripts, win } = setup(10000);
+  const result = loader.load("browser-key");
+  win.kakao = { maps: { load: () => {} } };
+  scripts[0].onload?.();
+  const settled = expect(result).rejects.toThrow("지도 연결 실패");
+  await vi.advanceTimersByTimeAsync(10000);
+  await settled;
+});

@@ -12,7 +12,8 @@ export function StoreSearch({ initialBrand }: { initialBrand: BrandId }) {
     [pending, setPending] = useState(false),
     [hasNext, setHasNext] = useState(false),
     [selectedId, setSelectedId] = useState<string | null>(null),
-    [searchId, setSearchId] = useState(0);
+    [searchId, setSearchId] = useState(0),
+    [panRequest, setPanRequest] = useState(0);
   const last = useRef<URLSearchParams | null>(null),
     requestId = useRef(0),
     list = useRef<HTMLDivElement>(null);
@@ -173,6 +174,7 @@ export function StoreSearch({ initialBrand }: { initialBrand: BrandId }) {
           items={items}
           searchId={searchId}
           selectedId={selectedId}
+          panRequest={panRequest}
           onSelect={selectFromMap}
         />
         <div className="store-list" ref={list}>
@@ -206,7 +208,11 @@ export function StoreSearch({ initialBrand }: { initialBrand: BrandId }) {
                 <button
                   type="button"
                   aria-pressed={s.id === selectedId}
-                  onClick={() => setSelectedId(s.id)}
+                  onClick={() => {
+                    setSelectedId(s.id);
+                    // Every press re-centres, even on the already selected store.
+                    setPanRequest((n) => n + 1);
+                  }}
                 >
                   <MapPin size={12} aria-hidden="true" /> 지도에서 보기
                 </button>

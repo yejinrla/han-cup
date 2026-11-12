@@ -155,6 +155,9 @@ test("a failed map load explains itself and loads again on request", async ({
     page.getByRole("button", { name: "지도 핀 메가MGC커피 성수점" }),
   ).toBeVisible();
   await expect(page.getByText("지도를 불러오지 못했어요")).toBeHidden();
+  await expect(
+    page.getByRole("region", { name: "주변 매장 지도" }),
+  ).toBeFocused();
   expect(sdkRequests).toBe(3);
 });
 
@@ -240,6 +243,22 @@ test("map pins and store cards share one selection across paging and new searche
   );
   expect(afterMore.maps).toBe(1);
   expect(afterMore.centers.at(-1)).toEqual([37.547, 127.047]);
+  // The user drags the map away; pressing the selected card again returns to it.
+  await page.evaluate(() =>
+    (
+      window as never as { __kakaoFake: { centers: number[][] } }
+    ).__kakaoFake.centers.push([0, 0]),
+  );
+  await showOnMap("메가MGC커피 뚝섬점").click();
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        (
+          window as never as { __kakaoFake: { centers: number[][] } }
+        ).__kakaoFake.centers.at(-1),
+      ),
+    )
+    .toEqual([37.547, 127.047]);
 
   await showOnMap("메가MGC커피 서울숲점").click();
   await page.getByRole("button", { name: "매장 찾기", exact: true }).click();
@@ -258,4 +277,29 @@ test("map pins and store cards share one selection across paging and new searche
   );
   expect(afterSearch.maps).toBe(1);
   expect(afterSearch.centers.at(-1)).toEqual([37.54, 127.05]);
+});
+
+test("a map failure followed by a brand change asks for a new search instead of a retry", async ({
+  page,
+}) => {
+  await page.route("**/api/stores", (route) =>
+    route.fulfill({
+      contentType: "application/json",
+      body: JSON.stringify({
+        items: [store("a", "메가MGC커피 성수점", 37.54, 127.05)],
+        hasNext: false,
+      }),
+    }),
+  );
+  await page.goto("/stores?brand=mega");
+  await page.getByLabel("지역명").fill("서울 성수동");
+  await page.getByRole("button", { name: "매장 찾기", exact: true }).click();
+  await expect(page.getByText("지도를 불러오지 못했어요")).toBeVisible();
+  await page.getByLabel("매장 브랜드").selectOption("starbucks");
+  await expect(
+    page.getByText("지역을 검색하면 가까운 매장이 표시돼요."),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "지도 다시 불러오기" }),
+  ).toHaveCount(0);
 });
