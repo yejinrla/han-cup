@@ -1,0 +1,91 @@
+-- HanCup: run once in a NEW Supabase project SQL Editor.
+-- Creates schema and six brands; drink catalog is imported separately.
+BEGIN;
+SET LOCAL search_path = public;
+
+-- 001_core.sql
+create table public.brands(id text primary key,name text not null);
+insert into brands values ('starbucks','스타벅스'),('twosome','투썸플레이스'),('ediya','이디야'),('mega','메가MGC커피'),('compose','컴포즈커피'),('paik','빽다방');
+create table drinks(id uuid primary key default gen_random_uuid(),brand_id text not null references brands(id),slug text not null unique,name text not null,category text not null check(category in ('coffee','tea','ade','smoothie','other')),status text not null default 'active' check(status in ('active','discontinued')),default_variant_id uuid,revision integer not null default 1);
+create table drink_variants(id uuid primary key default gen_random_uuid(),drink_id uuid not null references drinks(id),temperature text not null check(temperature in ('hot','iced','ambient')),size_label text not null,cup_ml numeric check(cup_ml>0),nutrition_basis_ml numeric check(nutrition_basis_ml>0),calories_kcal numeric check(calories_kcal>=0),sugar_g numeric check(sugar_g>=0),caffeine_mg numeric check(caffeine_mg>=0),extra_nutrition jsonb not null default '{}',price_krw integer check(price_krw>=0),source_url text not null,checked_at date not null,price_source_url text,image_path text,image_source_url text,image_permission text,unique(drink_id,temperature,size_label),unique(id,drink_id));
+alter table drinks add constraint default_variant_owner foreign key(default_variant_id,id) references drink_variants(id,drink_id) deferrable initially deferred;
+create table profiles(id uuid primary key references auth.users(id) on delete cascade,nickname text not null check(char_length(nickname) between 2 and 20));
+create table reviews(id uuid primary key default gen_random_uuid(),user_id uuid not null references profiles(id) on delete cascade,drink_id uuid not null references drinks(id),variant_id uuid,rating integer not null check(rating between 1 and 5),body text not null default '' check(char_length(body)<=1000),consumed_on date not null check(consumed_on <= (now() at time zone 'Asia/Seoul')::date),visibility text not null default 'private' check(visibility in ('public','private')),moderation_status text not null default 'visible' check(moderation_status in ('visible','hidden')),moderation_reason text,created_at timestamptz not null default clock_timestamp(),updated_at timestamptz not null default clock_timestamp(),foreign key(variant_id,drink_id) references drink_variants(id,drink_id));
+create index reviews_public_idx on reviews(drink_id,user_id,created_at desc,id desc) where visibility='public' and moderation_status='visible';
+create table favorites(user_id uuid not null references profiles(id) on delete cascade,drink_id uuid not null references drinks(id),created_at timestamptz not null default now(),primary key(user_id,drink_id));
+create table operator_roles(user_id uuid primary key references profiles(id) on delete cascade);
+create table review_reports(id uuid primary key default gen_random_uuid(),reporter_id uuid not null references profiles(id) on delete cascade,review_id uuid not null references reviews(id) on delete cascade,reason text not null check(char_length(reason) between 1 and 500),created_at timestamptz not null default now(),unique(reporter_id,review_id));
+create table catalog_releases(id uuid primary key default gen_random_uuid(),reviewer text not null,created_at timestamptz not null default now(),reverted boolean not null default false);
+create table catalog_release_items(release_id uuid not null references catalog_releases(id),drink_id uuid not null,previous jsonb not null,primary key(release_id,drink_id));
+do $$declare t text;begin foreach t in array array['brands','drinks','drink_variants','profiles','reviews','favorites','operator_roles','review_reports','catalog_releases','catalog_release_items'] loop execute format('alter table %I enable row level security',t);end loop;end$$;
+grant usage on schema public to anon,authenticated;
+revoke all on brands,drinks,drink_variants,profiles,reviews,favorites,operator_roles,review_reports,catalog_releases,catalog_release_items from anon,authenticated;
+grant select on brands,drinks,drink_variants to anon,authenticated;
+create policy public_brands on brands for select using(true);
+create policy public_drinks on drinks for select using(true);
+create policy public_variants on drink_variants for select using(true);
+grant select on profiles,reviews,favorites to authenticated;
+grant select on reviews to anon;
+grant update(nickname) on profiles to authenticated;
+create policy own_profile_read on profiles for select to authenticated using(id=auth.uid());
+create policy own_profile_update on profiles for update to authenticated using(id=auth.uid()) with check(id=auth.uid());
+grant insert(user_id,drink_id,variant_id,rating,body,consumed_on,visibility) on reviews to authenticated;
+grant update(variant_id,rating,body,consumed_on,visibility) on reviews to authenticated;
+grant delete on reviews to authenticated;
+create policy own_review_read on reviews for select to authenticated using(user_id=auth.uid());
+create policy own_review_insert on reviews for insert to authenticated with check(user_id=auth.uid());
+create policy own_review_update on reviews for update to authenticated using(user_id=auth.uid()) with check(user_id=auth.uid());
+create policy own_review_delete on reviews for delete to authenticated using(user_id=auth.uid());
+grant insert(user_id,drink_id),delete on favorites to authenticated;
+create policy own_favorites_read on favorites for select to authenticated using(user_id=auth.uid());
+create policy own_favorites_insert on favorites for insert to authenticated with check(user_id=auth.uid());
+create policy own_favorites_delete on favorites for delete to authenticated using(user_id=auth.uid());
+create function public.provision_profile() returns trigger language plpgsql security definer set search_path=public as $$begin insert into public.profiles(id,nickname) values(new.id,'한컵친구'||substr(replace(new.id::text,'-',''),1,6)) on conflict do nothing;return new;end$$;
+create trigger on_auth_user_created after insert on auth.users for each row execute function public.provision_profile();
+revoke all on function public.provision_profile() from public;
+
+-- 004_reviews.sql
+create function public.rating_summaries() returns table(drink_id uuid,average numeric,count bigint) language sql stable security definer set search_path=public as $$
+ select drink_id,round(avg(rating)::numeric,1),count(*) from (
+ select distinct on(drink_id,user_id) drink_id,user_id,rating from public.reviews where visibility='public' and moderation_status='visible' order by drink_id,user_id,created_at desc,id desc
+ ) latest group by drink_id;
+$$;
+revoke all on function public.rating_summaries() from public;
+grant execute on function public.rating_summaries() to anon,authenticated;
+create function public.public_reviews(product uuid,offset_rows integer default 0) returns table(id uuid,nickname text,rating integer,body text,consumed_on date,variant_id uuid,created_at timestamptz) language sql stable security definer set search_path=public as $$
+ select r.id,p.nickname,r.rating,r.body,r.consumed_on,r.variant_id,r.created_at from public.reviews r join public.profiles p on p.id=r.user_id where r.drink_id=product and r.visibility='public' and r.moderation_status='visible' order by r.created_at desc,r.id desc limit 20 offset greatest(0,least(offset_rows,10000));
+$$;
+revoke all on function public.public_reviews(uuid,integer) from public;
+grant execute on function public.public_reviews(uuid,integer) to anon,authenticated;
+create function public.is_public_review(review uuid) returns boolean language sql stable security definer set search_path=public as $$select exists(select 1 from public.reviews where id=review and visibility='public' and moderation_status='visible')$$;
+revoke all on function public.is_public_review(uuid) from public;
+grant execute on function public.is_public_review(uuid) to authenticated;
+grant insert(reporter_id,review_id,reason) on review_reports to authenticated;
+create policy report_public_review on review_reports for insert to authenticated with check(reporter_id=auth.uid() and is_public_review(review_id));
+create function public.is_operator() returns boolean language sql stable security definer set search_path=public as $$select exists(select 1 from public.operator_roles where user_id=auth.uid())$$;
+revoke all on function public.is_operator() from public;
+grant execute on function public.is_operator() to authenticated;
+create function public.update_review_timestamp() returns trigger language plpgsql set search_path=public as $$begin new.updated_at=clock_timestamp();return new;end$$;
+create trigger update_review_timestamp before update on reviews for each row execute function update_review_timestamp();
+
+-- 005_map_budget.sql
+create table map_budget(day date primary key,total integer not null default 0);
+create table map_client_budget(client_hash text primary key,window_start timestamptz not null,hits integer not null);
+alter table map_budget enable row level security;alter table map_client_budget enable row level security;
+create function reserve_map_request(client text,daily_limit integer) returns boolean language plpgsql security definer set search_path=public as $$declare n integer;h integer;begin
+ if daily_limit<1 or daily_limit>100000 or length(client)<>64 then return false;end if;
+ delete from map_budget where day < current_date-7;delete from map_client_budget where window_start < now()-interval '1 day';
+ insert into map_client_budget values(client,now(),1) on conflict(client_hash) do update set hits=case when map_client_budget.window_start<now()-interval '1 minute' then 1 else map_client_budget.hits+1 end,window_start=case when map_client_budget.window_start<now()-interval '1 minute' then now() else map_client_budget.window_start end returning hits into h;
+ if h>15 then return false;end if;
+ insert into map_budget values(current_date,1) on conflict(day) do update set total=map_budget.total+1 where map_budget.total<daily_limit returning total into n;
+ return n is not null;
+end$$;
+revoke all on function reserve_map_request(text,integer) from public,anon,authenticated;
+-- Supabase service_role executes only; plain PostgreSQL test adapter grants explicitly.
+do $$begin if exists(select 1 from pg_roles where rolname='service_role') then grant execute on function reserve_map_request(text,integer) to service_role;end if;end$$;
+
+-- 006_account_deletion.sql
+create table account_deletions(user_id uuid primary key references auth.users(id) on delete cascade,unlink_completed boolean not null default false,updated_at timestamptz not null default now());
+alter table account_deletions enable row level security;
+
+COMMIT;
