@@ -4,11 +4,8 @@ import { serverClient } from "@/lib/supabase/server";
 import { getCatalog } from "@/features/catalog/repository";
 import { ReviewForm } from "@/features/reviews/components/ReviewForm";
 import { JournalCalendar } from "@/features/reviews/components/JournalCalendar";
-import {
-  journalHref,
-  monthRange,
-  resolveJournalDate,
-} from "@/features/reviews/calendar";
+import { journalHref, resolveJournalDate } from "@/features/reviews/calendar";
+import { loadJournalData } from "@/features/reviews/load-journal";
 import { koreanDate } from "@/features/reviews/schema";
 import { deleteReview } from "@/features/reviews/service";
 export const metadata = {
@@ -38,7 +35,6 @@ export default async function Records({
     );
   const user = await requireUser(returnTo);
   const db = await serverClient();
-  const data = await getCatalog();
   const editing =
     typeof p.edit === "string"
       ? (
@@ -55,36 +51,16 @@ export default async function Records({
     p.date ?? editing?.consumed_on,
     today,
   );
-  const { start, end } = monthRange(selectedDate);
   const offset =
     typeof p.cursor === "string" && /^\d+$/.test(p.cursor)
       ? Math.min(Number(p.cursor), 10000)
       : 0;
-  const { data: rows, error } = await db
-    .from("reviews")
-    .select("*")
-    .eq("user_id", user.id)
-    .eq("consumed_on", selectedDate)
-    .order("created_at", { ascending: false })
-    .order("id", { ascending: false })
-    .range(offset, offset + 20);
-  if (error) throw new Error("기록을 불러오지 못했어요.");
-  const pageRows = rows?.slice(0, 20) ?? [];
-  const recordDates: string[] = [];
-  // Fetch dates only, in pages: PostgREST caps rows returned per request.
-  for (let from = 0; ; from += 500) {
-    const result = await db
-      .from("reviews")
-      .select("consumed_on")
-      .eq("user_id", user.id)
-      .gte("consumed_on", start)
-      .lte("consumed_on", end)
-      .order("id", { ascending: true })
-      .range(from, from + 499);
-    if (result.error) throw new Error("달력 기록을 불러오지 못했어요.");
-    recordDates.push(...(result.data ?? []).map((r) => r.consumed_on));
-    if (!result.data || result.data.length < 500) break;
-  }
+  const {
+    catalog: data,
+    rows,
+    recordDates,
+  } = await loadJournalData(db, user.id, selectedDate, offset, getCatalog);
+  const pageRows = rows.slice(0, 20);
   const selected = data.drinks.find(
     (d) => d.id === (editing?.drink_id ?? p.drink),
   );
