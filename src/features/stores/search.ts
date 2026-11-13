@@ -37,6 +37,12 @@ const aliases: Record<BrandId, string[]> = {
   compose: ["컴포즈커피"],
   paik: ["빽다방"],
 };
+export class KakaoLocalError extends Error {
+  constructor(readonly status: number) {
+    super("매장 검색을 잠시 이용할 수 없어요.");
+    this.name = "KakaoLocalError";
+  }
+}
 export async function searchStores(
   input: unknown,
   fetcher: typeof fetch = fetch,
@@ -53,7 +59,7 @@ export async function searchStores(
         cache: "no-store",
       },
     );
-    if (!res.ok) throw new Error("매장 검색을 잠시 이용할 수 없어요.");
+    if (!res.ok) throw new KakaoLocalError(res.status);
     return res.json();
   };
   let lat = p.lat,

@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { createHash } from "node:crypto";
-import { searchStores, validateStoreInput } from "@/features/stores/search";
+import {
+  KakaoLocalError,
+  searchStores,
+  validateStoreInput,
+} from "@/features/stores/search";
 import { adminClient } from "@/lib/supabase/admin";
 export async function POST(request: Request) {
   let input;
@@ -21,6 +25,7 @@ export async function POST(request: Request) {
       },
       { status: 503 },
     );
+  let stage: "budget" | "kakao" = "budget";
   try {
     const db = adminClient();
     const client = createHash("sha256")
@@ -64,15 +69,28 @@ export async function POST(request: Request) {
         },
         { status: 429 },
       );
+    stage = "kakao";
     const result = await searchStores(input);
     return NextResponse.json(result, {
       headers: { "Cache-Control": "no-store" },
     });
-  } catch {
+  } catch (error) {
+    const providerCodes: Record<number, string> = {
+      401: "KAKAO_LOCAL_AUTH_FAILED",
+      403: "KAKAO_LOCAL_ACCESS_DENIED",
+      429: "KAKAO_LOCAL_THROTTLED",
+    };
+    const code =
+      stage === "budget"
+        ? "STORE_SEARCH_BUDGET_UNAVAILABLE"
+        : error instanceof KakaoLocalError
+          ? (providerCodes[error.status] ?? "KAKAO_LOCAL_UNAVAILABLE")
+          : "KAKAO_LOCAL_UNAVAILABLE";
     return NextResponse.json(
       {
         error:
           "매장 검색을 잠시 이용할 수 없어요. 카카오맵에서 이어서 찾아보세요.",
+        code,
       },
       { status: 503 },
     );

@@ -77,3 +77,35 @@ test("database permission denial is distinguished from invalid server credential
   expect(JSON.stringify(body)).not.toContain("private database diagnostic");
   expect(search).not.toHaveBeenCalled();
 });
+
+test.each([
+  [401, "KAKAO_LOCAL_AUTH_FAILED"],
+  [403, "KAKAO_LOCAL_ACCESS_DENIED"],
+  [429, "KAKAO_LOCAL_THROTTLED"],
+  [500, "KAKAO_LOCAL_UNAVAILABLE"],
+])(
+  "Kakao HTTP %i is diagnosed without exposing its response",
+  async (status, expectedCode) => {
+    const { searchStores: actualSearch } = await vi.importActual<
+      typeof import("@/features/stores/search")
+    >("@/features/stores/search");
+    let providerError: unknown;
+    try {
+      await actualSearch(
+        { brandId: "starbucks", region: "서울 성수동" },
+        async () => new Response("private provider details", { status }),
+        "test-rest-key",
+      );
+    } catch (error) {
+      providerError = error;
+    }
+    expect(providerError).toBeInstanceOf(Error);
+    rpc.mockResolvedValue({ data: true, error: null });
+    search.mockRejectedValue(providerError);
+    const response = await POST(request());
+    expect(response.status).toBe(503);
+    const body = await response.json();
+    expect(body.code).toBe(expectedCode);
+    expect(JSON.stringify(body)).not.toContain("private provider details");
+  },
+);
