@@ -10,6 +10,8 @@ import { getCatalog } from "@/features/catalog/repository";
 import { getSummaries } from "@/features/reviews/repository";
 import { getFavoriteIds } from "@/features/favorites/repository";
 import { DrinkCard } from "@/features/catalog/components/DrinkCard";
+import { getArticleFavorites } from "@/features/favorites/articles";
+import { ArticleFavoriteButton } from "@/features/favorites/components/ArticleFavoriteButton";
 import { CupArt } from "@/components/CupArt";
 export async function generateMetadata({
   params,
@@ -31,10 +33,11 @@ export default async function TasteNotePage({
   const { slug } = await params;
   const note = tasteNotes.find((note) => note.slug === slug);
   if (!note) notFound();
-  const [catalog, summaries, favorites] = await Promise.all([
+  const [catalog, summaries, favorites, articleFavorites] = await Promise.all([
     getCatalog(),
     getSummaries(),
     getFavoriteIds(),
+    getArticleFavorites(),
   ]);
   const picks = resolveNoteRecommendations(note, catalog);
   return (
@@ -52,6 +55,11 @@ export default async function TasteNotePage({
           </p>
           <h1>{note.title}</h1>
           <p className="taste-note-summary">{note.summary}</p>
+          <ArticleFavoriteButton
+            slug={note.slug}
+            initial={articleFavorites.slugs.includes(note.slug)}
+            available={articleFavorites.available}
+          />
         </header>
         <div className="taste-note-cover" aria-hidden="true">
           <span>

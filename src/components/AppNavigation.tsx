@@ -28,7 +28,7 @@ const tabs = [
   {
     href: "/me/favorites",
     label: "좋아요",
-    accessibleLabel: "좋아요한 음료",
+    accessibleLabel: "좋아요",
     icon: Heart,
     matches: (path: string) => path === "/me/favorites",
   },

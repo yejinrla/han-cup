@@ -42,7 +42,7 @@ test("desktop and mobile share a centered app frame and persistent accessible ta
     for (const link of await nav.getByRole("link").all())
       await expect(link).toBeInViewport();
   }
-  await nav.getByRole("link", { name: "좋아요한 음료", exact: true }).click();
+  await nav.getByRole("link", { name: "좋아요", exact: true }).click();
   await expect(page).toHaveURL(/\/login\?next=%2Fme%2Ffavorites/);
 });
 

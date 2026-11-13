@@ -527,6 +527,68 @@ test("record editing stays inside its card, cancels without losing the page and 
   }
 });
 
+test("article likes persist separately from drinks and can be removed", async ({
+  page,
+  context,
+}) => {
+  await authenticate(context);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/me/favorites?tab=articles");
+  const tabs = page.getByRole("navigation", { name: "좋아요 종류" });
+  await expect(
+    tabs.getByRole("link", { name: "아티클", exact: true }),
+  ).toHaveAttribute("aria-current", "page");
+  await expect(
+    page.getByRole("heading", { name: "아직 좋아요한 아티클이 없어요" }),
+  ).toBeVisible();
+  await page.goto("/notes/autumn-tea");
+  await page
+    .getByRole("button", { name: "아티클 좋아요하기", exact: true })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "아티클 좋아요 해제", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await page.reload();
+  await expect(
+    page.getByRole("button", { name: "아티클 좋아요 해제", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await page.goto("/me/favorites?tab=articles");
+  await expect(page.locator(".magazine-card")).toHaveCount(1);
+  await page.locator(".magazine-card").click();
+  await expect(page).toHaveURL(/\/notes\/autumn-tea$/);
+  await page.goto("/me/favorites?tab=articles");
+  for (const width of [320, 1440]) {
+    await page.setViewportSize({ width, height: 844 });
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+  }
+  await page.screenshot({
+    path: "/tmp/hancup-saved-articles.png",
+    fullPage: true,
+  });
+  await tabs.getByRole("link", { name: "음료", exact: true }).click();
+  await expect(page).toHaveURL("http://localhost:3001/me/favorites");
+  await expect(page.locator(".magazine-card")).toHaveCount(0);
+  await expect(
+    page.getByRole("heading", { name: "좋아요한 음료", exact: true }),
+  ).toBeVisible();
+  await tabs.getByRole("link", { name: "아티클", exact: true }).click();
+  await page
+    .getByRole("button", { name: "아티클 좋아요 해제", exact: true })
+    .click();
+  await expect(page.locator(".magazine-card")).toHaveCount(0);
+  await expect(
+    page.getByRole("heading", { name: "아직 좋아요한 아티클이 없어요" }),
+  ).toBeVisible();
+  await page.goto("/notes/autumn-tea");
+  await expect(
+    page.getByRole("button", { name: "아티클 좋아요하기", exact: true }),
+  ).toHaveAttribute("aria-pressed", "false");
+});
+
 test("five tabs separate records, likes and My with settings and logout", async ({
   page,
   context,
@@ -560,11 +622,11 @@ test("five tabs separate records, likes and My with settings and logout", async 
   await expect(
     page.getByRole("button", { name: "로그아웃", exact: true }),
   ).toHaveCount(0);
-  await nav.getByRole("link", { name: "좋아요한 음료", exact: true }).click();
+  await nav.getByRole("link", { name: "좋아요", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "좋아요한 음료", exact: true }),
   ).toBeVisible();
-  await expect(active).toHaveAccessibleName("좋아요한 음료");
+  await expect(active).toHaveAccessibleName("좋아요");
   await expect(page.locator(".personal-tabs")).toHaveCount(0);
   for (const width of [320, 1440]) {
     await page.setViewportSize({ width, height: 844 });

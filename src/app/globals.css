@@ -2809,3 +2809,59 @@ body {
   border-radius: 18px;
   margin-bottom: 24px;
 }
+
+.favorite-kind-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: #edf1e7;
+  border-radius: 14px;
+  margin: 24px 0;
+}
+.favorite-kind-tabs a {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border-radius: 11px;
+  color: #5e6e59;
+  font-size: 14px;
+}
+.favorite-kind-tabs a[aria-current="page"] {
+  background: #fff;
+  color: var(--green);
+  font-weight: 700;
+  box-shadow: 0 2px 8px #283a2e08;
+}
+.article-like-control {
+  margin: 18px 0;
+}
+.article-like-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid #ced9c6;
+  border-radius: 24px;
+  color: var(--green);
+  background: #fff;
+  font-size: 13px;
+}
+.article-like-button.is-favorite {
+  background: #e9efdf;
+  border-color: #b8c9a9;
+}
+.article-like-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.saved-article-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+.saved-article-actions .article-like-control {
+  margin: 8px 0 0;
+}

@@ -47,3 +47,15 @@ test("magazine collects articles and connects home, details and list", async ({
     await expect(cards).toHaveCount(3);
   }
 });
+
+test("anonymous article like retains the selected article through login", async ({
+  page,
+}) => {
+  await page.goto("/notes/sweet-coffee");
+  await page
+    .getByRole("button", { name: "아티클 좋아요하기", exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/login\?next=/);
+  const next = new URL(page.url()).searchParams.get("next");
+  expect(next).toBe("/me/favorites?tab=articles&addArticle=sweet-coffee");
+});

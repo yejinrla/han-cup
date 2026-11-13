@@ -46,6 +46,12 @@ beforeAll(async () => {
   await db.query(
     await readFile("supabase/migrations/007_home_popularity.sql", "utf8"),
   );
+  const articleMigration = await readFile(
+    "supabase/migrations/008_article_favorites.sql",
+    "utf8",
+  );
+  await db.query(articleMigration);
+  await db.query(articleMigration);
   await db.query(
     `insert into auth.users values ($1),($2) on conflict do nothing`,
     [a, b],
@@ -402,4 +408,61 @@ test("popularity includes private/public distinct recorders without exposing pri
     (await as(null, "select * from popular_drinks() where drink_id=$1", [d]))
       .rows,
   ).toEqual([{ drink_id: d, recorders: "1" }]);
+});
+
+test("article favorites are private, cannot be forged and can only be removed by their owner", async () => {
+  await as(
+    a,
+    "insert into article_favorites(user_id,article_slug) values($1,'autumn-tea')",
+    [a],
+  );
+  expect(
+    (await as(a, "select article_slug from article_favorites")).rows,
+  ).toEqual([{ article_slug: "autumn-tea" }]);
+  expect((await as(b, "select * from article_favorites")).rows).toHaveLength(0);
+  await expect(as(null, "select * from article_favorites")).rejects.toThrow();
+  await expect(
+    as(
+      b,
+      "insert into article_favorites(user_id,article_slug) values($1,'sweet-coffee')",
+      [a],
+    ),
+  ).rejects.toThrow();
+  expect(
+    (await as(b, "delete from article_favorites where user_id=$1", [a]))
+      .rowCount,
+  ).toBe(0);
+  await expect(
+    as(a, "update article_favorites set article_slug='sweet-coffee'"),
+  ).rejects.toThrow();
+  expect(
+    (
+      await as(
+        a,
+        "delete from article_favorites where article_slug='autumn-tea'",
+      )
+    ).rowCount,
+  ).toBe(1);
+});
+
+test("article favorites cascade when the owning account is deleted", async () => {
+  const user = "00000000-0000-4000-8000-000000000099";
+  await db.query("begin");
+  try {
+    await db.query("insert into auth.users(id) values($1)", [user]);
+    await db.query(
+      "insert into article_favorites(user_id,article_slug) values($1,'your-latte')",
+      [user],
+    );
+    await db.query("delete from auth.users where id=$1", [user]);
+    expect(
+      (
+        await db.query("select * from article_favorites where user_id=$1", [
+          user,
+        ])
+      ).rows,
+    ).toHaveLength(0);
+  } finally {
+    await db.query("rollback");
+  }
 });
