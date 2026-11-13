@@ -29,11 +29,32 @@ export async function POST(request: Request) {
           new Date().toISOString().slice(0, 10),
       )
       .digest("hex");
-    const { data: allowed, error } = await db.rpc("reserve_map_request", {
+    const {
+      data: allowed,
+      error,
+      status: budgetStatus,
+    } = await db.rpc("reserve_map_request", {
       client,
       daily_limit: Number(process.env.KAKAO_DAILY_SEARCH_BUDGET ?? 1000),
     });
-    if (error || !allowed)
+    if (error || typeof allowed !== "boolean") {
+      const code = ["PGRST202", "42883", "42P01"].includes(error?.code ?? "")
+        ? "STORE_SEARCH_SETUP_REQUIRED"
+        : budgetStatus === 401 ||
+            budgetStatus === 403 ||
+            ["42501", "PGRST301", "PGRST302"].includes(error?.code ?? "")
+          ? "STORE_SEARCH_AUTH_FAILED"
+          : "STORE_SEARCH_BUDGET_UNAVAILABLE";
+      return NextResponse.json(
+        {
+          error:
+            "매장 검색 연결을 확인하고 있어요. 잠시 후 다시 시도하거나 카카오맵에서 찾아보세요.",
+          code,
+        },
+        { status: 503 },
+      );
+    }
+    if (!allowed)
       return NextResponse.json(
         {
           error:
