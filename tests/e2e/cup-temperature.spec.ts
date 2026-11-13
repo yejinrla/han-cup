@@ -60,3 +60,16 @@ test("cup height follows the verified cup volume", async ({ page }) => {
   expect(ratio).toBeGreaterThan((520 / 670) * 0.97);
   expect(ratio).toBeLessThan((520 / 670) * 1.03);
 });
+
+test("decorative note cups are drawn solid, not as a missing-volume cup", async ({
+  page,
+}) => {
+  // The banner cup is decorative (aria-hidden), so it is found by its place.
+  await page.goto("/");
+  const cup = page.locator(".taste-note-banner-art svg.cup-art");
+  await expect(cup).toBeVisible();
+  await expect(cup.locator("[data-cup-body]")).not.toHaveAttribute(
+    "stroke-dasharray",
+    /.+/,
+  );
+});

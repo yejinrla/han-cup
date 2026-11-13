@@ -15,16 +15,24 @@
 The stage 1 readability scan keeps running as the regression guard for size and contrast.
 
 ### Task 1: Data cup
-- [ ] RED: name and height-ratio test fails.
-- [ ] GREEN: parametric CupArt, callers pass cupMl, detail illustration note.
+- [x] RED: name and height-ratio test fails.
+- [x] GREEN: parametric CupArt, callers pass cupMl, detail illustration note.
 
 ### Task 2: Compact card
-- [ ] RED: card height / meta / price test fails.
-- [ ] GREEN: DrinkCard markup and CSS.
+- [x] RED: card height / meta / price test fails.
+- [x] GREEN: DrinkCard markup and CSS.
 
 ### Task 3: One-row filters
-- [ ] RED: filter tests fail; update existing tests to open the panel.
-- [ ] GREEN: CatalogFilters markup and CSS.
+- [x] RED: filter tests fail; update existing tests to open the panel.
+- [x] GREEN: CatalogFilters markup and CSS.
 
 ### Task 4: Verification
-- [ ] Lint, typecheck, unit/DB, full browser suite, build; agent-browser at 320/390/1440. Independent review (time-boxed), one fix pass. Docs, commit, push.
+- [x] Lint, typecheck, unit/DB, full browser suite, build; agent-browser at 320/390 (1440 not checked separately in this stage: the app renders in the same 480px frame, and the readability scan runs at 1440). Independent review (time-boxed), one fix pass. Docs, commit, push.
+
+## Verification and review
+
+Seams were confirmed by the user before tests were written; every new test went RED for the intended reason first. Cup: names carry temperature, volume and category; the drawn 520ml:670ml body heights keep the volume ratio. Card: 281px at 390px for every card (was about 380px; 472px after stage 1 moved units below figures). Filters: chips, selects, panel, quick picks and reset keep the URL contract; two older tests gained only a panel-open step.
+
+Decisions made while implementing (recorded in the spec): "기본" size omitted from the card meta line so it fits one line at 390px; the apply button stays outside the panel; the reset link sits next to the result count; decorative note cups use the new art drawn solid. A first CSS attempt with `display: contents` on `details` did not order the panel in Chromium and was replaced. Two test mistakes were caught and fixed: a helper that recursively called itself after a bulk replace, and a panel re-click that closed an already-open panel.
+
+Independent review: no Critical; URL contract, details state, cup edge cases (0/null/NaN/over 710ml, unknown category) and price 0-versus-null confirmed. Fixed Important — decorative cups showed the dashed missing-volume outline (test-first). Fixed Minor — steam clipped above the viewBox for hot cups over about 650ml (clamped; no such hot drink in data to test), reset-link-in-viewport check restored at 390px, four dead CSS rules removed. Not testable with current data: a priced card (no variant has a price) and hot cups above 591ml.

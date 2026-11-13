@@ -24,6 +24,9 @@ test("nutrition limits live in a panel that opens with a count when set", async 
     "음료명이나 브랜드",
   );
   await expect(page.getByLabel("당류 상한")).toBeHidden();
+  await expect(
+    page.locator(".results-bar").getByRole("link", { name: "조건 초기화" }),
+  ).toBeInViewport({ ratio: 1 });
   await openPanel(page);
   await expect(page.getByLabel("당류 상한")).toHaveAttribute(
     "placeholder",

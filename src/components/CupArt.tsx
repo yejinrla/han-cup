@@ -50,6 +50,8 @@ export function CupArt({
   const height =
     (FULL_HEIGHT * (known ? Math.min(cupMl, FULL_ML) : 591)) / FULL_ML;
   const top = BASE_Y - height;
+  // Steam rises 28 units; keep it inside the viewBox for the tallest cups.
+  const steamStart = Math.max(top - 26, 30);
   const label = temperature
     ? `${name}, ${temperatureLabel[temperature]} 음료, ${
         known ? `${cupMl}ml` : "용량 미제공"
@@ -61,7 +63,9 @@ export function CupArt({
     TOP_HALF - (TOP_HALF - BOTTOM_HALF) * ((y - top) / height);
   const outline = {
     strokeWidth: 2,
-    strokeDasharray: known ? undefined : "7 6",
+    // Dashed only for a real drink whose volume is unknown; decorative cups
+    // (no temperature) are not a statement about any drink's volume.
+    strokeDasharray: known || !temperature ? undefined : "7 6",
   };
   return (
     <svg
@@ -87,8 +91,8 @@ export function CupArt({
             strokeLinecap="round"
             opacity=".85"
           >
-            <path d={`M${CX - 14} ${top - 26}q-8-7 0-14t0-14`} />
-            <path d={`M${CX + 14} ${top - 26}q-8-7 0-14t0-14`} />
+            <path d={`M${CX - 14} ${steamStart}q-8-7 0-14t0-14`} />
+            <path d={`M${CX + 14} ${steamStart}q-8-7 0-14t0-14`} />
           </g>
           <path
             data-cup-body

@@ -354,11 +354,6 @@ textarea {
   font-weight: 650;
   border-bottom: 2px solid var(--green);
 }
-.category-tabs .reset-link {
-  margin-left: auto;
-  font-size: 11px;
-  color: var(--muted);
-}
 .results-bar {
   display: flex;
   align-items: center;
@@ -369,11 +364,6 @@ textarea {
 .results-bar b {
   color: var(--green);
   font-size: 12px;
-}
-.results-bar p > span {
-  font-size: 11px;
-  color: var(--muted);
-  margin-left: 7px;
 }
 .results-bar > div {
   display: flex;
@@ -1256,9 +1246,6 @@ th small {
 .category-tabs > a {
   padding-bottom: 12px;
 }
-.category-tabs .reset-link {
-  font-size: 11px;
-}
 .results-bar {
   padding: 18px 0 14px;
   font-size: 11px;
@@ -1809,9 +1796,6 @@ body {
 .results-bar > div {
   width: 100%;
   justify-content: space-between;
-}
-.results-bar p > span {
-  display: none;
 }
 .basis-toggle {
   font-size: 11px;
