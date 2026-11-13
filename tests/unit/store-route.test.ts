@@ -63,3 +63,17 @@ test("rejected server credentials return a safe authentication diagnostic", asyn
   expect(JSON.stringify(body)).not.toContain("private credential diagnostic");
   expect(search).not.toHaveBeenCalled();
 });
+
+test("database permission denial is distinguished from invalid server credentials", async () => {
+  rpc.mockResolvedValue({
+    data: null,
+    error: { code: "42501", message: "private database diagnostic" },
+    status: 403,
+  });
+  const response = await POST(request());
+  expect(response.status).toBe(503);
+  const body = await response.json();
+  expect(body.code).toBe("STORE_SEARCH_PERMISSION_DENIED");
+  expect(JSON.stringify(body)).not.toContain("private database diagnostic");
+  expect(search).not.toHaveBeenCalled();
+});

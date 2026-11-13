@@ -40,11 +40,13 @@ export async function POST(request: Request) {
     if (error || typeof allowed !== "boolean") {
       const code = ["PGRST202", "42883", "42P01"].includes(error?.code ?? "")
         ? "STORE_SEARCH_SETUP_REQUIRED"
-        : budgetStatus === 401 ||
-            budgetStatus === 403 ||
-            ["42501", "PGRST301", "PGRST302"].includes(error?.code ?? "")
-          ? "STORE_SEARCH_AUTH_FAILED"
-          : "STORE_SEARCH_BUDGET_UNAVAILABLE";
+        : error?.code === "42501"
+          ? "STORE_SEARCH_PERMISSION_DENIED"
+          : budgetStatus === 401 ||
+              budgetStatus === 403 ||
+              ["PGRST301", "PGRST302"].includes(error?.code ?? "")
+            ? "STORE_SEARCH_AUTH_FAILED"
+            : "STORE_SEARCH_BUDGET_UNAVAILABLE";
       return NextResponse.json(
         {
           error:
