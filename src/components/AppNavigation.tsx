@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { House, MapPin, Heart, CalendarDays } from "lucide-react";
+import { House, MapPin, Heart, CalendarDays, UserRound } from "lucide-react";
 
 const tabs = [
   {
@@ -34,11 +34,17 @@ const tabs = [
   },
   {
     href: "/me/records",
-    label: "나의 한컵",
-    accessibleLabel: "나의 한컵",
+    label: "기록",
+    accessibleLabel: "음료 기록",
     icon: CalendarDays,
-    matches: (path: string) =>
-      path.startsWith("/me/") && path !== "/me/favorites",
+    matches: (path: string) => path === "/me/records",
+  },
+  {
+    href: "/me",
+    label: "마이",
+    accessibleLabel: "마이페이지",
+    icon: UserRound,
+    matches: (path: string) => path === "/me" || path === "/me/settings",
   },
 ];
 

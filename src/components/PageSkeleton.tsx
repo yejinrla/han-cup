@@ -1,4 +1,5 @@
-type SkeletonVariant = "home" | "favorites" | "journal" | "stores" | "catalog";
+type SkeletonVariant =
+  "home" | "favorites" | "journal" | "stores" | "catalog" | "account";
 
 function Heading() {
   return (
@@ -59,7 +60,6 @@ export function PageSkeleton({
           </>
         ) : variant === "journal" ? (
           <>
-            <Tabs />
             <div className="skeleton-calendar">
               <span className="skeleton-block skeleton-month" />
               <div className="skeleton-calendar-grid">
@@ -77,9 +77,15 @@ export function PageSkeleton({
             <span className="skeleton-block skeleton-map" />
             <span className="skeleton-block skeleton-record" />
           </>
+        ) : variant === "account" ? (
+          <>
+            <span className="skeleton-block skeleton-profile" />
+            <span className="skeleton-block skeleton-search" />
+            <span className="skeleton-block skeleton-search" />
+          </>
         ) : (
           <>
-            <Tabs />
+            {variant === "catalog" && <Tabs />}
             <Cards />
           </>
         )}

@@ -526,3 +526,61 @@ test("record editing stays inside its card, cancels without losing the page and 
       );
   }
 });
+
+test("five tabs separate records, likes and My with settings and logout", async ({
+  page,
+  context,
+}) => {
+  await authenticate(context);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/me");
+  await expect(
+    page.getByRole("heading", { name: "마이페이지", exact: true }),
+  ).toBeVisible();
+  const nav = page.getByRole("navigation", { name: "주 메뉴" });
+  await expect(nav.getByRole("link")).toHaveCount(5);
+  const active = nav.locator('[aria-current="page"]');
+  await expect(active).toHaveCount(1);
+  await expect(active).toHaveAccessibleName("마이페이지");
+  await expect(
+    page.getByRole("button", { name: "로그아웃", exact: true }),
+  ).toBeVisible();
+  await page.screenshot({ path: "/tmp/hancup-my-mobile.png", fullPage: true });
+  await page
+    .getByRole("link", { name: "프로필·계정 설정", exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/me\/settings$/);
+  await expect(active).toHaveAccessibleName("마이페이지");
+  await page.getByRole("link", { name: "마이페이지로", exact: true }).click();
+  await expect(page).toHaveURL(/\/me$/);
+  await nav.getByRole("link", { name: "음료 기록", exact: true }).click();
+  await expect(page.locator(".journal-calendar")).toBeVisible();
+  await expect(active).toHaveAccessibleName("음료 기록");
+  await expect(page.locator(".personal-tabs")).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "로그아웃", exact: true }),
+  ).toHaveCount(0);
+  await nav.getByRole("link", { name: "좋아요한 음료", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "좋아요한 음료", exact: true }),
+  ).toBeVisible();
+  await expect(active).toHaveAccessibleName("좋아요한 음료");
+  await expect(page.locator(".personal-tabs")).toHaveCount(0);
+  for (const width of [320, 1440]) {
+    await page.setViewportSize({ width, height: 844 });
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+    for (const tab of await nav.getByRole("link").all()) {
+      await expect(tab).toBeInViewport();
+      expect((await tab.boundingBox())!.width).toBeGreaterThanOrEqual(44);
+    }
+  }
+  await nav.getByRole("link", { name: "마이페이지", exact: true }).click();
+  await page.getByRole("button", { name: "로그아웃", exact: true }).click();
+  await expect(page).toHaveURL("http://localhost:3001/");
+  await nav.getByRole("link", { name: "마이페이지", exact: true }).click();
+  await expect(page).toHaveURL(/\/login\?next=%2Fme$/);
+});

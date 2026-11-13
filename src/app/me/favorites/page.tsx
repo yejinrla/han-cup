@@ -35,11 +35,6 @@ export default async function Favorites({
       <p className="eyebrow">MY LITTLE COLLECTION</p>
       <h1 className="page-heading">좋아요한 음료</h1>
       <p className="page-intro">하트를 누른 음료를 한곳에서 다시 만나보세요.</p>
-      <nav className="personal-tabs">
-        <Link href="/me/records">마신 기록</Link>
-        <Link href="/me/favorites">좋아요한 음료</Link>
-        <Link href="/me/settings">계정 설정</Link>
-      </nav>
       {p.add && !ids.has(p.add) && (
         <form action={add} className="status-box">
           <input type="hidden" name="drinkId" value={p.add} />

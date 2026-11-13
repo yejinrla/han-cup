@@ -1801,7 +1801,7 @@ body {
   height: calc(var(--tab-height) + env(safe-area-inset-bottom));
   padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   background: #fdfefb;
   border-top: 1px solid #dfe6d9;
   box-shadow: 0 -5px 24px #35492c06;
@@ -2084,7 +2084,7 @@ body {
 
 /* Discovery home and dedicated catalog search. */
 .app-bottom-nav {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   padding-left: 6px;
   padding-right: 6px;
 }
@@ -2738,4 +2738,74 @@ body {
 }
 .record[id] {
   scroll-margin-top: 88px;
+}
+
+/* Account management is independent of journal and favorites. */
+.my-profile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 20px;
+  margin-bottom: 24px;
+}
+.my-avatar {
+  flex: 0 0 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--green);
+  background: #e9efdf;
+}
+.my-profile > div {
+  min-width: 0;
+}
+.my-profile h2 {
+  margin: 0 0 7px;
+  overflow-wrap: anywhere;
+}
+.my-profile p {
+  margin: 0;
+  color: #65745e;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.my-settings-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  font-size: 14px;
+}
+.my-settings-link > span {
+  flex: 1;
+}
+.my-settings-link > svg {
+  flex-shrink: 0;
+  color: var(--green);
+}
+.my-logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  margin-top: 20px;
+  color: #5e6e59;
+  font-size: 13px;
+}
+.my-logout:hover {
+  background: #eef2e8;
+}
+.skeleton-profile {
+  height: 130px;
+  border-radius: 18px;
+  margin-bottom: 24px;
 }
