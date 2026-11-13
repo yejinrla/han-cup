@@ -34,16 +34,28 @@ async function readabilityProblems(page: Page): Promise<Problem[]> {
         });
       return 0.2126 * r + 0.7152 * g + 0.0722 * b;
     };
-    const opaque = (color: string) => {
-      const parts = color.match(/[\d.]+/g)!;
-      return parts.length < 4 || Number(parts[3]) > 0.5;
+    // Colors as [r, g, b, a]; translucent layers are blended over what lies
+    // behind them so text on a see-through panel is judged on what shows.
+    const rgba = (color: string) => {
+      const [r, g, b, a = 1] = color.match(/[\d.]+/g)!.map(Number);
+      return [r, g, b, a];
     };
+    const over = (top: number[], under: number[]) => [
+      ...[0, 1, 2].map((i) => top[i] * top[3] + under[i] * (1 - top[3])),
+      1,
+    ];
+    const css = (c: number[]) => `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
     const backgroundOf = (element: Element) => {
+      const layers: number[][] = [];
       for (let e: Element | null = element; e; e = e.parentElement) {
-        const color = getComputedStyle(e).backgroundColor;
-        if (opaque(color)) return color;
+        const color = rgba(getComputedStyle(e).backgroundColor);
+        if (color[3] > 0) layers.push(color);
+        if (color[3] >= 1) break;
       }
-      return "rgb(255, 255, 255)";
+      return layers.reduceRight(
+        (under, top) => over(top, under),
+        [255, 255, 255, 1],
+      );
     };
     const problems: { text: string; where: string; detail: string }[] = [];
     const walker = document.createTreeWalker(
@@ -58,7 +70,7 @@ async function readabilityProblems(page: Page): Promise<Problem[]> {
       // outside the text rules (WCAG 1.4.3 exceptions).
       if (
         element.closest(
-          "svg, script, style, nextjs-portal, .sr-only, .wordmark, [aria-hidden='true'], [disabled], [aria-disabled='true']",
+          "svg.cup-art, script, style, nextjs-portal, .sr-only, .wordmark, [aria-hidden='true'], [disabled], [aria-disabled='true']",
         )
       )
         continue;
@@ -69,8 +81,9 @@ async function readabilityProblems(page: Page): Promise<Problem[]> {
       const where = `${element.tagName.toLowerCase()}${[...element.classList].map((c) => "." + c).join("")}`;
       if (size < 11)
         problems.push({ text: text.slice(0, 24), where, detail: `${size}px` });
-      const a = luminance(style.color),
-        b = luminance(backgroundOf(element));
+      const background = backgroundOf(element);
+      const a = luminance(css(over(rgba(style.color), background))),
+        b = luminance(css(background));
       const ratio = (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
       const large =
         size >= 24 || (size >= 18.66 && Number(style.fontWeight) >= 700);
@@ -136,4 +149,76 @@ test("search basis and sort controls keep their labels on one line at 320px", as
     });
     expect(lines).toBe(1);
   }
+});
+
+test("sentence-length secondary text is 13px and card nutrition numbers are 14px tabular figures", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const path of ["/", "/search", "/stores", "/compare", "/about"]) {
+    await page.goto(path);
+    const small = await page.evaluate(() => {
+      const muted = getComputedStyle(document.documentElement)
+        .getPropertyValue("--muted")
+        .trim();
+      const probe = document.createElement("i");
+      probe.style.color = muted;
+      document.body.append(probe);
+      const mutedRgb = getComputedStyle(probe).color;
+      probe.remove();
+      // Short labels on cards (brand, release date) stay at the 11px floor.
+      return [...document.querySelectorAll("main p")]
+        .filter((p) => (p as HTMLElement).offsetParent)
+        .filter((p) => !p.closest(".drink-card, .discovery-release"))
+        .filter((p) => (p.textContent ?? "").trim().length > 15)
+        .filter((p) => getComputedStyle(p).color === mutedRgb)
+        .filter((p) => parseFloat(getComputedStyle(p).fontSize) < 13)
+        .map((p) => `${p.className || "p"}: ${getComputedStyle(p).fontSize}`);
+    });
+    expect(small, path).toEqual([]);
+  }
+  for (const path of ["/", "/search"]) {
+    await page.goto(path);
+    const numbers = await page.evaluate(() => [
+      ...new Set(
+        [...document.querySelectorAll(".nutrition-strip b")].map(
+          (b) =>
+            `${getComputedStyle(b).fontSize} ${getComputedStyle(b).fontVariantNumeric}`,
+        ),
+      ),
+    ]);
+    expect(numbers, path).toEqual(["14px tabular-nums"]);
+  }
+});
+
+test("card nutrition labels and figures fit two-column cards at 320px", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 700 });
+  await page.goto("/search");
+  // Measure with the real webfont: fallback fonts are narrower and hide overflow.
+  await page.waitForLoadState("networkidle");
+  await page.evaluate(() => document.fonts.ready);
+  const problems = await page.evaluate(() => {
+    const lines = (element: Element) => {
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      return new Set([...range.getClientRects()].map((r) => Math.round(r.top)))
+        .size;
+    };
+    return [...document.querySelectorAll(".nutrition-strip")].flatMap(
+      (strip) => [
+        ...(strip.scrollWidth > strip.clientWidth + 1
+          ? ["strip overflows"]
+          : []),
+        ...[...strip.children]
+          .filter((cell) => cell.scrollWidth > cell.clientWidth + 1)
+          .map((cell) => `figure overflows: ${cell.textContent}`),
+        ...[...strip.querySelectorAll("small")]
+          .filter((label) => lines(label) > 1)
+          .map((label) => `label wraps: ${label.textContent}`),
+      ],
+    );
+  });
+  expect(problems).toEqual([]);
 });

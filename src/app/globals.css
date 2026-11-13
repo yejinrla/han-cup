@@ -2364,3 +2364,48 @@ body {
   color: var(--muted);
   margin-bottom: 6px;
 }
+
+/* Reading floor (UI stage 1): sentence-length secondary text reads at 13px and
+   card nutrition figures at 14px tabular digits. Short card labels stay at 11px. */
+.page-intro,
+.data-notice,
+.source-note,
+p.muted,
+.discovery-welcome > p,
+.discovery-section-note,
+.discovery-refresh,
+.taste-note-footnote,
+.empty-state p,
+.auth-card p,
+.journal-banner p {
+  font-size: 13px;
+}
+.nutrition-strip {
+  /* Equal columns so one long figure cannot squeeze its neighbours' labels. */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.nutrition-strip small {
+  white-space: nowrap;
+}
+.nutrition-strip b {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.nutrition-strip em {
+  /* The unit sits under the 14px figure so narrow cards keep both readable. */
+  display: block;
+  margin-left: 0;
+}
+@media (max-width: 359px) {
+  /* Two-column cards on the narrowest phones fit a figure like 193.4 only at 13px
+     with tighter cell padding. */
+  .nutrition-strip {
+    padding-inline: 2px;
+  }
+  .nutrition-strip > div {
+    padding-left: 3px;
+  }
+  .nutrition-strip b {
+    font-size: 13px;
+  }
+}
