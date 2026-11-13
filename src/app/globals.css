@@ -2,7 +2,8 @@
 :root {
   --green: #335b43;
   --ink: #283a2e;
-  --muted: #7c877c;
+  /* Secondary text: 5.45:1 on white, 5.24:1 on paper, 4.93:1 on the pale green tint. */
+  --muted: #5f6e57;
   --line: #e4e8df;
   --paper: #fafbf7;
 }
@@ -119,18 +120,18 @@ textarea {
   color: #8aa170;
 }
 .wordmark small {
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 2px;
   margin-left: 11px;
-  color: #8b9587;
+  color: var(--muted);
 }
 .site-header nav {
   display: flex;
   align-items: center;
   gap: 38px;
   font-size: 13px;
-  color: #7c857b;
+  color: var(--muted);
 }
 .site-header nav a {
   display: flex;
@@ -163,21 +164,6 @@ textarea {
   grid-template-columns: 1.1fr 1fr;
   padding: 48px 65px;
 }
-.eyebrow {
-  font-size: 9px;
-  letter-spacing: 2px;
-  font-weight: 600;
-  color: #7c8e75;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.eyebrow > span {
-  width: 5px;
-  height: 5px;
-  border-radius: 100%;
-  background: #7f9769;
-}
 .hero h1 {
   font-size: 42px;
   font-weight: 650;
@@ -186,12 +172,12 @@ textarea {
   margin: 18px 0 15px;
 }
 .hero h1 span {
-  color: #5c7452;
+  color: var(--muted);
 }
 .hero-description {
   font-size: 12px;
   line-height: 1.9;
-  color: #7c8774;
+  color: var(--muted);
 }
 .hero-link {
   display: inline-flex;
@@ -199,7 +185,7 @@ textarea {
   gap: 26px;
   border-bottom: 1px solid #9cae8d;
   padding: 0 0 5px;
-  font-size: 10px;
+  font-size: 11px;
   margin-top: 23px;
 }
 .hero-art {
@@ -245,11 +231,11 @@ textarea {
   box-shadow: 0 4px 12px #586b4c09;
   border: 1px solid #e2e7db;
   border-radius: 6px;
-  color: #748469;
+  color: var(--muted);
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 9px;
+  font-size: 11px;
   z-index: 1;
 }
 .note-top {
@@ -266,16 +252,16 @@ textarea {
   position: absolute;
   bottom: -10px;
   letter-spacing: 3px;
-  font-size: 7px;
-  color: #98a48c;
+  font-size: 11px;
+  color: var(--muted);
 }
 .hero-index {
   position: absolute;
   right: 25px;
   top: 25px;
-  font-size: 7px;
+  font-size: 11px;
   letter-spacing: 1.8px;
-  color: #8f9b86;
+  color: var(--muted);
 }
 .collection {
   max-width: 1320px;
@@ -296,7 +282,7 @@ textarea {
 .collection-heading h2 span {
   font-size: 11px;
   font-weight: 400;
-  color: #90988b;
+  color: var(--muted);
   margin-left: 18px;
   letter-spacing: 0;
 }
@@ -304,8 +290,8 @@ textarea {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 10px;
-  color: #7c8975;
+  font-size: 11px;
+  color: var(--muted);
 }
 .search-box {
   display: flex;
@@ -316,7 +302,7 @@ textarea {
   border-radius: 7px;
   padding: 14px 19px;
   max-width: 100%;
-  color: #8b9b7f;
+  color: var(--muted);
 }
 .search-box input {
   background: none;
@@ -328,7 +314,7 @@ textarea {
   padding: 4px;
 }
 .search-box input::placeholder {
-  color: #9ca397;
+  color: var(--muted);
 }
 .search-box button {
   display: flex;
@@ -349,14 +335,14 @@ textarea {
   background: #fff;
   border-radius: 5px;
   padding: 8px 9px;
-  font-size: 10px;
+  font-size: 11px;
   gap: 5px;
 }
 .filter-main select {
   border: 0;
   background: transparent;
-  font-size: 10px;
-  color: #64745d;
+  font-size: 11px;
+  color: var(--muted);
   max-width: 120px;
   cursor: pointer;
 }
@@ -371,16 +357,16 @@ textarea {
   border: 0;
   background: #f5f7f1;
   text-align: right;
-  font-size: 10px;
+  font-size: 11px;
 }
 .number-filter small {
-  font-size: 9px;
-  color: #929b8c;
+  font-size: 11px;
+  color: var(--muted);
 }
 .apply-button {
   background: #e8eee1;
   border-radius: 5px;
-  font-size: 10px;
+  font-size: 11px;
   padding: 9px 12px;
 }
 .category-tabs {
@@ -393,7 +379,7 @@ textarea {
 }
 .category-tabs > a {
   padding: 0 3px 14px;
-  color: #899080;
+  color: var(--muted);
 }
 .category-tabs > a.active {
   color: var(--green);
@@ -402,8 +388,8 @@ textarea {
 }
 .category-tabs .reset-link {
   margin-left: auto;
-  font-size: 10px;
-  color: #8a9383;
+  font-size: 11px;
+  color: var(--muted);
 }
 .results-bar {
   display: flex;
@@ -417,8 +403,8 @@ textarea {
   font-size: 12px;
 }
 .results-bar p > span {
-  font-size: 10px;
-  color: #929b8c;
+  font-size: 11px;
+  color: var(--muted);
   margin-left: 7px;
 }
 .results-bar > div {
@@ -432,8 +418,8 @@ textarea {
   border-radius: 5px;
   padding: 3px;
   gap: 3px;
-  font-size: 9px;
-  color: #909a87;
+  font-size: 11px;
+  color: var(--muted);
 }
 .basis-toggle a {
   padding: 5px 10px;
@@ -444,15 +430,15 @@ textarea {
   color: #4f6842;
 }
 .sort-link {
-  font-size: 10px;
+  font-size: 11px;
   display: flex;
   gap: 8px;
   align-items: center;
-  color: #7c8872;
+  color: var(--muted);
 }
 .data-notice {
-  font-size: 10px;
-  color: #84917a;
+  font-size: 11px;
+  color: var(--muted);
   margin-bottom: 18px;
   line-height: 1.9;
   background: #f1f5eb;
@@ -493,21 +479,13 @@ textarea {
 .drink-visual.other {
   background: #e9e5dd;
 }
-.collection-number {
-  position: absolute;
-  left: 15px;
-  top: 14px;
-  font-size: 8px;
-  letter-spacing: 1px;
-  color: #919585;
-}
 .favorite-button {
   position: absolute;
   right: 12px;
   top: 10px;
   padding: 6px;
   z-index: 1;
-  color: #8d9882;
+  color: var(--muted);
 }
 .favorite-button:hover {
   color: #355b43;
@@ -529,9 +507,9 @@ textarea {
   position: absolute;
   left: 14px;
   bottom: 13px;
-  font-size: 7px;
+  font-size: 11px;
   border: 1px solid #ffffff80;
-  color: #7c8d76;
+  color: var(--muted);
   border-radius: 3px;
   padding: 2px 5px;
   background: #fff8;
@@ -543,12 +521,12 @@ textarea {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 9px;
-  color: #88927e;
+  font-size: 11px;
+  color: var(--muted);
 }
 .brand-name > span {
   margin-left: auto;
-  font-size: 8px;
+  font-size: 11px;
   white-space: nowrap;
 }
 .brand-dot {
@@ -575,7 +553,7 @@ textarea {
   min-height: 25px;
 }
 .drink-title svg {
-  color: #99a38c;
+  color: var(--muted);
 }
 .nutrition-strip {
   display: grid;
@@ -597,8 +575,8 @@ textarea {
 }
 .nutrition-strip small {
   display: block;
-  font-size: 8px;
-  color: #95a08b;
+  font-size: 11px;
+  color: var(--muted);
   margin-bottom: 4px;
 }
 .nutrition-strip b {
@@ -607,11 +585,11 @@ textarea {
   white-space: nowrap;
 }
 .nutrition-strip em {
-  font-size: 8px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 400;
   margin-left: 3px;
-  color: #94a085;
+  color: var(--muted);
 }
 .card-bottom {
   display: flex;
@@ -623,21 +601,21 @@ textarea {
   display: flex;
   gap: 4px;
   align-items: center;
-  color: #8a967a;
-  font-size: 9px;
+  color: var(--muted);
+  font-size: 11px;
 }
 .rating small {
-  color: #adb2a6;
+  color: var(--muted);
 }
 .compare-button {
-  font-size: 9px;
+  font-size: 11px;
   display: flex;
   gap: 4px;
   align-items: center;
   border: 1px solid #e4e8dd;
   border-radius: 4px;
   padding: 4px 8px;
-  color: #8a957e;
+  color: var(--muted);
 }
 .compare-button.selected {
   background: #e9efdf;
@@ -649,17 +627,17 @@ textarea {
   border-top: 1px solid #f0f1ec;
   margin-top: 12px;
   padding-top: 9px;
-  font-size: 8px;
-  color: #8e9785;
+  font-size: 11px;
+  color: var(--muted);
 }
 .price-note span {
-  color: #abb1a2;
+  color: var(--muted);
 }
 .collection-footnote {
   display: flex;
   justify-content: space-between;
-  font-size: 9px;
-  color: #9aa28f;
+  font-size: 11px;
+  color: var(--muted);
   margin: 25px 0;
 }
 .collection-footnote a {
@@ -683,8 +661,8 @@ textarea {
   letter-spacing: -1px;
   margin: 10px 0;
 }
-.journal-banner p:not(.eyebrow) {
-  color: #909b84;
+.journal-banner p {
+  color: var(--muted);
   font-size: 11px;
   line-height: 1.9;
 }
@@ -705,23 +683,23 @@ textarea {
   display: flex;
   align-items: center;
   gap: 25px;
-  color: #9da593;
+  color: var(--muted);
 }
 .site-footer .wordmark {
   font-size: 23px;
 }
 .site-footer p {
-  font-size: 10px;
+  font-size: 11px;
 }
 .site-footer > div:last-child {
   margin-left: auto;
   display: flex;
   gap: 20px;
-  font-size: 9px;
+  font-size: 11px;
   align-items: center;
 }
 .site-footer small {
-  font-size: 8px;
+  font-size: 11px;
 }
 .compare-tray {
   position: fixed;
@@ -747,8 +725,8 @@ textarea {
   font-size: 12px;
 }
 .compare-tray small {
-  font-size: 9px;
-  color: #98a08f;
+  font-size: 11px;
+  color: var(--muted);
   margin-left: 7px;
 }
 .compare-tray > div {
@@ -768,13 +746,13 @@ textarea {
 }
 .compare-tray button {
   display: flex;
-  color: #98a58d;
+  color: var(--muted);
   padding: 5px;
 }
 .empty-state {
   text-align: center;
   padding: 70px 20px;
-  color: #8e9a80;
+  color: var(--muted);
   border: 1px dashed #d7dfce;
   border-radius: 8px;
 }
@@ -792,7 +770,7 @@ textarea {
   margin-bottom: 20px;
 }
 .inline-error {
-  font-size: 10px;
+  font-size: 11px;
   color: #9d6138;
   line-height: 1.6;
 }
@@ -821,7 +799,7 @@ textarea {
 }
 .page-intro {
   font-size: 13px;
-  color: #8a9580;
+  color: var(--muted);
   margin-bottom: 30px;
 }
 .breadcrumb {
@@ -829,7 +807,7 @@ textarea {
   align-items: center;
   gap: 12px;
   font-size: 11px;
-  color: #8c9783;
+  color: var(--muted);
   margin-bottom: 28px;
 }
 .detail-grid {
@@ -856,8 +834,8 @@ textarea {
   left: 0;
   right: 0;
   text-align: center;
-  color: #8b957e;
-  font-size: 10px;
+  color: var(--muted);
+  font-size: 11px;
 }
 .detail-title {
   font-size: 31px;
@@ -881,8 +859,8 @@ textarea {
   margin: 20px 0;
 }
 .detail-nutrients small {
-  font-size: 10px;
-  color: #89967c;
+  font-size: 11px;
+  color: var(--muted);
   display: block;
 }
 .detail-nutrients b {
@@ -890,8 +868,8 @@ textarea {
   font-weight: 600;
 }
 .source-note {
-  font-size: 10px;
-  color: #919c85;
+  font-size: 11px;
+  color: var(--muted);
   margin-top: 15px;
 }
 .source-note a {
@@ -926,7 +904,7 @@ textarea {
   margin-bottom: 15px;
 }
 .muted {
-  color: #8d9882;
+  color: var(--muted);
   font-size: 12px;
 }
 .comparison-scroll {
@@ -968,7 +946,8 @@ th a {
 }
 th small {
   display: block;
-  color: #98a28a;
+  font-size: 11px;
+  color: var(--muted);
   font-weight: 400;
   margin-bottom: 10px;
 }
@@ -977,7 +956,7 @@ th small {
   gap: 6px;
   align-items: center;
   font-size: 11px;
-  color: #879878;
+  color: var(--muted);
 }
 .auth-card {
   max-width: 440px;
@@ -998,7 +977,7 @@ th small {
 }
 .auth-card p {
   font-size: 12px;
-  color: #8c9682;
+  color: var(--muted);
   line-height: 1.9;
 }
 .kakao-button {
@@ -1020,7 +999,7 @@ th small {
   padding: 15px;
   border-radius: 6px;
   font-size: 12px;
-  color: #7d8c71;
+  color: var(--muted);
   margin: 20px 0;
 }
 .form-stack {
@@ -1066,7 +1045,7 @@ th small {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: #87967b;
+  color: var(--muted);
 }
 .record-body {
   white-space: pre-wrap;
@@ -1077,8 +1056,8 @@ th small {
   display: inline-block;
   border-radius: 4px;
   background: #edf2e4;
-  color: #728765;
-  font-size: 10px;
+  color: var(--muted);
+  font-size: 11px;
   padding: 4px 8px;
 }
 .personal-tabs {
@@ -1103,7 +1082,7 @@ th small {
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #819372;
+  color: var(--muted);
 }
 .store-grid {
   display: grid;
@@ -1127,14 +1106,14 @@ th small {
 }
 .store-item p {
   font-size: 11px;
-  color: #8b9880;
+  color: var(--muted);
 }
 .store-item a {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   font-size: 11px;
-  color: #537443;
+  color: var(--muted);
   margin-top: 12px;
 }
 /* Map status overlay sits on the Kakao canvas; selection links pins and cards. */
@@ -1199,7 +1178,7 @@ th small {
   font: inherit;
   font-size: 11px;
   font-weight: 600;
-  color: #537443;
+  color: var(--muted);
   cursor: pointer;
 }
 .prose {
@@ -1213,7 +1192,7 @@ th small {
 .prose p,
 .prose li {
   font-size: 13px;
-  color: #75846a;
+  color: var(--muted);
 }
 .danger {
   color: #a85e49;
@@ -1234,7 +1213,7 @@ th small {
   font-size: 26px;
 }
 .wordmark small {
-  font-size: 7px;
+  font-size: 11px;
   margin-left: 7px;
 }
 .site-header nav {
@@ -1265,12 +1244,8 @@ th small {
   margin-top: 18px;
   white-space: nowrap;
 }
-.eyebrow {
-  font-size: 7px;
-  letter-spacing: 1.4px;
-}
 .hero-description {
-  font-size: 10px;
+  font-size: 11px;
 }
 .hero-art {
   align-self: center;
@@ -1289,7 +1264,7 @@ th small {
   display: none;
 }
 .art-caption {
-  font-size: 5px;
+  font-size: 11px;
   letter-spacing: 1px;
   bottom: 0;
   white-space: nowrap;
@@ -1298,7 +1273,7 @@ th small {
   display: none;
 }
 .hero-link {
-  font-size: 9px;
+  font-size: 11px;
   gap: 14px;
 }
 .collection {
@@ -1311,7 +1286,7 @@ th small {
   font-size: 21px;
 }
 .collection-count {
-  font-size: 8px;
+  font-size: 11px;
   gap: 4px;
 }
 .collection-count svg {
@@ -1322,7 +1297,7 @@ th small {
   gap: 8px;
 }
 .search-box input {
-  font-size: 10px;
+  font-size: 11px;
   min-width: 0;
   width: 0;
 }
@@ -1335,53 +1310,53 @@ th small {
 }
 .filter-main > label {
   padding: 6px;
-  font-size: 9px;
+  font-size: 11px;
 }
 .filter-main select {
-  font-size: 9px;
+  font-size: 11px;
   max-width: 90px;
 }
 .number-filter input {
   width: 33px;
-  font-size: 9px;
+  font-size: 11px;
 }
 .number-filter small {
-  font-size: 8px;
+  font-size: 11px;
 }
 .apply-button {
-  font-size: 9px;
+  font-size: 11px;
   padding: 7px 9px;
 }
 .category-tabs {
   gap: 16px;
-  font-size: 10px;
+  font-size: 11px;
   padding-top: 17px;
 }
 .category-tabs > a {
   padding-bottom: 12px;
 }
 .category-tabs .reset-link {
-  font-size: 8px;
+  font-size: 11px;
 }
 .results-bar {
   padding: 18px 0 14px;
-  font-size: 10px;
+  font-size: 11px;
 }
 .results-bar > div {
   gap: 8px;
 }
 .basis-toggle {
-  font-size: 8px;
+  font-size: 11px;
 }
 .basis-toggle a {
   padding: 4px 7px;
 }
 .sort-link {
-  font-size: 8px;
+  font-size: 11px;
   gap: 2px;
 }
 .data-notice {
-  font-size: 8px;
+  font-size: 11px;
   padding: 8px 10px;
 }
 .drink-grid {
@@ -1395,11 +1370,6 @@ th small {
   width: 127px;
   height: 151px;
 }
-.collection-number {
-  font-size: 6px;
-  left: 10px;
-  top: 11px;
-}
 .favorite-button {
   right: 4px;
   top: 4px;
@@ -1408,7 +1378,7 @@ th small {
   width: 15px;
 }
 .temp-badge {
-  font-size: 6px;
+  font-size: 11px;
   left: 9px;
   bottom: 9px;
 }
@@ -1416,7 +1386,7 @@ th small {
   padding: 12px 9px 9px;
 }
 .brand-name {
-  font-size: 8px;
+  font-size: 11px;
   gap: 4px;
   flex-wrap: wrap;
   min-height: 27px;
@@ -1424,7 +1394,7 @@ th small {
 .brand-name > span {
   width: 100%;
   margin-left: 0;
-  font-size: 7px;
+  font-size: 11px;
 }
 .drink-title {
   font-size: 12px;
@@ -1445,27 +1415,27 @@ th small {
   padding-left: 4px;
 }
 .nutrition-strip small {
-  font-size: 7px;
+  font-size: 11px;
 }
 .nutrition-strip b {
-  font-size: 10px;
+  font-size: 11px;
 }
 .nutrition-strip em {
-  font-size: 6px;
+  font-size: 11px;
   margin-left: 1px;
 }
 .card-bottom {
   margin-top: 10px;
 }
 .rating {
-  font-size: 7px;
+  font-size: 11px;
   gap: 2px;
 }
 .rating svg {
   width: 10px;
 }
 .compare-button {
-  font-size: 8px;
+  font-size: 11px;
   padding: 3px 5px;
   gap: 2px;
 }
@@ -1473,14 +1443,14 @@ th small {
   width: 11px;
 }
 .price-note {
-  font-size: 7px;
+  font-size: 11px;
   gap: 4px;
 }
 .price-note span {
   display: none;
 }
 .collection-footnote {
-  font-size: 8px;
+  font-size: 11px;
   display: block;
   line-height: 1.9;
 }
@@ -1495,12 +1465,12 @@ th small {
 .journal-banner h2 {
   font-size: 21px;
 }
-.journal-banner p:not(.eyebrow) {
-  font-size: 10px;
+.journal-banner p {
+  font-size: 11px;
 }
 .journal-banner .primary-button {
   margin-top: 20px;
-  font-size: 10px;
+  font-size: 11px;
 }
 .site-footer {
   padding: 25px 20px 80px;
@@ -1518,7 +1488,7 @@ th small {
   bottom: 12px;
 }
 .compare-tray > span {
-  font-size: 10px;
+  font-size: 11px;
 }
 .compare-tray small {
   display: none;
@@ -1527,7 +1497,7 @@ th small {
   gap: 8px;
 }
 .compare-tray a {
-  font-size: 10px;
+  font-size: 11px;
   padding: 9px 13px;
   gap: 12px;
 }
@@ -1601,24 +1571,24 @@ th small {
 .sort-control select {
   border: 0;
   background: none;
-  font-size: 10px;
-  color: #63725b;
+  font-size: 11px;
+  color: var(--muted);
   max-width: 120px;
 }
 .sort-control button {
   border: 1px solid #dde4d4;
   border-radius: 4px;
   padding: 4px 7px;
-  font-size: 9px;
+  font-size: 11px;
   color: #536e43;
 }
 
 .sort-control select {
-  font-size: 8px;
+  font-size: 11px;
   max-width: 90px;
 }
 .sort-control button {
-  font-size: 8px;
+  font-size: 11px;
   padding: 3px 5px;
 }
 
@@ -1659,7 +1629,7 @@ th small {
   gap: 6px;
 }
 .journal-weekdays {
-  color: #687461;
+  color: var(--muted);
   font-size: 12px;
   text-align: center;
   margin-bottom: 10px;
@@ -1707,7 +1677,7 @@ th small {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #687461;
+  color: var(--muted);
   font-size: 12px;
   margin: 20px 0 0;
 }
@@ -1728,7 +1698,7 @@ th small {
   margin-bottom: 16px;
 }
 .journal-calendar-legend {
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.6;
 }
 
@@ -1777,7 +1747,7 @@ body {
   display: none;
 }
 .app-header-note {
-  color: #7b8a76;
+  color: var(--muted);
   font-size: 11px;
   margin-right: auto;
 }
@@ -1889,10 +1859,6 @@ body {
   opacity: 0.5;
   z-index: 0;
 }
-.eyebrow {
-  font-size: 9px;
-  letter-spacing: 1.2px;
-}
 .art-caption {
   display: none;
 }
@@ -1906,7 +1872,7 @@ body {
   display: none;
 }
 .collection-count {
-  font-size: 9px;
+  font-size: 11px;
 }
 .search-box {
   border-radius: 14px;
@@ -1929,7 +1895,7 @@ body {
   width: 42px;
 }
 .number-filter small {
-  font-size: 10px;
+  font-size: 11px;
 }
 .apply-button {
   font-size: 12px;
@@ -1937,7 +1903,8 @@ body {
   border-radius: 9px;
 }
 .category-tabs {
-  gap: 17px;
+  /* 13px keeps every category and the reset link on one 390px line at 11px+ type. */
+  gap: 13px;
   overflow-x: auto;
   font-size: 12px;
 }
@@ -1958,10 +1925,11 @@ body {
   display: none;
 }
 .basis-toggle {
-  font-size: 10px;
+  font-size: 11px;
 }
 .basis-toggle a {
   padding: 7px 9px;
+  white-space: nowrap;
 }
 .sort-control {
   font-size: 11px;
@@ -1974,6 +1942,7 @@ body {
 .sort-control button {
   font-size: 11px;
   min-height: 36px;
+  white-space: nowrap;
 }
 .data-notice {
   font-size: 11px;
@@ -1998,10 +1967,10 @@ body {
   padding: 13px 10px;
 }
 .brand-name {
-  font-size: 10px;
+  font-size: 11px;
 }
 .brand-name > span {
-  font-size: 9px;
+  font-size: 11px;
 }
 .drink-title {
   font-size: 14px;
@@ -2012,26 +1981,26 @@ body {
   padding: 9px 2px;
 }
 .nutrition-strip small {
-  font-size: 9px;
+  font-size: 11px;
 }
 .nutrition-strip b {
   font-size: 12px;
 }
 .nutrition-strip em {
-  font-size: 8px;
+  font-size: 11px;
 }
 .rating {
-  font-size: 9px;
+  font-size: 11px;
 }
 .compare-button {
   min-height: 36px;
-  font-size: 10px;
+  font-size: 11px;
 }
 .price-note {
-  font-size: 9px;
+  font-size: 11px;
 }
 .collection-footnote {
-  font-size: 10px;
+  font-size: 11px;
 }
 .journal-banner {
   border-radius: 18px;
@@ -2048,7 +2017,7 @@ body {
   margin: 0;
   flex-wrap: wrap;
   justify-content: center;
-  font-size: 10px;
+  font-size: 11px;
 }
 .page-wrap {
   margin: 24px auto 36px;
@@ -2089,7 +2058,7 @@ body {
   padding-right: 6px;
 }
 .app-bottom-nav a {
-  font-size: 10px;
+  font-size: 11px;
 }
 .discovery-home {
   padding: 24px 18px 0;
@@ -2103,12 +2072,9 @@ body {
   letter-spacing: -1.2px;
   margin: 12px 0;
 }
-.discovery-welcome h1 span {
-  color: #5b7850;
-}
-.discovery-welcome > p:not(.eyebrow) {
+.discovery-welcome > p {
   font-size: 12px;
-  color: #667660;
+  color: var(--muted);
 }
 .discovery-search {
   display: flex;
@@ -2135,11 +2101,6 @@ body {
   align-items: end;
   gap: 8px;
   margin-bottom: 15px;
-}
-.discovery-section-head .eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 .discovery-section h2 {
   font-size: 21px;
@@ -2173,7 +2134,7 @@ body {
 .discovery-refresh,
 .discovery-release {
   font-size: 11px;
-  color: #63735b;
+  color: var(--muted);
   line-height: 1.8;
 }
 .discovery-section-note {
@@ -2190,7 +2151,7 @@ body {
   gap: 4px;
   margin: 0 2px 9px;
   font-size: 11px;
-  color: #63735b;
+  color: var(--muted);
 }
 .discovery-rank b {
   font-size: 14px;
@@ -2250,7 +2211,7 @@ body {
   display: flex;
   gap: 5px;
   align-items: center;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   color: #726449;
   letter-spacing: 0.2px;
@@ -2297,7 +2258,7 @@ body {
   font-size: 12px;
   min-height: 40px;
   margin-bottom: 22px;
-  color: #5e7055;
+  color: var(--muted);
 }
 .taste-note-title h1 {
   font-size: 29px;
@@ -2307,7 +2268,7 @@ body {
   margin: 12px 0;
 }
 .taste-note-summary {
-  color: #65745e;
+  color: var(--muted);
   font-size: 13px;
   line-height: 1.9;
   word-break: keep-all;
@@ -2356,9 +2317,6 @@ body {
   padding-top: 28px;
   margin-top: 35px;
 }
-.taste-note-picks > .eyebrow {
-  margin-bottom: 7px;
-}
 .taste-note-pick {
   margin-top: 28px;
 }
@@ -2369,7 +2327,7 @@ body {
 }
 .taste-note-pick > p {
   font-size: 13px;
-  color: #65745e;
+  color: var(--muted);
   line-height: 2;
   margin: 9px 0 16px;
 }
@@ -2390,11 +2348,19 @@ body {
   font-size: 15px;
 }
 .taste-note-pick .nutrition-strip em {
-  font-size: 10px;
+  font-size: 11px;
 }
 .taste-note-footnote {
-  color: #68785f;
+  color: var(--muted);
   font-size: 11px;
   line-height: 1.9;
   margin: 28px 0 18px;
+}
+
+/* Detail brand line: plain secondary text above the drink name. */
+.detail-brand {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 6px;
 }

@@ -19,7 +19,6 @@ export default async function Settings() {
   if (error) throw new Error("계정 정보를 불러오지 못했어요.");
   return (
     <main id="main" className="page-wrap" style={{ maxWidth: 700 }}>
-      <p className="eyebrow">MY HANCUP</p>
       <h1 className="page-heading">계정 설정</h1>
       <nav className="personal-tabs">
         <Link href="/me/records">마신 기록</Link>

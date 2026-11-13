@@ -47,7 +47,6 @@ export default async function SearchPage({
       <section className="collection" id="collection">
         <div className="collection-heading">
           <div>
-            <p className="eyebrow">THE DRINK COLLECTION</p>
             <h1 className="search-heading">음료 검색</h1>
           </div>
           <span className="collection-count">
@@ -81,12 +80,11 @@ export default async function SearchPage({
         )}
         {result.items.length ? (
           <div className="drink-grid">
-            {result.items.map((item, i) => (
+            {result.items.map((item) => (
               <DrinkCard
                 key={item.id}
                 item={item}
                 isFavorite={favorites.includes(item.id)}
-                index={q.offset + i}
                 basis={q.basis}
               />
             ))}
@@ -125,7 +123,6 @@ export default async function SearchPage({
       </section>
       <section className="journal-banner">
         <div>
-          <p className="eyebrow">YOUR LITTLE CUP JOURNAL</p>
           <h2>오늘 마신 한 잔, 어땠나요?</h2>
           <p>
             좋았던 맛도, 다음엔 다른 걸 고르고 싶은 마음도.

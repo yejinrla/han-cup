@@ -69,7 +69,6 @@ export default async function Records({
     : null;
   return (
     <main id="main" className="page-wrap">
-      <p className="eyebrow">YOUR CUP JOURNAL</p>
       <h1 className="page-heading">나의 한 잔 기록</h1>
       <p className="page-intro">좋았던 한 모금도, 새로운 발견도 차곡차곡.</p>
       <nav className="personal-tabs">

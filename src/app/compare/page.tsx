@@ -19,7 +19,6 @@ export default async function Compare({
   const summaries = await getSummaries();
   return (
     <main id="main" className="page-wrap">
-      <p className="eyebrow">SIDE BY SIDE</p>
       <h1 className="page-heading">나에게 맞는 한 잔은?</h1>
       <p className="page-intro">
         가격부터 영양정보까지, 최대 3개 음료를 한눈에 비교해 보세요.
@@ -60,7 +59,11 @@ export default async function Compare({
                 <th scope="col">음료</th>
                 {items.map((x) => (
                   <th scope="col" key={x.variant.id}>
-                    <CupArt name={x.name} kind={x.category} />
+                    <CupArt
+                      name={x.name}
+                      kind={x.category}
+                      temperature={x.variant.temperature}
+                    />
                     <small>{brands[x.brandId]}</small>
                     <Link
                       href={"/drinks/" + x.slug + "?variant=" + x.variant.id}

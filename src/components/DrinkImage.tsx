@@ -2,20 +2,25 @@
 import { useState } from "react";
 import Image from "next/image";
 import { CupArt } from "./CupArt";
+import type { DrinkVariant } from "@/features/catalog/types";
 export function DrinkImage({
   src,
   name,
   kind,
+  temperature,
   large = false,
 }: {
   src: string | null;
   name: string;
   kind: string;
+  temperature: DrinkVariant["temperature"];
   large?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
   if (!src || failed || !/^\/images\/drinks\/[a-z0-9._-]+$/.test(src))
-    return <CupArt name={name} kind={kind} large={large} />;
+    return (
+      <CupArt name={name} kind={kind} temperature={temperature} large={large} />
+    );
   return (
     <Image
       src={src}

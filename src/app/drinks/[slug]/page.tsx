@@ -58,6 +58,7 @@ export default async function Detail({
             src={v.imagePath}
             name={drink.name}
             kind={drink.category}
+            temperature={v.temperature}
             large
           />
           {!v.imagePath && (
@@ -67,7 +68,7 @@ export default async function Detail({
           )}
         </div>
         <div>
-          <p className="eyebrow">{brands[drink.brandId]}</p>
+          <p className="detail-brand">{brands[drink.brandId]}</p>
           <h1 className="detail-title">{drink.name}</h1>
           {drink.status === "discontinued" && (
             <p className="status-box">

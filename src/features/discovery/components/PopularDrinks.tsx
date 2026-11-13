@@ -81,7 +81,7 @@ export function PopularDrinks({
       )}
       {ranked.length ? (
         <div className="drink-grid">
-          {ranked.map(({ item, recorders, rank }, i) => (
+          {ranked.map(({ item, recorders, rank }) => (
             <div key={item.id}>
               <p className="discovery-rank">
                 <b>{rank}위</b>
@@ -89,7 +89,6 @@ export function PopularDrinks({
               </p>
               <DrinkCard
                 item={item}
-                index={i}
                 basis="serving"
                 isFavorite={favoriteIds.includes(item.id)}
               />

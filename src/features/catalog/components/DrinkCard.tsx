@@ -7,12 +7,10 @@ import { fmt, getNutrition } from "../nutrition";
 import { FavoriteButton } from "@/features/favorites/components/FavoriteButton";
 export function DrinkCard({
   item,
-  index,
   basis,
   isFavorite = false,
 }: {
   item: CatalogItem;
-  index: number;
   basis: Basis;
   isFavorite?: boolean;
 }) {
@@ -20,9 +18,6 @@ export function DrinkCard({
   return (
     <article data-drink-card className="drink-card">
       <div className={`drink-visual ${item.category}`}>
-        <span className="collection-number">
-          NO. {String(index + 1).padStart(3, "0")}
-        </span>
         <FavoriteButton
           key={item.id + String(isFavorite)}
           drinkId={item.id}
@@ -37,6 +32,7 @@ export function DrinkCard({
             src={item.variant.imagePath}
             name={item.name}
             kind={item.category}
+            temperature={item.variant.temperature}
           />
         </Link>
         <span className="temp-badge">
