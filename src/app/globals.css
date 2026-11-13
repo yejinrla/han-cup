@@ -320,38 +320,6 @@ textarea {
   display: flex;
   padding: 2px;
 }
-.filter-main {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 15px 0 18px;
-  border-bottom: 1px solid var(--line);
-  flex-wrap: wrap;
-}
-.filter-main > label {
-  display: flex;
-  align-items: center;
-  border: 1px solid #e1e5dc;
-  background: #fff;
-  border-radius: 5px;
-  padding: 8px 9px;
-  font-size: 11px;
-  gap: 5px;
-}
-.filter-main select {
-  border: 0;
-  background: transparent;
-  font-size: 11px;
-  color: var(--muted);
-  max-width: 120px;
-  cursor: pointer;
-}
-.filter-separator {
-  height: 18px;
-  width: 1px;
-  background: var(--line);
-  margin: 0 4px;
-}
 .number-filter input {
   width: 41px;
   border: 0;
@@ -503,31 +471,8 @@ textarea {
 .drink-card:hover .cup-art {
   transform: rotate(4deg) translateY(-3px);
 }
-.temp-badge {
-  position: absolute;
-  left: 14px;
-  bottom: 13px;
-  font-size: 11px;
-  border: 1px solid #ffffff80;
-  color: var(--muted);
-  border-radius: 3px;
-  padding: 2px 5px;
-  background: #fff8;
-}
 .drink-info {
   padding: 18px 16px 12px;
-}
-.brand-name {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 11px;
-  color: var(--muted);
-}
-.brand-name > span {
-  margin-left: auto;
-  font-size: 11px;
-  white-space: nowrap;
 }
 .brand-dot {
   width: 5px;
@@ -620,18 +565,6 @@ textarea {
 .compare-button.selected {
   background: #e9efdf;
   color: var(--green);
-}
-.price-note {
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid #f0f1ec;
-  margin-top: 12px;
-  padding-top: 9px;
-  font-size: 11px;
-  color: var(--muted);
-}
-.price-note span {
-  color: var(--muted);
 }
 .collection-footnote {
   display: flex;
@@ -1304,18 +1237,6 @@ th small {
 .search-box svg {
   width: 17px;
 }
-.filter-main {
-  gap: 6px;
-  padding: 12px 0;
-}
-.filter-main > label {
-  padding: 6px;
-  font-size: 11px;
-}
-.filter-main select {
-  font-size: 11px;
-  max-width: 90px;
-}
 .number-filter input {
   width: 33px;
   font-size: 11px;
@@ -1377,24 +1298,8 @@ th small {
 .favorite-button svg {
   width: 15px;
 }
-.temp-badge {
-  font-size: 11px;
-  left: 9px;
-  bottom: 9px;
-}
 .drink-info {
   padding: 12px 9px 9px;
-}
-.brand-name {
-  font-size: 11px;
-  gap: 4px;
-  flex-wrap: wrap;
-  min-height: 27px;
-}
-.brand-name > span {
-  width: 100%;
-  margin-left: 0;
-  font-size: 11px;
 }
 .drink-title {
   font-size: 12px;
@@ -1441,13 +1346,6 @@ th small {
 }
 .compare-button svg {
   width: 11px;
-}
-.price-note {
-  font-size: 11px;
-  gap: 4px;
-}
-.price-note span {
-  display: none;
 }
 .collection-footnote {
   font-size: 11px;
@@ -1881,15 +1779,6 @@ body {
 .search-box input {
   font-size: 16px;
 }
-.filter-main > label {
-  font-size: 11px;
-  border-radius: 9px;
-  min-height: 42px;
-}
-.filter-main select {
-  font-size: 16px;
-  max-width: 118px;
-}
 .number-filter input {
   font-size: 16px;
   width: 42px;
@@ -1966,12 +1855,6 @@ body {
 .drink-info {
   padding: 13px 10px;
 }
-.brand-name {
-  font-size: 11px;
-}
-.brand-name > span {
-  font-size: 11px;
-}
 .drink-title {
   font-size: 14px;
   min-height: 44px;
@@ -1994,9 +1877,6 @@ body {
 }
 .compare-button {
   min-height: 36px;
-  font-size: 11px;
-}
-.price-note {
   font-size: 11px;
 }
 .collection-footnote {
@@ -2338,9 +2218,6 @@ body {
   min-height: 0;
   font-size: 17px;
 }
-.taste-note-pick .brand-name > span {
-  width: auto;
-}
 .taste-note-pick .nutrition-strip small {
   font-size: 11px;
 }
@@ -2408,4 +2285,183 @@ p.muted,
   .nutrition-strip b {
     font-size: 13px;
   }
+}
+
+/* UI stage 2: compact drink card. Variant facts share one meta line, the cup
+   art is smaller, and rating, price (when known) and compare share a row. */
+.drink-visual {
+  height: 98px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.drink-visual .cup-art {
+  width: 74px;
+  height: 88px;
+}
+.drink-info {
+  padding: 9px 10px 10px;
+  display: grid;
+  gap: 5px;
+}
+.drink-info .nutrition-strip {
+  padding: 6px 2px;
+}
+.drink-info .nutrition-strip small {
+  margin-bottom: 1px;
+  line-height: 1.3;
+}
+.drink-info .nutrition-strip b {
+  display: block;
+  line-height: 1.25;
+}
+.drink-info .nutrition-strip em {
+  line-height: 1.3;
+}
+.drink-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+.drink-title {
+  min-height: 0;
+  font-size: 14px;
+  line-height: 1.35;
+}
+.card-bottom {
+  margin-top: 0;
+  gap: 6px;
+}
+.card-price {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+/* UI stage 2: one-row search filters. Category chips choose the category,
+   brand and temperature stay as native selects styled as chips, and nutrition
+   limits open in a panel below the row. */
+.catalog-form .category-tabs {
+  margin-top: 12px;
+}
+.category-tabs a {
+  white-space: nowrap;
+}
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 13px;
+  color: var(--ink);
+}
+.filter-chip select {
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  color: inherit;
+  min-height: 38px;
+  padding: 0;
+}
+.filter-chip.set {
+  border-color: var(--green);
+  color: var(--green);
+  font-weight: 600;
+}
+.nutrition-panel {
+  display: block;
+}
+/* Open, the panel takes its own full-width line below the row so the apply
+   button stays next to brand and temperature. */
+.nutrition-panel[open] {
+  flex-basis: 100%;
+  order: 10;
+  display: grid;
+  gap: 8px;
+}
+.nutrition-panel[open] summary {
+  justify-self: start;
+}
+.nutrition-panel summary {
+  cursor: pointer;
+  list-style: none;
+}
+.nutrition-panel summary::-webkit-details-marker {
+  display: none;
+}
+.nutrition-panel summary::after {
+  content: "▾";
+  font-size: 11px;
+}
+.nutrition-panel[open] summary::after {
+  content: "▴";
+}
+.nutrition-panel-body {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+.quick-picks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.quick-picks a {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: var(--green);
+  font-weight: 600;
+}
+.nutrition-panel-body .number-filter {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+.nutrition-panel-body .number-filter input {
+  width: 100%;
+  min-height: 40px;
+  font-size: 16px;
+}
+.clear-limits {
+  justify-self: start;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: underline;
+}
+.filter-row .apply-button {
+  min-height: 40px;
+  border-radius: 999px;
+  padding: 0 16px;
+  font-size: 13px;
+}
+.results-bar .reset-link {
+  margin-left: 10px;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: underline;
 }

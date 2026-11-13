@@ -63,6 +63,7 @@ export default async function Compare({
                       name={x.name}
                       kind={x.category}
                       temperature={x.variant.temperature}
+                      cupMl={x.variant.cupMl}
                     />
                     <small>{brands[x.brandId]}</small>
                     <Link

@@ -57,8 +57,10 @@ export default async function SearchPage({
         <CatalogFilters q={q} />
         <div className="results-bar">
           <p>
-            총 <b>{result.total}</b>개의 음료{" "}
-            <span>· 가격과 영양정보를 비교해 보세요</span>
+            총 <b>{result.total}</b>개의 음료
+            <Link className="reset-link" href="/search">
+              조건 초기화
+            </Link>
           </p>
           <div>
             <BasisToggle q={q} />

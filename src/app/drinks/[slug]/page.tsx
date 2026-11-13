@@ -59,11 +59,12 @@ export default async function Detail({
             name={drink.name}
             kind={drink.category}
             temperature={v.temperature}
+            cupMl={v.cupMl}
             large
           />
           {!v.imagePath && (
             <span className="illustration-note">
-              제품 사진을 대신한 한컵 공통 일러스트
+              제품 사진 대신 컵 높이로 용량, 색으로 분류를 나타낸 공통 일러스트
             </span>
           )}
         </div>

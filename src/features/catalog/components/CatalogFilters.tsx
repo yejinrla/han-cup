@@ -3,6 +3,17 @@ import Link from "next/link";
 import { brands, type Basis } from "../types";
 import type { CatalogQuery } from "../query";
 export function CatalogFilters({ q }: { q: CatalogQuery }) {
+  const limits = [
+    ["maxCalories", "칼로리", "kcal", q.maxCalories],
+    ["maxSugar", "당류", "g", q.maxSugar],
+    ["maxCaffeine", "카페인", "mg", q.maxCaffeine],
+  ] as const;
+  const activeLimits = limits.filter(([, , , value]) => value !== null).length;
+  const per100 = q.basis === "100ml" ? "100ml당 " : "";
+  const quickPicks = [
+    [`${per100}당류 10g 이하`, { maxSugar: "10" }],
+    [`${per100}카페인 10mg 이하`, { maxCaffeine: "10" }],
+  ] as const;
   return (
     <>
       <form className="catalog-form" action="/search" id="catalog-search">
@@ -12,14 +23,35 @@ export function CatalogFilters({ q }: { q: CatalogQuery }) {
             name="q"
             aria-label="음료명 또는 브랜드 검색"
             defaultValue={q.q}
-            placeholder="어떤 한 잔을 찾으세요? 음료명, 브랜드로 검색해 보세요"
+            placeholder="음료명이나 브랜드"
           />
           <button type="submit" aria-label="검색">
             <ArrowUpRight size={21} />
           </button>
         </div>
-        <div className="filter-main">
-          <label>
+        <div className="category-tabs" aria-label="음료 분류">
+          {[
+            ["", "전체"],
+            ["coffee", "커피"],
+            ["tea", "티"],
+            ["ade", "에이드"],
+            ["smoothie", "스무디"],
+            ["other", "기타 음료"],
+          ].map(([id, label]) => (
+            <Link
+              key={id}
+              className={q.category === id ? "active" : ""}
+              aria-current={q.category === id ? "page" : undefined}
+              href={queryLink(q, { category: id, cursor: "" })}
+            >
+              {label}
+            </Link>
+          ))}
+        </div>
+        {/* The chips choose the category; the form keeps it when applying filters. */}
+        <input type="hidden" name="category" value={q.category} />
+        <div className="filter-row">
+          <label className="filter-chip">
             <SlidersHorizontal size={15} />
             <span className="sr-only">브랜드</span>
             <select name="brand" defaultValue={q.brandIds[0] ?? ""}>
@@ -31,45 +63,62 @@ export function CatalogFilters({ q }: { q: CatalogQuery }) {
               ))}
             </select>
           </label>
-          <label>
-            <span className="sr-only">음료 종류</span>
-            <select name="category" defaultValue={q.category}>
-              <option value="">모든 음료</option>
-              <option value="coffee">커피</option>
-              <option value="tea">티</option>
-              <option value="ade">에이드</option>
-              <option value="smoothie">스무디</option>
-              <option value="other">기타 음료</option>
-            </select>
-          </label>
-          <label>
+          <label className="filter-chip">
             <span className="sr-only">음료 온도</span>
             <select name="temperature" defaultValue={q.temperature}>
-              <option value="">HOT / ICE</option>
+              <option value="">HOT · ICE</option>
               <option value="iced">ICE</option>
               <option value="hot">HOT</option>
             </select>
           </label>
-          <span className="filter-separator" />
-          {[
-            ["maxCalories", "칼로리", "kcal", q.maxCalories],
-            ["maxSugar", "당류", "g", q.maxSugar],
-            ["maxCaffeine", "카페인", "mg", q.maxCaffeine],
-          ].map(([name, label, unit, value]) => (
-            <label className="number-filter" key={name}>
-              <span>{label}</span>
-              <input
-                aria-label={`${label} 상한`}
-                name={name as string}
-                type="number"
-                min="0"
-                step="any"
-                defaultValue={value ?? ""}
-                placeholder="전체"
-              />
-              <small>{unit} 이하</small>
-            </label>
-          ))}
+          <details className="nutrition-panel" open={activeLimits > 0}>
+            <summary
+              className={activeLimits ? "filter-chip set" : "filter-chip"}
+            >
+              {activeLimits ? `영양 조건 ${activeLimits}` : "영양 조건"}
+            </summary>
+            <div className="nutrition-panel-body">
+              <div className="quick-picks">
+                {quickPicks.map(([label, change]) => (
+                  <Link
+                    key={label}
+                    href={queryLink(q, { ...change, cursor: "" })}
+                  >
+                    {label}
+                  </Link>
+                ))}
+              </div>
+              {limits.map(([name, label, unit, value]) => (
+                <label className="number-filter" key={name}>
+                  <span>{label}</span>
+                  <input
+                    aria-label={`${label} 상한`}
+                    name={name}
+                    type="number"
+                    min="0"
+                    step="any"
+                    defaultValue={value ?? ""}
+                    placeholder="제한 없음"
+                  />
+                  <small>
+                    {per100}
+                    {unit} 이하
+                  </small>
+                </label>
+              ))}
+              <Link
+                className="clear-limits"
+                href={queryLink(q, {
+                  maxCalories: "",
+                  maxSugar: "",
+                  maxCaffeine: "",
+                  cursor: "",
+                })}
+              >
+                영양 조건 지우기
+              </Link>
+            </div>
+          </details>
           <input type="hidden" name="basis" value={q.basis} />
           <input type="hidden" name="sort" value={q.sort} />
           <button className="apply-button" type="submit">
@@ -77,27 +126,6 @@ export function CatalogFilters({ q }: { q: CatalogQuery }) {
           </button>
         </div>
       </form>
-      <div className="category-tabs">
-        {[
-          ["", "전체"],
-          ["coffee", "커피"],
-          ["tea", "티"],
-          ["ade", "에이드"],
-          ["smoothie", "스무디"],
-          ["other", "기타 음료"],
-        ].map(([id, label]) => (
-          <Link
-            key={id}
-            className={q.category === id ? "active" : ""}
-            href={queryLink(q, { category: id, cursor: "" })}
-          >
-            {label}
-          </Link>
-        ))}
-        <Link className="reset-link" href="/search">
-          조건 초기화
-        </Link>
-      </div>
     </>
   );
 }

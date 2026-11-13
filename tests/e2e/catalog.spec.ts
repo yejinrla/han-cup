@@ -5,6 +5,8 @@ test("browse, filter, compare and preserve anonymous selection", async ({
   await page.goto("/search");
   await expect(page.getByRole("heading", { name: "음료 검색" })).toBeVisible();
   expect(await page.locator("[data-drink-card]").count()).toBeGreaterThan(2);
+  // Nutrition limits sit in the collapsible panel on the search page.
+  await page.locator("details.nutrition-panel summary").click();
   await page.getByLabel("당류 상한").fill("10");
   await page.getByRole("button", { name: "필터 적용" }).click();
   await expect(page.locator("[data-drink-card]")).toHaveCount(2);

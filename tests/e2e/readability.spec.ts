@@ -124,9 +124,6 @@ test("search category row fits a 390px screen after the larger type", async ({
     client: e.clientWidth,
   }));
   expect(scroll).toBeLessThanOrEqual(client);
-  await expect(row.getByRole("link", { name: "조건 초기화" })).toBeInViewport({
-    ratio: 1,
-  });
 });
 
 test("search basis and sort controls keep their labels on one line at 320px", async ({

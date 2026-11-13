@@ -8,18 +8,26 @@ export function DrinkImage({
   name,
   kind,
   temperature,
+  cupMl,
   large = false,
 }: {
   src: string | null;
   name: string;
   kind: string;
   temperature: DrinkVariant["temperature"];
+  cupMl: number | null;
   large?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
   if (!src || failed || !/^\/images\/drinks\/[a-z0-9._-]+$/.test(src))
     return (
-      <CupArt name={name} kind={kind} temperature={temperature} large={large} />
+      <CupArt
+        name={name}
+        kind={kind}
+        temperature={temperature}
+        cupMl={cupMl}
+        large={large}
+      />
     );
   return (
     <Image
