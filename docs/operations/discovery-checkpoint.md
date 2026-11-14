@@ -11,9 +11,7 @@
 - 단위/실제DB37개, 전체 익명 브라우저19개, 실제 세션 브라우저5개 통과. 린트·타입 검사·빌드 통과.
 - 통합 활성화 SQL을 새 폐기용 DB에 두 번 실행해3제품/3변형, 중복 없음 확인.
 
-## 운영에서 필요한 마지막 설정
-`supabase/enable-discovery.sql`을 기존 Supabase SQL Editor에 전체 붙여넣고 실행한다. 인기 RPC와 승인된 신메뉴3종을 추가하며 기존 기록을 삭제하지 않는다. 실행 전까지는 운영 홈에 집계 준비 중/신메뉴 준비 중이 표시될 수 있다. 이 환경에는 운영 DB 자격 증명이 없으며 사용자에게 비밀 키를 요청하지 않았다.
-
-사용자가 SQL 실행을 완료하면 `/api/discovery/popular`의 available=true와 홈의 신메뉴3종을 확인한다. 실행되지 않은 운영 설정을 완료로 표현하지 않는다.
+## 운영 설정 (2026-11-14 적용 완료)
+사용자가 2026-11-14 기존 Supabase SQL Editor에서 `supabase/enable-discovery.sql`을 실행했다. 확인 쿼리에서 `popular_drinks()` 함수 존재, 겨울 신메뉴 3종 등록을 확인했고, 운영 `/api/discovery/popular`가 `available: true`로 응답하며 운영 홈에 신메뉴 3종이 표시된다. 다시 실행할 필요는 없다(재실행해도 안전하다). 적용 상태 전체는 `docs/operations/production-db.md`에 있다.
 
 초기 setup.sql/initial-catalog.sql은 기존 프로젝트에 다시 실행하지 않는다.
