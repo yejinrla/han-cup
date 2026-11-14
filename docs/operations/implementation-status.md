@@ -46,5 +46,6 @@ Critical 없음. Important 4개와 상향한 기능 결함 1개를 회귀 테스
 - 주변 매장 지도 안정성·목록 연동: `docs/superpowers/specs/2026-11-12-store-map-reliability-design.md`
 - UI 개선 1단계(가독성·온도에 맞는 컵): `docs/superpowers/specs/2026-11-13-readability-cup-temperature-design.md`
 - UI 개선 2단계(데이터로 그리는 컵·압축 카드·한 줄 필터): `docs/superpowers/specs/2026-11-13-data-cup-card-filters-design.md`
+- UI 개선 3단계(홈 신메뉴 묶음·세 잔 비교·상세 행동): `docs/superpowers/specs/2026-11-14-home-compare-detail-design.md`
 
 현재는 실서비스 공개 배포 완료 상태가 아니다. 실제 계정 설정과 공식 6개 브랜드 데이터 검수, 정식 개인정보 처리방침을 완료한 뒤 사용자 승인으로 배포한다.

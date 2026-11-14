@@ -2476,7 +2476,7 @@ p.muted,
   font-size: 13px;
   line-height: 1.35;
 }
-th .cup-art {
+.comparison-scroll th .cup-art {
   width: 56px;
   height: 68px;
 }
@@ -2561,6 +2561,13 @@ th .cup-art {
   text-align: center;
   word-break: keep-all;
   color: var(--ink);
+}
+/* Status messages from the controls (e.g. a full comparison) take their own
+   full-width line under the three buttons. */
+.detail-actions > .inline-error {
+  grid-column: 1 / -1;
+  order: 1;
+  margin: 0;
 }
 .detail-actions > .favorite-button.is-favorite {
   color: var(--green);

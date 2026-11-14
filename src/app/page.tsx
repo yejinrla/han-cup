@@ -10,6 +10,7 @@ import { koreanDate } from "@/features/reviews/schema";
 import {
   legacySearchUrl,
   selectNewArrivals,
+  groupArrivals,
 } from "@/features/discovery/curation";
 import { getPopularity } from "@/features/discovery/repository";
 import { unavailablePopularity } from "@/features/discovery/popularity";
@@ -31,18 +32,10 @@ export default async function Home({
     getPopularity().catch(() => unavailablePopularity()),
   ]);
   const arrivals = selectNewArrivals(data, curated, koreanDate());
-  // Arrivals released together from one official source share one heading.
-  const arrivalGroups = Object.values(
-    Object.groupBy(arrivals, (a) => `${a.releasedOn}|${a.sourceUrl}`),
-  ).map((group) => ({
-    key: `${group![0].releasedOn}|${group![0].sourceUrl}`,
-    releasedOn: group![0].releasedOn,
-    sourceUrl: group![0].sourceUrl,
-    brandNames: [...new Set(group!.map((a) => brands[a.item.brandId]))].join(
-      ", ",
-    ),
-    items: group!.map((a) => a.item),
-  }));
+  const arrivalGroups = groupArrivals(
+    arrivals,
+    (brandId) => brands[brandId as keyof typeof brands],
+  );
   const items = joinCatalog(data).map((item) => ({
     ...item,
     rating: summaries[item.id] ?? item.rating,

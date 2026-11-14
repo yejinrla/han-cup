@@ -43,3 +43,36 @@ test("detail secondary actions keep their labels inside at 320px", async ({
     );
   expect(overflowing).toEqual([]);
 });
+
+test("a full comparison message sits below the actions without breaking the row", async ({
+  page,
+}) => {
+  await page.addInitScript(() =>
+    localStorage.setItem(
+      "hancup.compare.v1",
+      JSON.stringify([
+        "1ca2ff55-559b-54be-83c2-e3a619eea066",
+        "c07146ee-387f-5964-9820-3aba34f6f479",
+        "f44dd04c-4dec-5455-a5a5-bf64e46e0f03",
+      ]),
+    ),
+  );
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/drinks/mega-11");
+  const compare = page.getByRole("button", { name: "비교 담기", exact: true });
+  await compare.click();
+  const message = page.locator(".detail-actions .inline-error");
+  await expect(message).toContainText("최대 3개까지");
+  const tops = await Promise.all(
+    [
+      compare,
+      page.getByRole("button", { name: "음료 찜하기" }),
+      page.getByRole("link", { name: "주변 매장 찾기" }),
+    ].map(async (c) => Math.round((await c.boundingBox())!.y)),
+  );
+  expect(new Set(tops).size).toBe(1);
+  const row = (await page.locator(".detail-actions").boundingBox())!;
+  const box = (await message.boundingBox())!;
+  expect(box.width).toBeGreaterThan(row.width * 0.9);
+  expect(box.y).toBeGreaterThan(tops[0]);
+});
