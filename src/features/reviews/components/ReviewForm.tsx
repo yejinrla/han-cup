@@ -3,6 +3,7 @@ import { useActionState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { saveReview, reportReview } from "../service";
 import { type ReviewInput, koreanDate } from "../schema";
+import { OptionPicker } from "./OptionPicker";
 export function ReviewForm({
   drinkId,
   variantId,
@@ -87,6 +88,7 @@ export function ReviewForm({
           </select>
         </label>
       </div>
+      <OptionPicker initial={existing?.options} />
       <label>
         한 잔의 기억 <span className="muted">선택 · 최대 1,000자</span>
         <textarea

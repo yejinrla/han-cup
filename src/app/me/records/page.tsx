@@ -1,3 +1,5 @@
+import { OptionChips } from "@/features/reviews/components/OptionChips";
+import { optionNutritionNote } from "@/features/reviews/options";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { serverClient } from "@/lib/supabase/server";
@@ -102,6 +104,9 @@ export default async function Records({
         <p className="muted journal-day-caption">
           {selectedDate} · 마신 날짜 기준
         </p>
+        {pageRows.some((r) => r.options?.length) && (
+          <p className="muted">{optionNutritionNote}</p>
+        )}
         {pageRows.length ? (
           pageRows.map((r) => {
             const d = data.drinks.find((x) => x.id === r.drink_id);
@@ -122,6 +127,7 @@ export default async function Records({
                     <span className="badge">판매 종료</span>
                   )}
                 </p>
+                <OptionChips options={r.options} />
                 <p className="record-body">{r.body}</p>
                 {r.moderation_status === "hidden" && (
                   <p className="status-box">
