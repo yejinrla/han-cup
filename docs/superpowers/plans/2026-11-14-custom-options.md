@@ -15,13 +15,23 @@
 First failing test: seam 1, "a record keeps the custom options the user chose".
 
 ### Task 1: Option rules
-- [ ] RED → GREEN, one behavior at a time: keep chosen options, default empty, reject unknown, reject more than five, reject duplicates, reject opposite pairs.
+- [x] RED → GREEN, one behavior at a time: keep chosen options, default empty, reject unknown, reject more than five, reject duplicates, reject opposite pairs.
 
 ### Task 2: Storage
-- [ ] RED → GREEN: migration 009 constraint and `public_reviews` options (seam 2); service saves options.
+- [x] RED → GREEN: migration 009 constraint and `public_reviews` options (seam 2); service saves options.
 
 ### Task 3: Form and display
-- [ ] Option chips in the form, chips on journal and public feed, nutrition note; readability rules. Verification per seam 3 decision.
+- [x] Option chips in the form, chips on journal and public feed, nutrition note; readability rules. Verification per seam 3 decision.
 
 ### Task 4: Verification and release
-- [ ] Lint, typecheck, unit/DB, anonymous browser suite, build. Independent review, one fix pass. Add 009 to production-db.md with its check query. PR; merge only after the user applies 009 in production.
+- [ ] (merge waits for production 009) Lint, typecheck, unit/DB, anonymous browser suite, build. Independent review, one fix pass. Add 009 to production-db.md with its check query. PR; merge only after the user applies 009 in production.
+
+## Verification and review
+
+Seam decision (user, 2026-11-14): seams 1 and 2 only; the logged-in form and lists (seam 3) are not browser-verified because the local auth stack needs Docker, which this environment lacks.
+
+Each rule went RED before GREEN: keep chosen options (failed with options dropped), default none (the existing test required it), unknown option, more than five, duplicates, opposite pairs, option-specific error messages. Database (real PostgreSQL, migration applied twice): the CHECK refuses bad sets with the app bypassed, `public_reviews` returns options for public records only, records without options read back empty.
+
+Independent review: no Critical; privacy boundary, recreated `public_reviews`, migration rerunnability, column grants and the deploy-before-009 failure mode confirmed. Fixed Important — the picker is now uncontrolled so a form reset after saving cannot desync it (logic not browser-verified); option rule failures show their own messages instead of the rating/text hint (test-first); the database test now iterates the app's option list, opposite groups and limit so app/DB drift fails a test, and the schema uses the shared limit. Fixed Minor — owner edit of options (column UPDATE grant) is tested; mutation checks confirm removing the grant or adding an app-only option fails the test. Documented — `setup.sql` stops at 006; production-db.md lists 007/008/009 for new projects. Not covered — the service FormData mapping, the edit path keeping options and the picker behaviour (seam 3).
+
+Release order: the user applies 009 in production and confirms with the check query in production-db.md; only then is the PR merged.

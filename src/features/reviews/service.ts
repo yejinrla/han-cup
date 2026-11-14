@@ -63,9 +63,16 @@ export async function saveReview(
       }) +
       "#record-" +
       result.data[0].id;
-  } catch {
+  } catch (e) {
+    // Option rules have their own messages; show them instead of the
+    // general rating/text/date hint.
+    const optionIssue =
+      e instanceof z.ZodError
+        ? e.issues.find((issue) => issue.path[0] === "options")
+        : undefined;
     return {
       error:
+        optionIssue?.message ??
         "별점은 1~5점, 글은 1,000자 이내로 입력하고 날짜와 음료를 확인해 주세요.",
     };
   }

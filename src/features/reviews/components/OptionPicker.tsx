@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 import {
   exclusiveOptionGroups,
   maxReviewOptions,
@@ -8,35 +8,33 @@ import {
   reviewOptionSections,
   type ReviewOptionId,
 } from "../options";
-// Real checkboxes named "options"; the server validates the same rules, so
-// the form still works without JavaScript.
+// Uncontrolled checkboxes named "options": the browser owns their state, so a
+// form reset after saving returns them to their initial values together with
+// the rest of the form. The server validates the same rules without JS.
 export function OptionPicker({
   initial = [],
 }: {
   initial?: readonly string[];
 }) {
-  const [selected, setSelected] = useState<string[]>([...initial]);
   const [message, setMessage] = useState("");
-  function toggle(id: ReviewOptionId, checked: boolean) {
+  function onChange(event: ChangeEvent<HTMLInputElement>) {
     setMessage("");
-    if (!checked) {
-      setSelected((s) => s.filter((x) => x !== id));
-      return;
-    }
-    // Picking an option clears the opposite one in its group.
-    const opposites =
-      exclusiveOptionGroups
-        .find((g) => g.includes(id))
-        ?.filter((x) => x !== id) ?? [];
-    const next = [
-      ...selected.filter((x) => !opposites.includes(x as ReviewOptionId)),
-      id,
+    const box = event.currentTarget;
+    if (!box.checked || !box.form) return;
+    const boxes = [
+      ...box.form.querySelectorAll<HTMLInputElement>('input[name="options"]'),
     ];
-    if (next.length > maxReviewOptions) {
+    // Picking an option clears the opposite one in its group.
+    const group = exclusiveOptionGroups.find((g) =>
+      g.includes(box.value as ReviewOptionId),
+    );
+    for (const other of boxes)
+      if (other !== box && group?.includes(other.value as ReviewOptionId))
+        other.checked = false;
+    if (boxes.filter((b) => b.checked).length > maxReviewOptions) {
+      box.checked = false;
       setMessage(`옵션은 ${maxReviewOptions}개까지 고를 수 있어요.`);
-      return;
     }
-    setSelected(next);
   }
   return (
     <fieldset className="option-picker">
@@ -54,8 +52,8 @@ export function OptionPicker({
                   type="checkbox"
                   name="options"
                   value={id}
-                  checked={selected.includes(id)}
-                  onChange={(e) => toggle(id, e.target.checked)}
+                  defaultChecked={initial.includes(id)}
+                  onChange={onChange}
                 />
                 <span>{reviewOptionLabels[id]}</span>
               </label>

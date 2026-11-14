@@ -75,3 +75,25 @@ test("opposite options cannot be chosen together", () => {
       .options,
   ).toEqual(["shot_extra", "syrup_none"]);
 });
+
+test("option problems are explained in their own words", () => {
+  expect(() =>
+    validateReview({ ...base, options: ["ice_less", "ice_extra"] }, now),
+  ).toThrow("서로 반대인 옵션은 함께 고를 수 없어요.");
+  expect(() =>
+    validateReview(
+      {
+        ...base,
+        options: [
+          "shot_extra",
+          "syrup_less",
+          "milk_change",
+          "ice_less",
+          "whip_none",
+          "decaf",
+        ],
+      },
+      now,
+    ),
+  ).toThrow("옵션은 5개까지 고를 수 있어요.");
+});

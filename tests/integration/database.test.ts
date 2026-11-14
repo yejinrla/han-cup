@@ -4,6 +4,11 @@ import { publishCatalog } from "../../scripts/catalog/import";
 import { rollbackCatalog } from "../../scripts/catalog/rollback";
 import { validateCatalog } from "../../scripts/catalog/schema";
 import { readFile } from "node:fs/promises";
+import {
+  exclusiveOptionGroups,
+  maxReviewOptions,
+  reviewOptionIds,
+} from "../../src/features/reviews/options";
 const db = new Client({
   connectionString:
     process.env.TEST_DATABASE_URL ??
@@ -516,4 +521,48 @@ test("custom options: the database keeps only valid sets and shows them only on 
   const latest = (await as(null, "select * from public_reviews($1,0)", [drink]))
     .rows[0];
   expect(latest.options).toEqual([]);
+});
+
+test("custom options: the database rules match the app's option list and allow owners to edit options", async () => {
+  const drink = "10000000-0000-4000-8000-000000000078";
+  await db.query(
+    `insert into drinks(id,brand_id,slug,name,category) values($1,'mega','options-sync-test','옵션 동기화 테스트','coffee')`,
+    [drink],
+  );
+  const insert = (options: string[]) =>
+    as(
+      a,
+      "insert into reviews(user_id,drink_id,rating,consumed_on,options) values($1,$2,4,current_date,$3) returning id",
+      [a, drink, options],
+    );
+  // Every option the app offers is storable on its own...
+  for (const id of reviewOptionIds) await insert([id]);
+  // ...every opposite pair the app forbids is refused by the database too...
+  for (const group of exclusiveOptionGroups)
+    for (let i = 0; i < group.length; i++)
+      for (let j = i + 1; j < group.length; j++)
+        await expect(insert([group[i], group[j]])).rejects.toThrow();
+  // ...and the limit is the same number.
+  const allowedSet = [
+    "shot_extra",
+    "syrup_less",
+    "milk_change",
+    "ice_less",
+    "whip_none",
+    "decaf",
+  ];
+  await insert(allowedSet.slice(0, maxReviewOptions));
+  await expect(
+    insert(allowedSet.slice(0, maxReviewOptions + 1)),
+  ).rejects.toThrow();
+  // The owner can change a record's options (column-level UPDATE grant).
+  const { rows } = await insert(["decaf"]);
+  await as(a, "update reviews set options=$1 where id=$2", [
+    ["ice_less"],
+    rows[0].id,
+  ]);
+  const saved = await db.query("select options from reviews where id=$1", [
+    rows[0].id,
+  ]);
+  expect(saved.rows[0].options).toEqual(["ice_less"]);
 });

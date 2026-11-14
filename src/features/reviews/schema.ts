@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { hasOppositeOptions, reviewOptionIds } from "./options";
+import {
+  hasOppositeOptions,
+  maxReviewOptions,
+  reviewOptionIds,
+} from "./options";
 export function koreanDate(now = new Date()) {
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Seoul",
@@ -16,8 +20,8 @@ export const reviewSchema = z.object({
   consumedOn: z.iso.date(),
   visibility: z.enum(["private", "public"]).default("private"),
   options: z
-    .array(z.enum(reviewOptionIds))
-    .max(5)
+    .array(z.enum(reviewOptionIds, { error: "고를 수 없는 옵션이에요." }))
+    .max(maxReviewOptions, `옵션은 ${maxReviewOptions}개까지 고를 수 있어요.`)
     .refine(
       (o) => new Set(o).size === o.length,
       "같은 옵션을 두 번 고를 수 없어요.",
