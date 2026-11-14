@@ -6,6 +6,7 @@ import { brands, type Basis } from "@/features/catalog/types";
 import { getSummaries } from "@/features/reviews/repository";
 import { RemoveCompare } from "@/features/compare/components/CompareControls";
 import { normalizeComparisonIds } from "@/features/compare/selection";
+import { lowestIndex } from "@/features/compare/lowest";
 export const metadata = { title: "음료 비교" };
 export default async function Compare({
   searchParams,
@@ -19,7 +20,6 @@ export default async function Compare({
   const summaries = await getSummaries();
   return (
     <main id="main" className="page-wrap">
-      <p className="eyebrow">SIDE BY SIDE</p>
       <h1 className="page-heading">나에게 맞는 한 잔은?</h1>
       <p className="page-intro">
         가격부터 영양정보까지, 최대 3개 음료를 한눈에 비교해 보세요.
@@ -60,7 +60,12 @@ export default async function Compare({
                 <th scope="col">음료</th>
                 {items.map((x) => (
                   <th scope="col" key={x.variant.id}>
-                    <CupArt name={x.name} kind={x.category} />
+                    <CupArt
+                      name={x.name}
+                      kind={x.category}
+                      temperature={x.variant.temperature}
+                      cupMl={x.variant.cupMl}
+                    />
                     <small>{brands[x.brandId]}</small>
                     <Link
                       href={"/drinks/" + x.slug + "?variant=" + x.variant.id}
@@ -82,44 +87,62 @@ export default async function Compare({
               </tr>
             </thead>
             <tbody>
-              {[
-                ["가격", items.map((x) => fmt(x.variant.priceKrw, "원"))],
-                ["컵 용량", items.map((x) => fmt(x.variant.cupMl, "ml"))],
+              {(
                 [
-                  "칼로리",
-                  items.map((x) =>
-                    fmt(getNutrition(x.variant, basis).caloriesKcal, "kcal"),
-                  ),
-                ],
-                [
-                  "당류",
-                  items.map((x) =>
-                    fmt(getNutrition(x.variant, basis).sugarG, "g"),
-                  ),
-                ],
-                [
-                  "카페인",
-                  items.map((x) =>
-                    fmt(getNutrition(x.variant, basis).caffeineMg, "mg"),
-                  ),
-                ],
-                [
-                  "공개 평점",
-                  items.map((x) => {
-                    const r = summaries[x.id];
-                    return r?.count
-                      ? `${r.average} / 5 (${r.count}명)`
-                      : "평가 없음";
-                  }),
-                ],
-              ].map(([label, values]) => (
-                <tr key={label as string}>
-                  <th scope="row">{label}</th>
-                  {(values as string[]).map((v, i) => (
-                    <td key={i}>{v}</td>
-                  ))}
-                </tr>
-              ))}
+                  ["가격", items.map((x) => x.variant.priceKrw), "원", true],
+                  ["컵 용량", items.map((x) => x.variant.cupMl), "ml", false],
+                  [
+                    "칼로리",
+                    items.map(
+                      (x) => getNutrition(x.variant, basis).caloriesKcal,
+                    ),
+                    "kcal",
+                    true,
+                  ],
+                  [
+                    "당류",
+                    items.map((x) => getNutrition(x.variant, basis).sugarG),
+                    "g",
+                    true,
+                  ],
+                  [
+                    "카페인",
+                    items.map((x) => getNutrition(x.variant, basis).caffeineMg),
+                    "mg",
+                    true,
+                  ],
+                ] as const
+              ).map(([label, values, unit, lowerIsBetter]) => {
+                // Only lower-is-better rows name a lowest value, and only when
+                // every value is known and one is clearly lowest.
+                const low = lowerIsBetter ? lowestIndex([...values]) : null;
+                return (
+                  <tr key={label}>
+                    <th scope="row">{label}</th>
+                    {values.map((v, i) => (
+                      <td key={i} className={i === low ? "is-lowest" : ""}>
+                        {fmt(v, unit)}
+                        {i === low && (
+                          <span className="lowest-note">가장 낮음</span>
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
+              <tr>
+                <th scope="row">공개 평점</th>
+                {items.map((x) => {
+                  const r = summaries[x.id];
+                  return (
+                    <td key={x.variant.id}>
+                      {r?.count
+                        ? `${r.average} / 5 (${r.count}명)`
+                        : "평가 없음"}
+                    </td>
+                  );
+                })}
+              </tr>
             </tbody>
           </table>
         </div>

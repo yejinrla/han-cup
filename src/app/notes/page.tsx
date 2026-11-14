@@ -16,7 +16,6 @@ export default function MagazinePage() {
         <ArrowLeft size={15} aria-hidden="true" /> 홈으로
       </Link>
       <header className="taste-note-title magazine-title">
-        <p className="eyebrow">HANCUP MAGAZINE</p>
         <h1>한컵 매거진</h1>
         <p className="taste-note-summary">취향에 맞는 한 잔을 찾는 이야기</p>
       </header>

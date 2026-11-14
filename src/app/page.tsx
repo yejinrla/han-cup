@@ -1,6 +1,7 @@
+import { brands } from "@/features/catalog/types";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Search, ArrowUpRight, Sparkles, TrendingUp } from "lucide-react";
+import { Search, ArrowUpRight } from "lucide-react";
 import { getCatalog, joinCatalog } from "@/features/catalog/repository";
 import { getSummaries } from "@/features/reviews/repository";
 import { getFavoriteIds } from "@/features/favorites/repository";
@@ -9,6 +10,7 @@ import { koreanDate } from "@/features/reviews/schema";
 import {
   legacySearchUrl,
   selectNewArrivals,
+  groupArrivals,
 } from "@/features/discovery/curation";
 import { getPopularity } from "@/features/discovery/repository";
 import { unavailablePopularity } from "@/features/discovery/popularity";
@@ -30,6 +32,10 @@ export default async function Home({
     getPopularity().catch(() => unavailablePopularity()),
   ]);
   const arrivals = selectNewArrivals(data, curated, koreanDate());
+  const arrivalGroups = groupArrivals(
+    arrivals,
+    (brandId) => brands[brandId as keyof typeof brands],
+  );
   const items = joinCatalog(data).map((item) => ({
     ...item,
     rating: summaries[item.id] ?? item.rating,
@@ -37,11 +43,10 @@ export default async function Home({
   return (
     <main id="main" className="discovery-home">
       <section className="discovery-welcome">
-        <p className="eyebrow">A LITTLE CUP OF DISCOVERY</p>
         <h1>
           오늘은 어떤 한 잔을
           <br />
-          <span>발견해 볼까요?</span>
+          발견해 볼까요?
         </h1>
         <p>새로운 맛부터 지금 많이 기록하는 음료까지.</p>
         <Link href="/search" className="discovery-search">
@@ -54,9 +59,6 @@ export default async function Home({
       <section className="discovery-section" aria-labelledby="new-drinks-title">
         <div className="discovery-section-head">
           <div>
-            <p className="eyebrow">
-              <Sparkles size={12} aria-hidden="true" /> NEW SIPS
-            </p>
             <h2 id="new-drinks-title">이번주 신메뉴</h2>
           </div>
           <Link href="/search">
@@ -64,21 +66,28 @@ export default async function Home({
           </Link>
         </div>
         {arrivals.length ? (
-          <div className="drink-grid">
-            {arrivals.map(({ item, releasedOn, sourceUrl }, i) => (
-              <div key={item.id}>
-                <p className="discovery-release">
-                  {releasedOn} 출시 ·{" "}
-                  <a href={sourceUrl} target="_blank" rel="noreferrer">
+          <div className="arrival-groups">
+            {arrivalGroups.map((group) => (
+              <div className="arrival-group" key={group.key}>
+                <p className="arrival-group-head">
+                  {group.brandNames} · {group.releasedOn} 출시 ·{" "}
+                  <a href={group.sourceUrl} target="_blank" rel="noreferrer">
                     공식 출시 정보
                   </a>
                 </p>
-                <DrinkCard
-                  item={{ ...item, rating: summaries[item.id] ?? item.rating }}
-                  index={i}
-                  basis="serving"
-                  isFavorite={favorites.includes(item.id)}
-                />
+                <div className="arrival-rail">
+                  {group.items.map((item) => (
+                    <DrinkCard
+                      key={item.id}
+                      item={{
+                        ...item,
+                        rating: summaries[item.id] ?? item.rating,
+                      }}
+                      basis="serving"
+                      isFavorite={favorites.includes(item.id)}
+                    />
+                  ))}
+                </div>
               </div>
             ))}
           </div>
@@ -97,9 +106,6 @@ export default async function Home({
       >
         <div className="discovery-section-head">
           <div>
-            <p className="eyebrow">
-              <TrendingUp size={13} aria-hidden="true" /> HANCUP NOW
-            </p>
             <h2 id="popular-drinks-title">실시간 인기 메뉴</h2>
           </div>
         </div>

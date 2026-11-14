@@ -5,7 +5,6 @@ export const metadata = {
 export default function Privacy() {
   return (
     <main id="main" className="page-wrap prose">
-      <p className="eyebrow">YOUR RECORDS, YOUR CHOICE</p>
       <h1 className="page-heading">개인정보 안내</h1>
       <div className="status-box">
         출시 준비용 안내입니다. 실제 운영자·문의처와 공급자 처리 지역을 확정한

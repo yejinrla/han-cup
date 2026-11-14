@@ -2,7 +2,8 @@
 :root {
   --green: #335b43;
   --ink: #283a2e;
-  --muted: #7c877c;
+  /* Secondary text: 5.45:1 on white, 5.24:1 on paper, 4.93:1 on the pale green tint. */
+  --muted: #5f6e57;
   --line: #e4e8df;
   --paper: #fafbf7;
 }
@@ -119,18 +120,18 @@ textarea {
   color: #8aa170;
 }
 .wordmark small {
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 2px;
   margin-left: 11px;
-  color: #8b9587;
+  color: var(--muted);
 }
 .site-header nav {
   display: flex;
   align-items: center;
   gap: 38px;
   font-size: 13px;
-  color: #7c857b;
+  color: var(--muted);
 }
 .site-header nav a {
   display: flex;
@@ -163,21 +164,6 @@ textarea {
   grid-template-columns: 1.1fr 1fr;
   padding: 48px 65px;
 }
-.eyebrow {
-  font-size: 9px;
-  letter-spacing: 2px;
-  font-weight: 600;
-  color: #7c8e75;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.eyebrow > span {
-  width: 5px;
-  height: 5px;
-  border-radius: 100%;
-  background: #7f9769;
-}
 .hero h1 {
   font-size: 42px;
   font-weight: 650;
@@ -186,12 +172,12 @@ textarea {
   margin: 18px 0 15px;
 }
 .hero h1 span {
-  color: #5c7452;
+  color: var(--muted);
 }
 .hero-description {
   font-size: 12px;
   line-height: 1.9;
-  color: #7c8774;
+  color: var(--muted);
 }
 .hero-link {
   display: inline-flex;
@@ -199,7 +185,7 @@ textarea {
   gap: 26px;
   border-bottom: 1px solid #9cae8d;
   padding: 0 0 5px;
-  font-size: 10px;
+  font-size: 11px;
   margin-top: 23px;
 }
 .hero-art {
@@ -245,11 +231,11 @@ textarea {
   box-shadow: 0 4px 12px #586b4c09;
   border: 1px solid #e2e7db;
   border-radius: 6px;
-  color: #748469;
+  color: var(--muted);
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 9px;
+  font-size: 11px;
   z-index: 1;
 }
 .note-top {
@@ -266,16 +252,16 @@ textarea {
   position: absolute;
   bottom: -10px;
   letter-spacing: 3px;
-  font-size: 7px;
-  color: #98a48c;
+  font-size: 11px;
+  color: var(--muted);
 }
 .hero-index {
   position: absolute;
   right: 25px;
   top: 25px;
-  font-size: 7px;
+  font-size: 11px;
   letter-spacing: 1.8px;
-  color: #8f9b86;
+  color: var(--muted);
 }
 .collection {
   max-width: 1320px;
@@ -296,7 +282,7 @@ textarea {
 .collection-heading h2 span {
   font-size: 11px;
   font-weight: 400;
-  color: #90988b;
+  color: var(--muted);
   margin-left: 18px;
   letter-spacing: 0;
 }
@@ -304,8 +290,8 @@ textarea {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 10px;
-  color: #7c8975;
+  font-size: 11px;
+  color: var(--muted);
 }
 .search-box {
   display: flex;
@@ -316,7 +302,7 @@ textarea {
   border-radius: 7px;
   padding: 14px 19px;
   max-width: 100%;
-  color: #8b9b7f;
+  color: var(--muted);
 }
 .search-box input {
   background: none;
@@ -328,59 +314,27 @@ textarea {
   padding: 4px;
 }
 .search-box input::placeholder {
-  color: #9ca397;
+  color: var(--muted);
 }
 .search-box button {
   display: flex;
   padding: 2px;
-}
-.filter-main {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 15px 0 18px;
-  border-bottom: 1px solid var(--line);
-  flex-wrap: wrap;
-}
-.filter-main > label {
-  display: flex;
-  align-items: center;
-  border: 1px solid #e1e5dc;
-  background: #fff;
-  border-radius: 5px;
-  padding: 8px 9px;
-  font-size: 10px;
-  gap: 5px;
-}
-.filter-main select {
-  border: 0;
-  background: transparent;
-  font-size: 10px;
-  color: #64745d;
-  max-width: 120px;
-  cursor: pointer;
-}
-.filter-separator {
-  height: 18px;
-  width: 1px;
-  background: var(--line);
-  margin: 0 4px;
 }
 .number-filter input {
   width: 41px;
   border: 0;
   background: #f5f7f1;
   text-align: right;
-  font-size: 10px;
+  font-size: 11px;
 }
 .number-filter small {
-  font-size: 9px;
-  color: #929b8c;
+  font-size: 11px;
+  color: var(--muted);
 }
 .apply-button {
   background: #e8eee1;
   border-radius: 5px;
-  font-size: 10px;
+  font-size: 11px;
   padding: 9px 12px;
 }
 .category-tabs {
@@ -393,17 +347,12 @@ textarea {
 }
 .category-tabs > a {
   padding: 0 3px 14px;
-  color: #899080;
+  color: var(--muted);
 }
 .category-tabs > a.active {
   color: var(--green);
   font-weight: 650;
   border-bottom: 2px solid var(--green);
-}
-.category-tabs .reset-link {
-  margin-left: auto;
-  font-size: 10px;
-  color: #8a9383;
 }
 .results-bar {
   display: flex;
@@ -416,11 +365,6 @@ textarea {
   color: var(--green);
   font-size: 12px;
 }
-.results-bar p > span {
-  font-size: 10px;
-  color: #929b8c;
-  margin-left: 7px;
-}
 .results-bar > div {
   display: flex;
   align-items: center;
@@ -432,8 +376,8 @@ textarea {
   border-radius: 5px;
   padding: 3px;
   gap: 3px;
-  font-size: 9px;
-  color: #909a87;
+  font-size: 11px;
+  color: var(--muted);
 }
 .basis-toggle a {
   padding: 5px 10px;
@@ -444,15 +388,15 @@ textarea {
   color: #4f6842;
 }
 .sort-link {
-  font-size: 10px;
+  font-size: 11px;
   display: flex;
   gap: 8px;
   align-items: center;
-  color: #7c8872;
+  color: var(--muted);
 }
 .data-notice {
-  font-size: 10px;
-  color: #84917a;
+  font-size: 11px;
+  color: var(--muted);
   margin-bottom: 18px;
   line-height: 1.9;
   background: #f1f5eb;
@@ -493,21 +437,13 @@ textarea {
 .drink-visual.other {
   background: #e9e5dd;
 }
-.collection-number {
-  position: absolute;
-  left: 15px;
-  top: 14px;
-  font-size: 8px;
-  letter-spacing: 1px;
-  color: #919585;
-}
 .favorite-button {
   position: absolute;
   right: 12px;
   top: 10px;
   padding: 6px;
   z-index: 1;
-  color: #8d9882;
+  color: var(--muted);
 }
 .favorite-button:hover {
   color: #355b43;
@@ -525,31 +461,8 @@ textarea {
 .drink-card:hover .cup-art {
   transform: rotate(4deg) translateY(-3px);
 }
-.temp-badge {
-  position: absolute;
-  left: 14px;
-  bottom: 13px;
-  font-size: 7px;
-  border: 1px solid #ffffff80;
-  color: #7c8d76;
-  border-radius: 3px;
-  padding: 2px 5px;
-  background: #fff8;
-}
 .drink-info {
   padding: 18px 16px 12px;
-}
-.brand-name {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 9px;
-  color: #88927e;
-}
-.brand-name > span {
-  margin-left: auto;
-  font-size: 8px;
-  white-space: nowrap;
 }
 .brand-dot {
   width: 5px;
@@ -575,7 +488,7 @@ textarea {
   min-height: 25px;
 }
 .drink-title svg {
-  color: #99a38c;
+  color: var(--muted);
 }
 .nutrition-strip {
   display: grid;
@@ -597,8 +510,8 @@ textarea {
 }
 .nutrition-strip small {
   display: block;
-  font-size: 8px;
-  color: #95a08b;
+  font-size: 11px;
+  color: var(--muted);
   margin-bottom: 4px;
 }
 .nutrition-strip b {
@@ -607,11 +520,11 @@ textarea {
   white-space: nowrap;
 }
 .nutrition-strip em {
-  font-size: 8px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 400;
   margin-left: 3px;
-  color: #94a085;
+  color: var(--muted);
 }
 .card-bottom {
   display: flex;
@@ -623,43 +536,31 @@ textarea {
   display: flex;
   gap: 4px;
   align-items: center;
-  color: #8a967a;
-  font-size: 9px;
+  color: var(--muted);
+  font-size: 11px;
 }
 .rating small {
-  color: #adb2a6;
+  color: var(--muted);
 }
 .compare-button {
-  font-size: 9px;
+  font-size: 11px;
   display: flex;
   gap: 4px;
   align-items: center;
   border: 1px solid #e4e8dd;
   border-radius: 4px;
   padding: 4px 8px;
-  color: #8a957e;
+  color: var(--muted);
 }
 .compare-button.selected {
   background: #e9efdf;
   color: var(--green);
 }
-.price-note {
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid #f0f1ec;
-  margin-top: 12px;
-  padding-top: 9px;
-  font-size: 8px;
-  color: #8e9785;
-}
-.price-note span {
-  color: #abb1a2;
-}
 .collection-footnote {
   display: flex;
   justify-content: space-between;
-  font-size: 9px;
-  color: #9aa28f;
+  font-size: 11px;
+  color: var(--muted);
   margin: 25px 0;
 }
 .collection-footnote a {
@@ -683,8 +584,8 @@ textarea {
   letter-spacing: -1px;
   margin: 10px 0;
 }
-.journal-banner p:not(.eyebrow) {
-  color: #909b84;
+.journal-banner p {
+  color: var(--muted);
   font-size: 11px;
   line-height: 1.9;
 }
@@ -705,23 +606,23 @@ textarea {
   display: flex;
   align-items: center;
   gap: 25px;
-  color: #9da593;
+  color: var(--muted);
 }
 .site-footer .wordmark {
   font-size: 23px;
 }
 .site-footer p {
-  font-size: 10px;
+  font-size: 11px;
 }
 .site-footer > div:last-child {
   margin-left: auto;
   display: flex;
   gap: 20px;
-  font-size: 9px;
+  font-size: 11px;
   align-items: center;
 }
 .site-footer small {
-  font-size: 8px;
+  font-size: 11px;
 }
 .compare-tray {
   position: fixed;
@@ -747,8 +648,8 @@ textarea {
   font-size: 12px;
 }
 .compare-tray small {
-  font-size: 9px;
-  color: #98a08f;
+  font-size: 11px;
+  color: var(--muted);
   margin-left: 7px;
 }
 .compare-tray > div {
@@ -768,13 +669,13 @@ textarea {
 }
 .compare-tray button {
   display: flex;
-  color: #98a58d;
+  color: var(--muted);
   padding: 5px;
 }
 .empty-state {
   text-align: center;
   padding: 70px 20px;
-  color: #8e9a80;
+  color: var(--muted);
   border: 1px dashed #d7dfce;
   border-radius: 8px;
 }
@@ -792,7 +693,7 @@ textarea {
   margin-bottom: 20px;
 }
 .inline-error {
-  font-size: 10px;
+  font-size: 11px;
   color: #9d6138;
   line-height: 1.6;
 }
@@ -821,7 +722,7 @@ textarea {
 }
 .page-intro {
   font-size: 13px;
-  color: #8a9580;
+  color: var(--muted);
   margin-bottom: 30px;
 }
 .breadcrumb {
@@ -829,7 +730,7 @@ textarea {
   align-items: center;
   gap: 12px;
   font-size: 11px;
-  color: #8c9783;
+  color: var(--muted);
   margin-bottom: 28px;
 }
 .detail-grid {
@@ -856,8 +757,8 @@ textarea {
   left: 0;
   right: 0;
   text-align: center;
-  color: #8b957e;
-  font-size: 10px;
+  color: var(--muted);
+  font-size: 11px;
 }
 .detail-title {
   font-size: 31px;
@@ -881,8 +782,8 @@ textarea {
   margin: 20px 0;
 }
 .detail-nutrients small {
-  font-size: 10px;
-  color: #89967c;
+  font-size: 11px;
+  color: var(--muted);
   display: block;
 }
 .detail-nutrients b {
@@ -890,8 +791,8 @@ textarea {
   font-weight: 600;
 }
 .source-note {
-  font-size: 10px;
-  color: #919c85;
+  font-size: 11px;
+  color: var(--muted);
   margin-top: 15px;
 }
 .source-note a {
@@ -926,7 +827,7 @@ textarea {
   margin-bottom: 15px;
 }
 .muted {
-  color: #8d9882;
+  color: var(--muted);
   font-size: 12px;
 }
 .comparison-scroll {
@@ -968,7 +869,8 @@ th a {
 }
 th small {
   display: block;
-  color: #98a28a;
+  font-size: 11px;
+  color: var(--muted);
   font-weight: 400;
   margin-bottom: 10px;
 }
@@ -977,7 +879,7 @@ th small {
   gap: 6px;
   align-items: center;
   font-size: 11px;
-  color: #879878;
+  color: var(--muted);
 }
 .auth-card {
   max-width: 440px;
@@ -998,7 +900,7 @@ th small {
 }
 .auth-card p {
   font-size: 12px;
-  color: #8c9682;
+  color: var(--muted);
   line-height: 1.9;
 }
 .kakao-button {
@@ -1020,7 +922,7 @@ th small {
   padding: 15px;
   border-radius: 6px;
   font-size: 12px;
-  color: #7d8c71;
+  color: var(--muted);
   margin: 20px 0;
 }
 .form-stack {
@@ -1066,7 +968,7 @@ th small {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: #87967b;
+  color: var(--muted);
 }
 .record-body {
   white-space: pre-wrap;
@@ -1077,8 +979,8 @@ th small {
   display: inline-block;
   border-radius: 4px;
   background: #edf2e4;
-  color: #728765;
-  font-size: 10px;
+  color: var(--muted);
+  font-size: 11px;
   padding: 4px 8px;
 }
 .personal-tabs {
@@ -1103,7 +1005,7 @@ th small {
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #819372;
+  color: var(--muted);
 }
 .store-grid {
   display: grid;
@@ -1127,14 +1029,14 @@ th small {
 }
 .store-item p {
   font-size: 11px;
-  color: #8b9880;
+  color: var(--muted);
 }
 .store-item a {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   font-size: 11px;
-  color: #537443;
+  color: var(--muted);
   margin-top: 12px;
 }
 /* Map status overlay sits on the Kakao canvas; selection links pins and cards. */
@@ -1199,7 +1101,7 @@ th small {
   font: inherit;
   font-size: 11px;
   font-weight: 600;
-  color: #537443;
+  color: var(--muted);
   cursor: pointer;
 }
 .prose {
@@ -1213,7 +1115,7 @@ th small {
 .prose p,
 .prose li {
   font-size: 13px;
-  color: #75846a;
+  color: var(--muted);
 }
 .danger {
   color: #a85e49;
@@ -1234,7 +1136,7 @@ th small {
   font-size: 26px;
 }
 .wordmark small {
-  font-size: 7px;
+  font-size: 11px;
   margin-left: 7px;
 }
 .site-header nav {
@@ -1265,12 +1167,8 @@ th small {
   margin-top: 18px;
   white-space: nowrap;
 }
-.eyebrow {
-  font-size: 7px;
-  letter-spacing: 1.4px;
-}
 .hero-description {
-  font-size: 10px;
+  font-size: 11px;
 }
 .hero-art {
   align-self: center;
@@ -1289,7 +1187,7 @@ th small {
   display: none;
 }
 .art-caption {
-  font-size: 5px;
+  font-size: 11px;
   letter-spacing: 1px;
   bottom: 0;
   white-space: nowrap;
@@ -1298,7 +1196,7 @@ th small {
   display: none;
 }
 .hero-link {
-  font-size: 9px;
+  font-size: 11px;
   gap: 14px;
 }
 .collection {
@@ -1311,7 +1209,7 @@ th small {
   font-size: 21px;
 }
 .collection-count {
-  font-size: 8px;
+  font-size: 11px;
   gap: 4px;
 }
 .collection-count svg {
@@ -1322,66 +1220,51 @@ th small {
   gap: 8px;
 }
 .search-box input {
-  font-size: 10px;
+  font-size: 11px;
   min-width: 0;
   width: 0;
 }
 .search-box svg {
   width: 17px;
 }
-.filter-main {
-  gap: 6px;
-  padding: 12px 0;
-}
-.filter-main > label {
-  padding: 6px;
-  font-size: 9px;
-}
-.filter-main select {
-  font-size: 9px;
-  max-width: 90px;
-}
 .number-filter input {
   width: 33px;
-  font-size: 9px;
+  font-size: 11px;
 }
 .number-filter small {
-  font-size: 8px;
+  font-size: 11px;
 }
 .apply-button {
-  font-size: 9px;
+  font-size: 11px;
   padding: 7px 9px;
 }
 .category-tabs {
   gap: 16px;
-  font-size: 10px;
+  font-size: 11px;
   padding-top: 17px;
 }
 .category-tabs > a {
   padding-bottom: 12px;
 }
-.category-tabs .reset-link {
-  font-size: 8px;
-}
 .results-bar {
   padding: 18px 0 14px;
-  font-size: 10px;
+  font-size: 11px;
 }
 .results-bar > div {
   gap: 8px;
 }
 .basis-toggle {
-  font-size: 8px;
+  font-size: 11px;
 }
 .basis-toggle a {
   padding: 4px 7px;
 }
 .sort-link {
-  font-size: 8px;
+  font-size: 11px;
   gap: 2px;
 }
 .data-notice {
-  font-size: 8px;
+  font-size: 11px;
   padding: 8px 10px;
 }
 .drink-grid {
@@ -1395,11 +1278,6 @@ th small {
   width: 127px;
   height: 151px;
 }
-.collection-number {
-  font-size: 6px;
-  left: 10px;
-  top: 11px;
-}
 .favorite-button {
   right: 4px;
   top: 4px;
@@ -1407,24 +1285,8 @@ th small {
 .favorite-button svg {
   width: 15px;
 }
-.temp-badge {
-  font-size: 6px;
-  left: 9px;
-  bottom: 9px;
-}
 .drink-info {
   padding: 12px 9px 9px;
-}
-.brand-name {
-  font-size: 8px;
-  gap: 4px;
-  flex-wrap: wrap;
-  min-height: 27px;
-}
-.brand-name > span {
-  width: 100%;
-  margin-left: 0;
-  font-size: 7px;
 }
 .drink-title {
   font-size: 12px;
@@ -1445,42 +1307,35 @@ th small {
   padding-left: 4px;
 }
 .nutrition-strip small {
-  font-size: 7px;
+  font-size: 11px;
 }
 .nutrition-strip b {
-  font-size: 10px;
+  font-size: 11px;
 }
 .nutrition-strip em {
-  font-size: 6px;
+  font-size: 11px;
   margin-left: 1px;
 }
 .card-bottom {
   margin-top: 10px;
 }
 .rating {
-  font-size: 7px;
+  font-size: 11px;
   gap: 2px;
 }
 .rating svg {
   width: 10px;
 }
 .compare-button {
-  font-size: 8px;
+  font-size: 11px;
   padding: 3px 5px;
   gap: 2px;
 }
 .compare-button svg {
   width: 11px;
 }
-.price-note {
-  font-size: 7px;
-  gap: 4px;
-}
-.price-note span {
-  display: none;
-}
 .collection-footnote {
-  font-size: 8px;
+  font-size: 11px;
   display: block;
   line-height: 1.9;
 }
@@ -1495,12 +1350,12 @@ th small {
 .journal-banner h2 {
   font-size: 21px;
 }
-.journal-banner p:not(.eyebrow) {
-  font-size: 10px;
+.journal-banner p {
+  font-size: 11px;
 }
 .journal-banner .primary-button {
   margin-top: 20px;
-  font-size: 10px;
+  font-size: 11px;
 }
 .site-footer {
   padding: 25px 20px 80px;
@@ -1518,7 +1373,7 @@ th small {
   bottom: 12px;
 }
 .compare-tray > span {
-  font-size: 10px;
+  font-size: 11px;
 }
 .compare-tray small {
   display: none;
@@ -1527,7 +1382,7 @@ th small {
   gap: 8px;
 }
 .compare-tray a {
-  font-size: 10px;
+  font-size: 11px;
   padding: 9px 13px;
   gap: 12px;
 }
@@ -1601,24 +1456,24 @@ th small {
 .sort-control select {
   border: 0;
   background: none;
-  font-size: 10px;
-  color: #63725b;
+  font-size: 11px;
+  color: var(--muted);
   max-width: 120px;
 }
 .sort-control button {
   border: 1px solid #dde4d4;
   border-radius: 4px;
   padding: 4px 7px;
-  font-size: 9px;
+  font-size: 11px;
   color: #536e43;
 }
 
 .sort-control select {
-  font-size: 8px;
+  font-size: 11px;
   max-width: 90px;
 }
 .sort-control button {
-  font-size: 8px;
+  font-size: 11px;
   padding: 3px 5px;
 }
 
@@ -1659,7 +1514,7 @@ th small {
   gap: 6px;
 }
 .journal-weekdays {
-  color: #687461;
+  color: var(--muted);
   font-size: 12px;
   text-align: center;
   margin-bottom: 10px;
@@ -1707,7 +1562,7 @@ th small {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #687461;
+  color: var(--muted);
   font-size: 12px;
   margin: 20px 0 0;
 }
@@ -1728,7 +1583,7 @@ th small {
   margin-bottom: 16px;
 }
 .journal-calendar-legend {
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.6;
 }
 
@@ -1777,7 +1632,7 @@ body {
   display: none;
 }
 .app-header-note {
-  color: #7b8a76;
+  color: var(--muted);
   font-size: 11px;
   margin-right: auto;
 }
@@ -1889,10 +1744,6 @@ body {
   opacity: 0.5;
   z-index: 0;
 }
-.eyebrow {
-  font-size: 9px;
-  letter-spacing: 1.2px;
-}
 .art-caption {
   display: none;
 }
@@ -1906,7 +1757,7 @@ body {
   display: none;
 }
 .collection-count {
-  font-size: 9px;
+  font-size: 11px;
 }
 .search-box {
   border-radius: 14px;
@@ -1915,21 +1766,12 @@ body {
 .search-box input {
   font-size: 16px;
 }
-.filter-main > label {
-  font-size: 11px;
-  border-radius: 9px;
-  min-height: 42px;
-}
-.filter-main select {
-  font-size: 16px;
-  max-width: 118px;
-}
 .number-filter input {
   font-size: 16px;
   width: 42px;
 }
 .number-filter small {
-  font-size: 10px;
+  font-size: 11px;
 }
 .apply-button {
   font-size: 12px;
@@ -1937,7 +1779,8 @@ body {
   border-radius: 9px;
 }
 .category-tabs {
-  gap: 17px;
+  /* 13px keeps every category and the reset link on one 390px line at 11px+ type. */
+  gap: 13px;
   overflow-x: auto;
   font-size: 12px;
 }
@@ -1954,14 +1797,12 @@ body {
   width: 100%;
   justify-content: space-between;
 }
-.results-bar p > span {
-  display: none;
-}
 .basis-toggle {
-  font-size: 10px;
+  font-size: 11px;
 }
 .basis-toggle a {
   padding: 7px 9px;
+  white-space: nowrap;
 }
 .sort-control {
   font-size: 11px;
@@ -1974,6 +1815,7 @@ body {
 .sort-control button {
   font-size: 11px;
   min-height: 36px;
+  white-space: nowrap;
 }
 .data-notice {
   font-size: 11px;
@@ -1997,12 +1839,6 @@ body {
 .drink-info {
   padding: 13px 10px;
 }
-.brand-name {
-  font-size: 10px;
-}
-.brand-name > span {
-  font-size: 9px;
-}
 .drink-title {
   font-size: 14px;
   min-height: 44px;
@@ -2012,26 +1848,23 @@ body {
   padding: 9px 2px;
 }
 .nutrition-strip small {
-  font-size: 9px;
+  font-size: 11px;
 }
 .nutrition-strip b {
   font-size: 12px;
 }
 .nutrition-strip em {
-  font-size: 8px;
+  font-size: 11px;
 }
 .rating {
-  font-size: 9px;
+  font-size: 11px;
 }
 .compare-button {
   min-height: 36px;
-  font-size: 10px;
-}
-.price-note {
-  font-size: 9px;
+  font-size: 11px;
 }
 .collection-footnote {
-  font-size: 10px;
+  font-size: 11px;
 }
 .journal-banner {
   border-radius: 18px;
@@ -2048,7 +1881,7 @@ body {
   margin: 0;
   flex-wrap: wrap;
   justify-content: center;
-  font-size: 10px;
+  font-size: 11px;
 }
 .page-wrap {
   margin: 24px auto 36px;
@@ -2089,7 +1922,7 @@ body {
   padding-right: 6px;
 }
 .app-bottom-nav a {
-  font-size: 10px;
+  font-size: 11px;
 }
 .discovery-home {
   padding: 24px 18px 0;
@@ -2103,12 +1936,9 @@ body {
   letter-spacing: -1.2px;
   margin: 12px 0;
 }
-.discovery-welcome h1 span {
-  color: #5b7850;
-}
-.discovery-welcome > p:not(.eyebrow) {
+.discovery-welcome > p {
   font-size: 12px;
-  color: #667660;
+  color: var(--muted);
 }
 .discovery-search {
   display: flex;
@@ -2135,11 +1965,6 @@ body {
   align-items: end;
   gap: 8px;
   margin-bottom: 15px;
-}
-.discovery-section-head .eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 .discovery-section h2 {
   font-size: 21px;
@@ -2173,7 +1998,7 @@ body {
 .discovery-refresh,
 .discovery-release {
   font-size: 11px;
-  color: #63735b;
+  color: var(--muted);
   line-height: 1.8;
 }
 .discovery-section-note {
@@ -2190,7 +2015,7 @@ body {
   gap: 4px;
   margin: 0 2px 9px;
   font-size: 11px;
-  color: #63735b;
+  color: var(--muted);
 }
 .discovery-rank b {
   font-size: 14px;
@@ -2250,7 +2075,7 @@ body {
   display: flex;
   gap: 5px;
   align-items: center;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   color: #726449;
   letter-spacing: 0.2px;
@@ -2297,7 +2122,7 @@ body {
   font-size: 12px;
   min-height: 40px;
   margin-bottom: 22px;
-  color: #5e7055;
+  color: var(--muted);
 }
 .taste-note-title h1 {
   font-size: 29px;
@@ -2307,7 +2132,7 @@ body {
   margin: 12px 0;
 }
 .taste-note-summary {
-  color: #65745e;
+  color: var(--muted);
   font-size: 13px;
   line-height: 1.9;
   word-break: keep-all;
@@ -2356,9 +2181,6 @@ body {
   padding-top: 28px;
   margin-top: 35px;
 }
-.taste-note-picks > .eyebrow {
-  margin-bottom: 7px;
-}
 .taste-note-pick {
   margin-top: 28px;
 }
@@ -2369,7 +2191,7 @@ body {
 }
 .taste-note-pick > p {
   font-size: 13px;
-  color: #65745e;
+  color: var(--muted);
   line-height: 2;
   margin: 9px 0 16px;
 }
@@ -2380,9 +2202,6 @@ body {
   min-height: 0;
   font-size: 17px;
 }
-.taste-note-pick .brand-name > span {
-  width: auto;
-}
 .taste-note-pick .nutrition-strip small {
   font-size: 11px;
 }
@@ -2390,10 +2209,10 @@ body {
   font-size: 15px;
 }
 .taste-note-pick .nutrition-strip em {
-  font-size: 10px;
+  font-size: 11px;
 }
 .taste-note-footnote {
-  color: #68785f;
+  color: var(--muted);
   font-size: 11px;
   line-height: 1.9;
   margin: 28px 0 18px;
@@ -2864,4 +2683,393 @@ body {
 }
 .saved-article-actions .article-like-control {
   margin: 8px 0 0;
+}
+
+/* Detail brand line: plain secondary text above the drink name. */
+.detail-brand {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+/* Reading floor (UI stage 1): sentence-length secondary text reads at 13px and
+   card nutrition figures at 14px tabular digits. Short card labels stay at 11px. */
+.page-intro,
+.data-notice,
+.source-note,
+p.muted,
+.discovery-welcome > p,
+.discovery-section-note,
+.discovery-refresh,
+.taste-note-footnote,
+.empty-state p,
+.auth-card p,
+.journal-banner p {
+  font-size: 13px;
+}
+.nutrition-strip {
+  /* Equal columns so one long figure cannot squeeze its neighbours' labels. */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.nutrition-strip small {
+  white-space: nowrap;
+}
+.nutrition-strip b {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.nutrition-strip em {
+  /* The unit sits under the 14px figure so narrow cards keep both readable. */
+  display: block;
+  margin-left: 0;
+}
+@media (max-width: 359px) {
+  /* Two-column cards on the narrowest phones fit a figure like 193.4 only at 13px
+     with tighter cell padding. */
+  .nutrition-strip {
+    padding-inline: 2px;
+  }
+  .nutrition-strip > div {
+    padding-left: 3px;
+  }
+  .nutrition-strip b {
+    font-size: 13px;
+  }
+}
+
+/* UI stage 2: compact drink card. Variant facts share one meta line, the cup
+   art is smaller, and rating, price (when known) and compare share a row. */
+.drink-visual {
+  height: 98px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.drink-visual .cup-art {
+  width: 74px;
+  height: 88px;
+}
+.drink-info {
+  padding: 9px 10px 10px;
+  display: grid;
+  gap: 5px;
+}
+.drink-info .nutrition-strip {
+  padding: 6px 2px;
+}
+.drink-info .nutrition-strip small {
+  margin-bottom: 1px;
+  line-height: 1.3;
+}
+.drink-info .nutrition-strip b {
+  display: block;
+  line-height: 1.25;
+}
+.drink-info .nutrition-strip em {
+  line-height: 1.3;
+}
+.drink-meta {
+  /* Inline flow keeps the brand dot with the first word when the line wraps. */
+  display: block;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+.drink-title {
+  min-height: 0;
+  font-size: 14px;
+  line-height: 1.35;
+  word-break: keep-all;
+}
+.card-bottom {
+  margin-top: 0;
+  gap: 6px;
+}
+.card-price {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+/* UI stage 2: one-row search filters. Category chips choose the category,
+   brand and temperature stay as native selects styled as chips, and nutrition
+   limits open in a panel below the row. */
+.catalog-form .category-tabs {
+  margin-top: 12px;
+}
+.category-tabs a {
+  white-space: nowrap;
+}
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 13px;
+  color: var(--ink);
+}
+.filter-chip select {
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  color: inherit;
+  min-height: 38px;
+  padding: 0;
+}
+.filter-chip.set {
+  border-color: var(--green);
+  color: var(--green);
+  font-weight: 600;
+}
+.nutrition-panel {
+  display: block;
+}
+/* Open, the panel takes its own full-width line below the row so the apply
+   button stays next to brand and temperature. */
+.nutrition-panel[open] {
+  flex-basis: 100%;
+  order: 10;
+  display: grid;
+  gap: 8px;
+}
+.nutrition-panel[open] summary {
+  justify-self: start;
+}
+.nutrition-panel summary {
+  cursor: pointer;
+  list-style: none;
+}
+.nutrition-panel summary::-webkit-details-marker {
+  display: none;
+}
+.nutrition-panel summary::after {
+  content: "▾";
+  font-size: 11px;
+}
+.nutrition-panel[open] summary::after {
+  content: "▴";
+}
+.nutrition-panel-body {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+.quick-picks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.quick-picks a {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: var(--green);
+  font-weight: 600;
+}
+.nutrition-panel-body .number-filter {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+.nutrition-panel-body .number-filter input {
+  width: 100%;
+  min-height: 40px;
+  font-size: 16px;
+}
+.clear-limits {
+  justify-self: start;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: underline;
+}
+.filter-row .apply-button {
+  min-height: 40px;
+  border-radius: 999px;
+  padding: 0 16px;
+  font-size: 13px;
+}
+.results-bar .reset-link {
+  margin-left: 10px;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: underline;
+}
+
+/* UI stage 3: three drinks side by side at 390px. A narrow label column and
+   fixed equal drink columns; only narrower screens scroll inside the table. */
+.comparison-scroll table {
+  width: 100%;
+  min-width: 330px;
+  table-layout: fixed;
+}
+.comparison-scroll th,
+.comparison-scroll td {
+  min-width: 0;
+  padding: 10px 4px;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+.comparison-scroll th:first-child,
+.comparison-scroll td:first-child {
+  width: 58px;
+  min-width: 0;
+  padding-left: 8px;
+}
+.comparison-scroll thead th {
+  vertical-align: bottom;
+}
+.comparison-scroll thead th a {
+  font-size: 13px;
+  line-height: 1.35;
+}
+.comparison-scroll th .cup-art {
+  width: 56px;
+  height: 68px;
+}
+.comparison-scroll td {
+  font-variant-numeric: tabular-nums;
+}
+.comparison-scroll td.is-lowest {
+  color: var(--green);
+  font-weight: 700;
+}
+.lowest-note {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* UI stage 3: new arrivals released together share one source line and a
+   horizontal rail of compact cards; the rail scrolls, the page does not. */
+.arrival-groups {
+  display: grid;
+  gap: 18px;
+}
+.arrival-group {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.arrival-group-head {
+  font-size: 13px;
+  color: var(--muted);
+}
+.arrival-group-head a {
+  color: var(--green);
+  text-decoration: underline;
+}
+.arrival-rail {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 6px;
+}
+.arrival-rail .drink-card {
+  flex: 0 0 150px;
+  scroll-snap-align: start;
+}
+.drink-meta .brand-dot {
+  display: inline-block;
+  vertical-align: middle;
+  margin: -2px 5px 0 0;
+}
+
+/* UI stage 3: detail actions. One record action leads; compare, favorite and
+   stores are three equal buttons tall enough to tap. */
+.detail-record {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 16px;
+}
+.detail-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 10px 0 20px;
+}
+.detail-actions > button,
+.detail-actions > a {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 6px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  font-size: 13px;
+  line-height: 1.25;
+  text-align: center;
+  word-break: keep-all;
+  color: var(--ink);
+}
+/* Status messages from the controls (e.g. a full comparison) take their own
+   full-width line under the three buttons. */
+.detail-actions > .inline-error {
+  grid-column: 1 / -1;
+  order: 1;
+  margin: 0;
+}
+.detail-actions > .favorite-button.is-favorite {
+  color: var(--green);
+  border-color: var(--green);
+}
+@media (max-width: 359px) {
+  /* On the narrowest phones a long label wraps inside its button and the
+     icon steps aside, keeping all three actions on one row. */
+  .detail-actions > a svg {
+    display: none;
+  }
+}
+@media (max-width: 359px) {
+  /* Narrowest phones: the stage 2 card rules (.drink-info .nutrition-strip)
+     outrank the earlier narrow-screen rules, so restate the layout here.
+     Three columns leave about 33px per figure, which a wider font can
+     overflow; instead each nutrient takes a full-width row. */
+  .drink-info .nutrition-strip {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 2px;
+    padding: 6px 8px;
+  }
+  .drink-info .nutrition-strip > div {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    padding: 0;
+    border-right: 0;
+  }
+  .drink-info .nutrition-strip small {
+    margin: 0 auto 0 0;
+  }
+  .drink-info .nutrition-strip b,
+  .drink-info .nutrition-strip em {
+    display: inline;
+  }
 }

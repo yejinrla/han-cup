@@ -81,15 +81,13 @@ export default async function TasteNotePage({
           className="taste-note-picks"
           aria-labelledby="note-picks-title"
         >
-          <p className="eyebrow">HANCUP PICKS</p>
           <h2 id="note-picks-title">이런 한 잔은 어때요?</h2>
-          {picks.map(({ pick, item }, index) => (
+          {picks.map(({ pick, item }) => (
             <section className="taste-note-pick" key={item.id}>
               <h3>{pick.heading}</h3>
               <p>{pick.body}</p>
               <DrinkCard
                 item={{ ...item, rating: summaries[item.id] ?? item.rating }}
-                index={index}
                 basis="serving"
                 isFavorite={favorites.includes(item.id)}
               />

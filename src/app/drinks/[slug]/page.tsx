@@ -58,16 +58,18 @@ export default async function Detail({
             src={v.imagePath}
             name={drink.name}
             kind={drink.category}
+            temperature={v.temperature}
+            cupMl={v.cupMl}
             large
           />
           {!v.imagePath && (
             <span className="illustration-note">
-              제품 사진을 대신한 한컵 공통 일러스트
+              제품 사진 대신 컵 높이로 용량, 색으로 분류를 나타낸 공통 일러스트
             </span>
           )}
         </div>
         <div>
-          <p className="eyebrow">{brands[drink.brandId]}</p>
+          <p className="detail-brand">{brands[drink.brandId]}</p>
           <h1 className="detail-title">{drink.name}</h1>
           {drink.status === "discontinued" && (
             <p className="status-box">
@@ -88,15 +90,20 @@ export default async function Detail({
           <p className="muted" style={{ marginTop: 16 }}>
             컵 용량 {fmt(v.cupMl, "ml")}　·　가격 {fmt(v.priceKrw, "원")}
           </p>
+          <Link
+            className="primary-button detail-record"
+            href={`/me/records?drink=${drink.id}&variant=${v.id}`}
+          >
+            한 잔 기록하기
+          </Link>
           <div className="detail-actions">
             <CompareButton id={v.id} />
-            <div style={{ position: "relative", width: 38, height: 32 }}>
-              <FavoriteButton
-                key={drink.id + String(favorites.includes(drink.id))}
-                drinkId={drink.id}
-                initial={favorites.includes(drink.id)}
-              />
-            </div>
+            <FavoriteButton
+              key={drink.id + String(favorites.includes(drink.id))}
+              drinkId={drink.id}
+              initial={favorites.includes(drink.id)}
+              showLabel
+            />
             <Link
               className="text-button"
               href={"/stores?brand=" + drink.brandId}

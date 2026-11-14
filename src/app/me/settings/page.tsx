@@ -22,7 +22,6 @@ export default async function Settings() {
       <Link href="/me" className="taste-note-back">
         <ArrowLeft size={15} aria-hidden="true" /> 마이페이지로
       </Link>
-      <p className="eyebrow">MY HANCUP</p>
       <h1 className="page-heading">계정 설정</h1>
       <SettingsForm nickname={data.nickname} />
     </main>

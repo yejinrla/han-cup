@@ -44,7 +44,6 @@ export default async function Favorites({
     }
     return (
       <main id="main" className="page-wrap">
-        <p className="eyebrow">MY LITTLE COLLECTION</p>
         <h1 className="page-heading">좋아요한 아티클</h1>
         <p className="page-intro">
           다시 읽고 싶은 한 잔의 이야기를 모아보세요.
@@ -102,7 +101,6 @@ export default async function Favorites({
   }
   return (
     <main id="main" className="page-wrap">
-      <p className="eyebrow">MY LITTLE COLLECTION</p>
       <h1 className="page-heading">좋아요한 음료</h1>
       <p className="page-intro">하트를 누른 음료를 한곳에서 다시 만나보세요.</p>
       <FavoriteTabs />
@@ -115,12 +113,12 @@ export default async function Favorites({
       )}
       {items.length ? (
         <div className="drink-grid">
-          {items.map((x, i) => (
+          {items.map((x) => (
             <div key={x.id}>
               {x.status === "discontinued" && (
                 <span className="badge">판매 종료</span>
               )}
-              <DrinkCard item={x} isFavorite index={i} basis="serving" />
+              <DrinkCard item={x} isFavorite basis="serving" />
             </div>
           ))}
         </div>

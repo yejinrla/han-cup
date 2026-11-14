@@ -83,3 +83,40 @@ export function legacySearchUrl(
   }
   return p.size ? "/search?" + p : null;
 }
+
+/**
+ * Arrivals released together from one official source share one heading.
+ * Groups and the items inside them keep the order of `arrivals`.
+ */
+export function groupArrivals<
+  T extends {
+    item: { brandId: string };
+    releasedOn: string;
+    sourceUrl: string;
+  },
+>(arrivals: T[], brandName: (brandId: string) => string) {
+  const groups = new Map<
+    string,
+    { key: string; releasedOn: string; sourceUrl: string; arrivals: T[] }
+  >();
+  for (const a of arrivals) {
+    const key = `${a.releasedOn}|${a.sourceUrl}`;
+    if (!groups.has(key))
+      groups.set(key, {
+        key,
+        releasedOn: a.releasedOn,
+        sourceUrl: a.sourceUrl,
+        arrivals: [],
+      });
+    groups.get(key)!.arrivals.push(a);
+  }
+  return [...groups.values()].map((g) => ({
+    key: g.key,
+    releasedOn: g.releasedOn,
+    sourceUrl: g.sourceUrl,
+    brandNames: [
+      ...new Set(g.arrivals.map((a) => brandName(a.item.brandId))),
+    ].join(", "),
+    items: g.arrivals.map((a): T["item"] => a.item),
+  }));
+}
