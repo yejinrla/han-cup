@@ -36,3 +36,15 @@ test("editorial recommendations resolve only existing active drinks in the recom
     resolveNoteRecommendations(note, ended).map((x) => x.item.slug),
   ).toEqual(["mega-11"]);
 });
+
+test("each published carousel article links two resolvable catalog drinks", () => {
+  expect(
+    tasteNotes.map((note) =>
+      resolveNoteRecommendations(note, data).map((pick) => pick.item.slug),
+    ),
+  ).toEqual([
+    ["mega-green-plum-quince-tea", "mega-11"],
+    ["ediya-3", "paik-8"],
+    ["starbucks-1", "starbucks-2"],
+  ]);
+});

@@ -14,6 +14,7 @@ const screens = [
   "/drinks/mega-green-plum-quince-tea",
   `/compare?ids=${compareIds}`,
   "/stores",
+  "/notes",
   "/notes/autumn-tea",
   "/login",
   "/about",

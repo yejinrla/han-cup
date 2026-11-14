@@ -1,6 +1,8 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { redirect, RedirectType } from "next/navigation";
+import { journalHref } from "./calendar";
 import { requireUser } from "@/lib/auth/session";
 import { serverClient } from "@/lib/supabase/server";
 import { validateReview } from "./schema";
@@ -11,6 +13,7 @@ export async function saveReview(
 ): Promise<FormState> {
   const user = await requireUser();
   const db = await serverClient();
+  let savedHref = "";
   try {
     const input = validateReview({
       drinkId: form.get("drinkId"),
@@ -43,13 +46,27 @@ export async function saveReview(
       return { error: "기록을 저장하지 못했어요. 다시 시도해 주세요." };
     revalidatePath("/me/records");
     revalidatePath("/", "layout");
-    return { success: "한 잔을 기록했어요." };
+    if (!id) return { success: "한 잔을 기록했어요." };
+    const cursor = Number(form.get("journalCursor"));
+    const keepPage =
+      input.consumedOn === form.get("originalDate") &&
+      Number.isSafeInteger(cursor) &&
+      cursor > 0 &&
+      cursor <= 10000;
+    savedHref =
+      journalHref(input.consumedOn, {
+        ...(keepPage ? { cursor: String(cursor) } : {}),
+        saved: "1",
+      }) +
+      "#record-" +
+      result.data[0].id;
   } catch {
     return {
       error:
         "별점은 1~5점, 글은 1,000자 이내로 입력하고 날짜와 음료를 확인해 주세요.",
     };
   }
+  redirect(savedHref, RedirectType.replace);
 }
 export async function deleteReview(form: FormData) {
   const user = await requireUser();

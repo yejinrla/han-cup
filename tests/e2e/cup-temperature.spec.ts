@@ -64,12 +64,15 @@ test("cup height follows the verified cup volume", async ({ page }) => {
 test("decorative note cups are drawn solid, not as a missing-volume cup", async ({
   page,
 }) => {
-  // The banner cup is decorative (aria-hidden), so it is found by its place.
+  // Banner cups are decorative (aria-hidden) and the banner is a carousel, so
+  // every cup in it is checked by its place.
   await page.goto("/");
-  const cup = page.locator(".taste-note-banner-art svg.cup-art");
-  await expect(cup).toBeVisible();
-  await expect(cup.locator("[data-cup-body]")).not.toHaveAttribute(
-    "stroke-dasharray",
-    /.+/,
+  const bodies = page.locator(
+    ".taste-note-banner-art svg.cup-art [data-cup-body]",
   );
+  await expect(bodies.first()).toBeVisible();
+  const dashed = await bodies.evaluateAll(
+    (all) => all.filter((b) => b.getAttribute("stroke-dasharray")).length,
+  );
+  expect(dashed).toBe(0);
 });

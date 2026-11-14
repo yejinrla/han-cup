@@ -1,0 +1,111 @@
+import { afterEach, beforeEach, expect, test, vi } from "vitest";
+
+const { rpc, search } = vi.hoisted(() => ({ rpc: vi.fn(), search: vi.fn() }));
+vi.mock("@/lib/supabase/admin", () => ({ adminClient: () => ({ rpc }) }));
+vi.mock("@/features/stores/search", async (original) => ({
+  ...(await original<typeof import("@/features/stores/search")>()),
+  searchStores: search,
+}));
+import { POST } from "@/app/api/stores/route";
+
+beforeEach(() => {
+  vi.stubEnv("KAKAO_REST_KEY", "test-rest-key");
+  vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "test-service-key");
+  rpc.mockReset();
+  search.mockReset();
+});
+afterEach(() => vi.unstubAllEnvs());
+function request() {
+  return new Request("https://hancup.test/api/stores", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ brandId: "starbucks", region: "서울 성수동" }),
+  });
+}
+
+test("database budget errors are unavailable, never a claimed quota exhaustion", async () => {
+  rpc.mockResolvedValue({
+    data: null,
+    error: { code: "PGRST202", message: "private diagnostic detail" },
+  });
+  const response = await POST(request());
+  expect(response.status).toBe(503);
+  const body = await response.json();
+  expect(body.code).toBe("STORE_SEARCH_SETUP_REQUIRED");
+  expect(body.error).not.toContain("한도");
+  expect(JSON.stringify(body)).not.toContain("private diagnostic detail");
+  expect(search).not.toHaveBeenCalled();
+});
+test("a rejected budget reservation still blocks Kakao requests with 429", async () => {
+  rpc.mockResolvedValue({ data: false, error: null });
+  const response = await POST(request());
+  expect(response.status).toBe(429);
+  expect(search).not.toHaveBeenCalled();
+});
+test("an allowed reservation returns actual search results", async () => {
+  rpc.mockResolvedValue({ data: true, error: null });
+  search.mockResolvedValue({ items: [], hasNext: false });
+  const response = await POST(request());
+  expect(response.status).toBe(200);
+  expect(await response.json()).toEqual({ items: [], hasNext: false });
+});
+
+test("rejected server credentials return a safe authentication diagnostic", async () => {
+  rpc.mockResolvedValue({
+    data: null,
+    error: { message: "private credential diagnostic" },
+    status: 401,
+  });
+  const response = await POST(request());
+  expect(response.status).toBe(503);
+  const body = await response.json();
+  expect(body.code).toBe("STORE_SEARCH_AUTH_FAILED");
+  expect(JSON.stringify(body)).not.toContain("private credential diagnostic");
+  expect(search).not.toHaveBeenCalled();
+});
+
+test("database permission denial is distinguished from invalid server credentials", async () => {
+  rpc.mockResolvedValue({
+    data: null,
+    error: { code: "42501", message: "private database diagnostic" },
+    status: 403,
+  });
+  const response = await POST(request());
+  expect(response.status).toBe(503);
+  const body = await response.json();
+  expect(body.code).toBe("STORE_SEARCH_PERMISSION_DENIED");
+  expect(JSON.stringify(body)).not.toContain("private database diagnostic");
+  expect(search).not.toHaveBeenCalled();
+});
+
+test.each([
+  [401, "KAKAO_LOCAL_AUTH_FAILED"],
+  [403, "KAKAO_LOCAL_ACCESS_DENIED"],
+  [429, "KAKAO_LOCAL_THROTTLED"],
+  [500, "KAKAO_LOCAL_UNAVAILABLE"],
+])(
+  "Kakao HTTP %i is diagnosed without exposing its response",
+  async (status, expectedCode) => {
+    const { searchStores: actualSearch } = await vi.importActual<
+      typeof import("@/features/stores/search")
+    >("@/features/stores/search");
+    let providerError: unknown;
+    try {
+      await actualSearch(
+        { brandId: "starbucks", region: "서울 성수동" },
+        async () => new Response("private provider details", { status }),
+        "test-rest-key",
+      );
+    } catch (error) {
+      providerError = error;
+    }
+    expect(providerError).toBeInstanceOf(Error);
+    rpc.mockResolvedValue({ data: true, error: null });
+    search.mockRejectedValue(providerError);
+    const response = await POST(request());
+    expect(response.status).toBe(503);
+    const body = await response.json();
+    expect(body.code).toBe(expectedCode);
+    expect(JSON.stringify(body)).not.toContain("private provider details");
+  },
+);

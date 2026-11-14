@@ -8,6 +8,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     { url: base },
     { url: base + "/search" },
+    { url: base + "/notes" },
     ...tasteNotes.map((note) => ({ url: base + "/notes/" + note.slug })),
     ...drinks
       .filter((d) => d.status === "active")

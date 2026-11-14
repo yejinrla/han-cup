@@ -134,6 +134,9 @@ if (!has.rowCount) {
 await appDb.query(
   await readFile("supabase/migrations/007_home_popularity.sql", "utf8"),
 );
+await appDb.query(
+  await readFile("supabase/migrations/008_article_favorites.sql", "utf8"),
+);
 await appDb.end();
 docker(
   "run",

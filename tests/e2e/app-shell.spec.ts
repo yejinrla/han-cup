@@ -11,7 +11,7 @@ test("desktop and mobile share a centered app frame and persistent accessible ta
   expect(frame!.width).toBe(480);
   expect(frame!.x).toBe(480);
   const nav = page.getByRole("navigation", { name: "주 메뉴" });
-  await expect(nav.getByRole("link")).toHaveCount(4);
+  await expect(nav.getByRole("link")).toHaveCount(5);
   await expect(
     nav.getByRole("link", { name: "홈", exact: true }),
   ).toHaveAttribute("aria-current", "page");
@@ -42,7 +42,7 @@ test("desktop and mobile share a centered app frame and persistent accessible ta
     for (const link of await nav.getByRole("link").all())
       await expect(link).toBeInViewport();
   }
-  await nav.getByRole("link", { name: "좋아요한 음료", exact: true }).click();
+  await nav.getByRole("link", { name: "좋아요", exact: true }).click();
   await expect(page).toHaveURL(/\/login\?next=%2Fme%2Ffavorites/);
 });
 

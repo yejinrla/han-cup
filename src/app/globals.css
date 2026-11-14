@@ -1656,7 +1656,7 @@ body {
   height: calc(var(--tab-height) + env(safe-area-inset-bottom));
   padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   background: #fdfefb;
   border-top: 1px solid #dfe6d9;
   box-shadow: 0 -5px 24px #35492c06;
@@ -1917,7 +1917,7 @@ body {
 
 /* Discovery home and dedicated catalog search. */
 .app-bottom-nav {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   padding-left: 6px;
   padding-right: 6px;
 }
@@ -2216,6 +2216,473 @@ body {
   font-size: 11px;
   line-height: 1.9;
   margin: 28px 0 18px;
+}
+
+/* Swipeable editorial cards: native touch scrolling, no autoplay. */
+.taste-note-carousel {
+  margin-top: 16px;
+  min-width: 0;
+}
+.taste-note-track {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  border-radius: 18px;
+}
+.taste-note-track::-webkit-scrollbar {
+  display: none;
+}
+.taste-note-track .taste-note-banner {
+  flex: 0 0 100%;
+  min-width: 0;
+  min-height: 240px;
+  margin-top: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  padding: 24px 20px;
+}
+.taste-note-track .taste-note-banner-copy {
+  width: calc(100% - 118px);
+}
+.taste-note-track .taste-note-banner h2 {
+  font-size: 22px;
+  margin-top: 13px;
+  line-height: 1.5;
+}
+.taste-note-track .taste-note-banner p {
+  font-size: 12px;
+}
+.taste-note-track .taste-note-read {
+  margin-top: 22px;
+}
+.taste-note-track .taste-note-banner-art {
+  top: auto;
+  bottom: 12px;
+  right: -8px;
+  transform: rotate(9deg);
+}
+.taste-note-track .taste-note-banner-art .cup-art {
+  width: 128px;
+  height: 160px;
+}
+.taste-note-track .taste-note-banner:focus-visible {
+  outline-offset: -4px;
+}
+.taste-note-tone-1 {
+  background: #f2e6e1;
+  border-color: #e8dad3;
+}
+.taste-note-tone-2 {
+  background: #e8eddf;
+  border-color: #dae2ce;
+}
+.taste-note-carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  gap: 8px;
+  margin-top: 4px;
+}
+.taste-note-position {
+  font-size: 11px;
+  color: #63715b;
+  min-width: 36px;
+}
+.taste-note-dots,
+.taste-note-arrows {
+  display: flex;
+  align-items: center;
+}
+.taste-note-dots button {
+  width: 32px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.taste-note-dots button span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #b8c2ae;
+}
+.taste-note-dots button[aria-pressed="true"] span {
+  width: 18px;
+  border-radius: 4px;
+  background: var(--green);
+}
+.taste-note-arrows button {
+  width: 36px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #526748;
+}
+
+/* Magazine index and shared entry points. */
+.magazine-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.magazine-section-head h2 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--ink);
+}
+.magazine-section-head > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  font-size: 12px;
+  color: var(--green);
+}
+.magazine-title {
+  margin-bottom: 28px;
+}
+.magazine-list {
+  display: grid;
+  gap: 16px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.magazine-card {
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--paper);
+}
+.magazine-thumbnail {
+  display: grid;
+  place-items: center;
+  flex: 0 0 104px;
+  background: #f1e9dc;
+}
+.magazine-thumbnail.taste-note-tone-1 {
+  background: #f2e6e1;
+}
+.magazine-thumbnail.taste-note-tone-2 {
+  background: #e8eddf;
+}
+.magazine-thumbnail .cup-art {
+  width: 88px;
+  height: 112px;
+}
+.magazine-card-copy {
+  min-width: 0;
+  padding: 20px 16px;
+}
+.magazine-card h2 {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.55;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.magazine-card p {
+  margin: 9px 0 16px;
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.magazine-card-read {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--green);
+}
+.magazine-return {
+  margin-left: 20px;
+}
+
+/* Route loading placeholders share the app frame and never intercept tabs. */
+.page-skeleton {
+  min-height: 65vh;
+}
+.skeleton-content {
+  min-width: 0;
+}
+.skeleton-block {
+  display: block;
+  background: #e7ebdf;
+  border-radius: 8px;
+  animation: skeleton-pulse 1.8s ease-in-out infinite;
+}
+.skeleton-heading {
+  margin-bottom: 28px;
+}
+.skeleton-eyebrow {
+  width: 35%;
+  height: 9px;
+  margin-bottom: 20px;
+}
+.skeleton-title {
+  width: 66%;
+  height: 32px;
+  margin-bottom: 16px;
+}
+.skeleton-description {
+  width: 86%;
+  height: 13px;
+}
+.skeleton-home .skeleton-title {
+  height: 72px;
+}
+.skeleton-search {
+  height: 52px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+}
+.skeleton-banner {
+  height: 240px;
+  border-radius: 18px;
+  margin: 28px 0 48px;
+}
+.skeleton-section-title {
+  width: 48%;
+  height: 24px;
+  margin-bottom: 24px;
+}
+.skeleton-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.skeleton-tabs > span {
+  width: 28%;
+  height: 32px;
+}
+.skeleton-card {
+  min-width: 0;
+}
+.skeleton-drink-image {
+  aspect-ratio: 1 / 1.15;
+  border-radius: 18px;
+  margin-bottom: 14px;
+}
+.skeleton-card-brand {
+  width: 40%;
+  height: 10px;
+  margin-bottom: 10px;
+}
+.skeleton-card-title {
+  width: 82%;
+  height: 18px;
+  margin-bottom: 12px;
+}
+.skeleton-card-info {
+  width: 94%;
+  height: 32px;
+}
+.skeleton-calendar {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  margin-bottom: 24px;
+}
+.skeleton-month {
+  width: 38%;
+  height: 26px;
+  margin-bottom: 26px;
+}
+.skeleton-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+}
+.skeleton-calendar-grid > span {
+  aspect-ratio: 1;
+  border-radius: 10px;
+}
+.skeleton-calendar-grid > span:nth-child(-n + 7) {
+  height: 10px;
+  aspect-ratio: auto;
+  margin-bottom: 8px;
+}
+.skeleton-map {
+  height: 300px;
+  border-radius: 18px;
+  margin-bottom: 24px;
+}
+.skeleton-record {
+  height: 130px;
+  border-radius: 18px;
+}
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-block {
+    animation: none;
+  }
+}
+
+.record-edit-panel {
+  margin-top: 20px;
+  padding: 18px 0 0;
+  border-top: 1px solid var(--line);
+}
+.record-edit-panel h3 {
+  margin: 0 0 18px;
+  font-size: 16px;
+}
+.record-review-form {
+  scroll-margin-top: 88px;
+  scroll-margin-bottom: 100px;
+}
+.record-edit-cancel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+}
+.record[id] {
+  scroll-margin-top: 88px;
+}
+
+/* Account management is independent of journal and favorites. */
+.my-profile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 20px;
+  margin-bottom: 24px;
+}
+.my-avatar {
+  flex: 0 0 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--green);
+  background: #e9efdf;
+}
+.my-profile > div {
+  min-width: 0;
+}
+.my-profile h2 {
+  margin: 0 0 7px;
+  overflow-wrap: anywhere;
+}
+.my-profile p {
+  margin: 0;
+  color: #65745e;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.my-settings-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  font-size: 14px;
+}
+.my-settings-link > span {
+  flex: 1;
+}
+.my-settings-link > svg {
+  flex-shrink: 0;
+  color: var(--green);
+}
+.my-logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  margin-top: 20px;
+  color: #5e6e59;
+  font-size: 13px;
+}
+.my-logout:hover {
+  background: #eef2e8;
+}
+.skeleton-profile {
+  height: 130px;
+  border-radius: 18px;
+  margin-bottom: 24px;
+}
+
+.favorite-kind-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: #edf1e7;
+  border-radius: 14px;
+  margin: 24px 0;
+}
+.favorite-kind-tabs a {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border-radius: 11px;
+  color: #5e6e59;
+  font-size: 14px;
+}
+.favorite-kind-tabs a[aria-current="page"] {
+  background: #fff;
+  color: var(--green);
+  font-weight: 700;
+  box-shadow: 0 2px 8px #283a2e08;
+}
+.article-like-control {
+  margin: 18px 0;
+}
+.article-like-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid #ced9c6;
+  border-radius: 24px;
+  color: var(--green);
+  background: #fff;
+  font-size: 13px;
+}
+.article-like-button.is-favorite {
+  background: #e9efdf;
+  border-color: #b8c9a9;
+}
+.article-like-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.saved-article-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+.saved-article-actions .article-like-control {
+  margin: 8px 0 0;
 }
 
 /* Detail brand line: plain secondary text above the drink name. */

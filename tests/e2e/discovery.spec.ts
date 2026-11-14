@@ -20,7 +20,7 @@ test("home offers new menus and recording trends with search through the home se
       .locator("[data-drink-card]"),
   ).toHaveCount(3);
   const nav = page.getByRole("navigation", { name: "주 메뉴" });
-  await expect(nav.getByRole("link")).toHaveCount(4);
+  await expect(nav.getByRole("link")).toHaveCount(5);
   await expect(
     nav.getByRole("link", { name: "음료 검색", exact: true }),
   ).toHaveCount(0);

@@ -10,6 +10,8 @@ import { getCatalog } from "@/features/catalog/repository";
 import { getSummaries } from "@/features/reviews/repository";
 import { getFavoriteIds } from "@/features/favorites/repository";
 import { DrinkCard } from "@/features/catalog/components/DrinkCard";
+import { getArticleFavorites } from "@/features/favorites/articles";
+import { ArticleFavoriteButton } from "@/features/favorites/components/ArticleFavoriteButton";
 import { CupArt } from "@/components/CupArt";
 export async function generateMetadata({
   params,
@@ -31,16 +33,20 @@ export default async function TasteNotePage({
   const { slug } = await params;
   const note = tasteNotes.find((note) => note.slug === slug);
   if (!note) notFound();
-  const [catalog, summaries, favorites] = await Promise.all([
+  const [catalog, summaries, favorites, articleFavorites] = await Promise.all([
     getCatalog(),
     getSummaries(),
     getFavoriteIds(),
+    getArticleFavorites(),
   ]);
   const picks = resolveNoteRecommendations(note, catalog);
   return (
     <main id="main" className="page-wrap taste-note-page">
       <Link href="/" className="taste-note-back">
         <ArrowLeft size={15} aria-hidden="true" /> 홈으로
+      </Link>
+      <Link href="/notes" className="taste-note-back magazine-return">
+        <ArrowLeft size={15} aria-hidden="true" /> 매거진 전체 보기
       </Link>
       <article>
         <header className="taste-note-title">
@@ -49,13 +55,19 @@ export default async function TasteNotePage({
           </p>
           <h1>{note.title}</h1>
           <p className="taste-note-summary">{note.summary}</p>
+          <ArticleFavoriteButton
+            slug={note.slug}
+            initial={articleFavorites.slugs.includes(note.slug)}
+            available={articleFavorites.available}
+          />
         </header>
         <div className="taste-note-cover" aria-hidden="true">
           <span>
-            잠깐의 여유,
-            <br />차 한 잔의 계절
+            {note.coverLines[0]}
+            <br />
+            {note.coverLines[1]}
           </span>
-          <CupArt name="차 한 잔" kind="tea" />
+          <CupArt name="음료 한 잔" kind={note.illustrationKind} />
         </div>
         <div className="taste-note-prose">
           {note.paragraphs.map((section) => (
@@ -90,10 +102,13 @@ export default async function TasteNotePage({
         </section>
         <p className="taste-note-footnote">
           음료 정보와 판매 여부는 브랜드·매장 사정에 따라 달라질 수 있어요.
-          취향에 맞는 다른 차도 검색에서 찾아보세요.
+          취향에 맞는 다른 음료도 검색에서 찾아보세요.
         </p>
-        <Link href="/search?category=tea" className="primary-button">
-          다른 차 메뉴 둘러보기
+        <Link
+          href={"/search?category=" + note.searchCategory}
+          className="primary-button"
+        >
+          다른 {note.searchCategory === "tea" ? "차" : "커피"} 메뉴 둘러보기
         </Link>
       </article>
     </main>
