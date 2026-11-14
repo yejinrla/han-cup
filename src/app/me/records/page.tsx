@@ -152,6 +152,7 @@ export default async function Records({
                         body: r.body,
                         consumedOn: r.consumed_on,
                         visibility: r.visibility,
+                        options: r.options ?? [],
                       }}
                     />
                   </div>

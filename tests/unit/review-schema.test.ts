@@ -25,3 +25,10 @@ test("validates scores, Korean date and private default", () => {
     validateReview({ ...base, consumedOn: "2026-02-30" }, now),
   ).toThrow();
 });
+
+test("a record keeps the custom options the user chose", () => {
+  expect(
+    validateReview({ ...base, options: ["shot_extra", "ice_less"] }, now)
+      .options,
+  ).toEqual(["shot_extra", "ice_less"]);
+});

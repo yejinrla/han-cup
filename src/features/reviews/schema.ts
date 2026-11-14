@@ -14,6 +14,7 @@ export const reviewSchema = z.object({
   body: z.string().max(1000).default(""),
   consumedOn: z.iso.date(),
   visibility: z.enum(["private", "public"]).default("private"),
+  options: z.array(z.string()).default([]),
 });
 export type ReviewInput = z.infer<typeof reviewSchema>;
 export function validateReview(input: unknown, now = new Date()): ReviewInput {
