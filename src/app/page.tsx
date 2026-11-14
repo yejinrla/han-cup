@@ -1,3 +1,4 @@
+import { brands } from "@/features/catalog/types";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Search, ArrowUpRight } from "lucide-react";
@@ -30,6 +31,18 @@ export default async function Home({
     getPopularity().catch(() => unavailablePopularity()),
   ]);
   const arrivals = selectNewArrivals(data, curated, koreanDate());
+  // Arrivals released together from one official source share one heading.
+  const arrivalGroups = Object.values(
+    Object.groupBy(arrivals, (a) => `${a.releasedOn}|${a.sourceUrl}`),
+  ).map((group) => ({
+    key: `${group![0].releasedOn}|${group![0].sourceUrl}`,
+    releasedOn: group![0].releasedOn,
+    sourceUrl: group![0].sourceUrl,
+    brandNames: [...new Set(group!.map((a) => brands[a.item.brandId]))].join(
+      ", ",
+    ),
+    items: group!.map((a) => a.item),
+  }));
   const items = joinCatalog(data).map((item) => ({
     ...item,
     rating: summaries[item.id] ?? item.rating,
@@ -60,20 +73,28 @@ export default async function Home({
           </Link>
         </div>
         {arrivals.length ? (
-          <div className="drink-grid">
-            {arrivals.map(({ item, releasedOn, sourceUrl }) => (
-              <div key={item.id}>
-                <p className="discovery-release">
-                  {releasedOn} 출시 ·{" "}
-                  <a href={sourceUrl} target="_blank" rel="noreferrer">
+          <div className="arrival-groups">
+            {arrivalGroups.map((group) => (
+              <div className="arrival-group" key={group.key}>
+                <p className="arrival-group-head">
+                  {group.brandNames} · {group.releasedOn} 출시 ·{" "}
+                  <a href={group.sourceUrl} target="_blank" rel="noreferrer">
                     공식 출시 정보
                   </a>
                 </p>
-                <DrinkCard
-                  item={{ ...item, rating: summaries[item.id] ?? item.rating }}
-                  basis="serving"
-                  isFavorite={favorites.includes(item.id)}
-                />
+                <div className="arrival-rail">
+                  {group.items.map((item) => (
+                    <DrinkCard
+                      key={item.id}
+                      item={{
+                        ...item,
+                        rating: summaries[item.id] ?? item.rating,
+                      }}
+                      basis="serving"
+                      isFavorite={favorites.includes(item.id)}
+                    />
+                  ))}
+                </div>
               </div>
             ))}
           </div>

@@ -2303,10 +2303,8 @@ p.muted,
   line-height: 1.3;
 }
 .drink-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px;
+  /* Inline flow keeps the brand dot with the first word when the line wraps. */
+  display: block;
   font-size: 11px;
   line-height: 1.4;
   color: var(--muted);
@@ -2448,4 +2446,130 @@ p.muted,
   font-size: 13px;
   color: var(--muted);
   text-decoration: underline;
+}
+
+/* UI stage 3: three drinks side by side at 390px. A narrow label column and
+   fixed equal drink columns; only narrower screens scroll inside the table. */
+.comparison-scroll table {
+  width: 100%;
+  min-width: 330px;
+  table-layout: fixed;
+}
+.comparison-scroll th,
+.comparison-scroll td {
+  min-width: 0;
+  padding: 10px 4px;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+.comparison-scroll th:first-child,
+.comparison-scroll td:first-child {
+  width: 58px;
+  min-width: 0;
+  padding-left: 8px;
+}
+.comparison-scroll thead th {
+  vertical-align: bottom;
+}
+.comparison-scroll thead th a {
+  font-size: 13px;
+  line-height: 1.35;
+}
+th .cup-art {
+  width: 56px;
+  height: 68px;
+}
+.comparison-scroll td {
+  font-variant-numeric: tabular-nums;
+}
+.comparison-scroll td.is-lowest {
+  color: var(--green);
+  font-weight: 700;
+}
+.lowest-note {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* UI stage 3: new arrivals released together share one source line and a
+   horizontal rail of compact cards; the rail scrolls, the page does not. */
+.arrival-groups {
+  display: grid;
+  gap: 18px;
+}
+.arrival-group {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.arrival-group-head {
+  font-size: 13px;
+  color: var(--muted);
+}
+.arrival-group-head a {
+  color: var(--green);
+  text-decoration: underline;
+}
+.arrival-rail {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 6px;
+}
+.arrival-rail .drink-card {
+  flex: 0 0 150px;
+  scroll-snap-align: start;
+}
+.drink-meta .brand-dot {
+  display: inline-block;
+  vertical-align: middle;
+  margin: -2px 5px 0 0;
+}
+
+/* UI stage 3: detail actions. One record action leads; compare, favorite and
+   stores are three equal buttons tall enough to tap. */
+.detail-record {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 16px;
+}
+.detail-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 10px 0 20px;
+}
+.detail-actions > button,
+.detail-actions > a {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 6px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  font-size: 13px;
+  line-height: 1.25;
+  text-align: center;
+  word-break: keep-all;
+  color: var(--ink);
+}
+.detail-actions > .favorite-button.is-favorite {
+  color: var(--green);
+  border-color: var(--green);
+}
+@media (max-width: 359px) {
+  /* On the narrowest phones a long label wraps inside its button and the
+     icon steps aside, keeping all three actions on one row. */
+  .detail-actions > a svg {
+    display: none;
+  }
 }

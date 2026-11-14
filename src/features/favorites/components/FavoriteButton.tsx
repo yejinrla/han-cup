@@ -7,9 +7,12 @@ import { toggleFavorite } from "../service";
 export function FavoriteButton({
   drinkId,
   initial = false,
+  showLabel = false,
 }: {
   drinkId: string;
   initial?: boolean;
+  /** Show "찜하기"/"찜 해제" next to the heart (detail page); cards stay icon-only. */
+  showLabel?: boolean;
 }) {
   const [saved, setSaved] = useState(initial),
     [message, setMessage] = useState(""),
@@ -37,6 +40,7 @@ export function FavoriteButton({
         }
       >
         <Heart size={18} fill={saved ? "currentColor" : "none"} />
+        {showLabel && <span>{saved ? "찜 해제" : "찜하기"}</span>}
       </button>
       <span className="sr-only" role="status">
         {message}

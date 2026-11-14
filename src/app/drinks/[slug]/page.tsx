@@ -90,15 +90,20 @@ export default async function Detail({
           <p className="muted" style={{ marginTop: 16 }}>
             컵 용량 {fmt(v.cupMl, "ml")}　·　가격 {fmt(v.priceKrw, "원")}
           </p>
+          <Link
+            className="primary-button detail-record"
+            href={`/me/records?drink=${drink.id}&variant=${v.id}`}
+          >
+            한 잔 기록하기
+          </Link>
           <div className="detail-actions">
             <CompareButton id={v.id} />
-            <div style={{ position: "relative", width: 38, height: 32 }}>
-              <FavoriteButton
-                key={drink.id + String(favorites.includes(drink.id))}
-                drinkId={drink.id}
-                initial={favorites.includes(drink.id)}
-              />
-            </div>
+            <FavoriteButton
+              key={drink.id + String(favorites.includes(drink.id))}
+              drinkId={drink.id}
+              initial={favorites.includes(drink.id)}
+              showLabel
+            />
             <Link
               className="text-button"
               href={"/stores?brand=" + drink.brandId}
