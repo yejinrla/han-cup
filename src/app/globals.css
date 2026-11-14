@@ -2780,6 +2780,7 @@ p.muted,
   min-height: 0;
   font-size: 14px;
   line-height: 1.35;
+  word-break: keep-all;
 }
 .card-bottom {
   margin-top: 0;
@@ -3045,5 +3046,30 @@ p.muted,
      icon steps aside, keeping all three actions on one row. */
   .detail-actions > a svg {
     display: none;
+  }
+}
+@media (max-width: 359px) {
+  /* Narrowest phones: the stage 2 card rules (.drink-info .nutrition-strip)
+     outrank the earlier narrow-screen rules, so restate the layout here.
+     Three columns leave about 33px per figure, which a wider font can
+     overflow; instead each nutrient takes a full-width row. */
+  .drink-info .nutrition-strip {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 2px;
+    padding: 6px 8px;
+  }
+  .drink-info .nutrition-strip > div {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    padding: 0;
+    border-right: 0;
+  }
+  .drink-info .nutrition-strip small {
+    margin: 0 auto 0 0;
+  }
+  .drink-info .nutrition-strip b,
+  .drink-info .nutrition-strip em {
+    display: inline;
   }
 }
