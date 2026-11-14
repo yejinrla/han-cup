@@ -466,3 +466,54 @@ test("article favorites cascade when the owning account is deleted", async () =>
     await db.query("rollback");
   }
 });
+
+test("custom options: the database keeps only valid sets and shows them only on public reviews", async () => {
+  // Rerunnable: applied twice, as an operator could in the SQL Editor.
+  const migration = await readFile(
+    "supabase/migrations/009_review_options.sql",
+    "utf8",
+  );
+  await db.query(migration);
+  await db.query(migration);
+  const drink = "10000000-0000-4000-8000-000000000077";
+  await db.query(
+    `insert into drinks(id,brand_id,slug,name,category) values($1,'mega','options-test','옵션 테스트','coffee')`,
+    [drink],
+  );
+  const insert = (user: string, options: string[], visibility: string) =>
+    as(
+      user,
+      "insert into reviews(user_id,drink_id,rating,consumed_on,visibility,options) values($1,$2,4,current_date,$3,$4)",
+      [user, drink, visibility, options],
+    );
+  // The app is bypassed here; the constraint itself must refuse bad sets.
+  for (const bad of [
+    ["gold_flakes"],
+    ["decaf", "decaf"],
+    ["shot_extra", "shot_light"],
+    ["syrup_less", "syrup_none"],
+    [
+      "shot_extra",
+      "syrup_less",
+      "milk_change",
+      "ice_less",
+      "whip_none",
+      "decaf",
+    ],
+  ])
+    await expect(insert(a, bad, "public")).rejects.toThrow();
+  await insert(a, ["shot_extra", "ice_less"], "public");
+  await insert(b, ["syrup_none"], "private");
+  const shown = (await as(null, "select * from public_reviews($1,0)", [drink]))
+    .rows;
+  expect(shown.map((r) => r.options)).toEqual([["shot_extra", "ice_less"]]);
+  // A record without options still saves and reads back as none.
+  await as(
+    b,
+    "insert into reviews(user_id,drink_id,rating,consumed_on,visibility) values($1,$2,3,current_date,'public')",
+    [b, drink],
+  );
+  const latest = (await as(null, "select * from public_reviews($1,0)", [drink]))
+    .rows[0];
+  expect(latest.options).toEqual([]);
+});

@@ -22,6 +22,8 @@ export async function saveReview(
       body: form.get("body") ?? "",
       consumedOn: form.get("consumedOn"),
       visibility: form.get("visibility") ?? "private",
+      // One checkbox per chosen option, all named "options".
+      options: form.getAll("options"),
     });
     const id = form.get("id");
     const fields = {
@@ -30,6 +32,7 @@ export async function saveReview(
       body: input.body,
       consumed_on: input.consumedOn,
       visibility: input.visibility,
+      options: input.options,
     };
     const result = id
       ? await db
