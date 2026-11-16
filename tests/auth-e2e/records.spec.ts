@@ -104,7 +104,9 @@ test("real sessions persist favorites and repeat records without leaking private
   await page
     .getByRole("button", { name: "한 잔 기록하기", exact: true })
     .click();
-  await expect(page.getByRole("status")).toContainText("한 잔을 기록했어요.");
+  await expect(
+    page.getByRole("status").filter({ hasText: "한 잔을 기록했어요." }),
+  ).toContainText("한 잔을 기록했어요.");
   const viewer = await browser.newContext();
   const publicPage = await viewer.newPage();
   await publicPage.goto("/drinks/" + slug);
@@ -145,7 +147,9 @@ test("real sessions persist favorites and repeat records without leaking private
     .eq("body", "공개로 남긴 두 번째 한 잔")
     .single();
   expect(stored.data?.visibility).toBe("private");
-  await expect(page.getByRole("status")).toContainText("기록을 수정했어요.");
+  await expect(
+    page.getByRole("status").filter({ hasText: "기록을 수정했어요." }),
+  ).toContainText("기록을 수정했어요.");
   await publicPage.reload();
   await expect(
     publicPage.getByText("공개로 남긴 두 번째 한 잔", { exact: true }),
@@ -329,7 +333,9 @@ test("journal calendar defaults to today, filters dates, paginates and refreshes
     await expect(page).toHaveURL(/date=2024-02-29&edit=/);
     await page.getByLabel("마신 날짜").fill("2024-02-28");
     await page.getByRole("button", { name: "기록 수정하기" }).click();
-    await expect(page.getByRole("status")).toContainText("기록을 수정했어요.");
+    await expect(
+      page.getByRole("status").filter({ hasText: "기록을 수정했어요." }),
+    ).toContainText("기록을 수정했어요.");
     await expect(page.locator(".journal-day.is-selected")).toHaveAttribute(
       "href",
       "/me/records?date=2024-02-28",
@@ -510,7 +516,9 @@ test("record editing stays inside its card, cancels without losing the page and 
       .click();
     await expect(page).toHaveURL(/date=2024-05-09/);
     await expect(page).not.toHaveURL(/edit=|cursor=20/);
-    await expect(page.getByRole("status")).toContainText("기록을 수정했어요.");
+    await expect(
+      page.getByRole("status").filter({ hasText: "기록을 수정했어요." }),
+    ).toContainText("기록을 수정했어요.");
     await expect(page.locator("article.record")).toHaveCount(1);
     await expect(
       page.getByText("날짜를 바꾼 기록", { exact: true }),
@@ -599,13 +607,18 @@ test("five tabs separate records, likes and My with settings and logout", async 
   await expect(
     page.getByRole("heading", { name: "마이페이지", exact: true }),
   ).toBeVisible();
+  const header = page.locator("header.site-header");
+  await expect(
+    header.getByRole("button", { name: "로그아웃", exact: true }),
+  ).toBeVisible();
+  await expect(header.getByRole("link", { name: /로그인/ })).toHaveCount(0);
   const nav = page.getByRole("navigation", { name: "주 메뉴" });
   await expect(nav.getByRole("link")).toHaveCount(5);
   const active = nav.locator('[aria-current="page"]');
   await expect(active).toHaveCount(1);
   await expect(active).toHaveAccessibleName("마이페이지");
   await expect(
-    page.getByRole("button", { name: "로그아웃", exact: true }),
+    page.locator("main").getByRole("button", { name: "로그아웃", exact: true }),
   ).toBeVisible();
   await page.screenshot({ path: "/tmp/hancup-my-mobile.png", fullPage: true });
   await page
@@ -620,7 +633,7 @@ test("five tabs separate records, likes and My with settings and logout", async 
   await expect(active).toHaveAccessibleName("음료 기록");
   await expect(page.locator(".personal-tabs")).toHaveCount(0);
   await expect(
-    page.getByRole("button", { name: "로그아웃", exact: true }),
+    page.locator("main").getByRole("button", { name: "로그아웃", exact: true }),
   ).toHaveCount(0);
   await nav.getByRole("link", { name: "좋아요", exact: true }).click();
   await expect(
@@ -641,8 +654,12 @@ test("five tabs separate records, likes and My with settings and logout", async 
     }
   }
   await nav.getByRole("link", { name: "마이페이지", exact: true }).click();
-  await page.getByRole("button", { name: "로그아웃", exact: true }).click();
+  await header.getByRole("button", { name: "로그아웃", exact: true }).click();
   await expect(page).toHaveURL("http://localhost:3001/");
+  await expect(header.getByRole("link", { name: /로그인/ })).toBeVisible();
+  await expect(
+    header.getByRole("button", { name: "로그아웃", exact: true }),
+  ).toHaveCount(0);
   await nav.getByRole("link", { name: "마이페이지", exact: true }).click();
   await expect(page).toHaveURL(/\/login\?next=%2Fme$/);
 });

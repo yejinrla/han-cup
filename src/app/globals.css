@@ -3155,3 +3155,16 @@ p.muted,
   font-size: 12px;
   color: var(--green);
 }
+
+.site-header > form {
+  margin: 0;
+  flex-shrink: 0;
+}
+.header-auth-placeholder {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 84px;
+  height: 44px;
+  border-radius: 24px;
+  background: #e7ebdf;
+}

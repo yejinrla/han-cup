@@ -137,6 +137,9 @@ await appDb.query(
 await appDb.query(
   await readFile("supabase/migrations/008_article_favorites.sql", "utf8"),
 );
+await appDb.query(
+  await readFile("supabase/migrations/009_review_options.sql", "utf8"),
+);
 await appDb.end();
 docker(
   "run",
