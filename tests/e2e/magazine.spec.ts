@@ -4,6 +4,10 @@ test("magazine collects articles and connects home, details and list", async ({
   page,
 }) => {
   await page.goto("/");
+  await expect(
+    page.getByRole("heading", { name: "한컵 매거진", exact: true }),
+  ).toHaveCount(0);
+  await page.locator('.taste-note-banner[href="/notes/autumn-tea"]').click();
   await page
     .getByRole("link", { name: "매거진 전체 보기", exact: true })
     .click();
