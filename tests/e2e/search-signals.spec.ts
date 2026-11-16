@@ -3,6 +3,8 @@ import { test, expect } from "@playwright/test";
 // The search page claims only what the catalog has: the brand count counts
 // brands with drinks, brands without drinks say "(준비 중)", and the price
 // sort appears only when some price is known (none is, in the current data).
+// Expectations follow the local catalog JSON (4 brands with drinks, no prices);
+// they change if the tests run against a configured Supabase catalog.
 test("search shows the real brand count, marks brands in preparation and hides the empty price sort", async ({
   page,
 }) => {
@@ -28,4 +30,9 @@ test("search shows the real brand count, marks brands in preparation and hides t
   await expect(
     page.getByLabel("음료 정렬").locator('option[value="price"]'),
   ).toHaveCount(0);
+});
+
+test("an old price-sort link keeps its sort selected", async ({ page }) => {
+  await page.goto("/search?sort=price");
+  await expect(page.getByLabel("음료 정렬")).toHaveValue("price");
 });

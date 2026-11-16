@@ -14,6 +14,7 @@ import {
   parseCatalogQuery,
 } from "@/features/catalog/repository";
 import { queryCatalog } from "@/features/catalog/query";
+import { brands } from "@/features/catalog/types";
 import { getSummaries } from "@/features/reviews/repository";
 import { configured } from "@/lib/supabase/server";
 export const metadata = { title: "음료 검색" };
@@ -36,7 +37,10 @@ export default async function SearchPage({
     getFavoriteIds(),
   ]);
   const activeDrinks = data.drinks.filter((d) => d.status === "active");
-  const activeBrands = new Set(activeDrinks.map((d) => d.brandId));
+  // Only brands we offer as filter choices count, even if the data has others.
+  const activeBrands = new Set(
+    activeDrinks.map((d) => d.brandId).filter((id) => id in brands),
+  );
   const activeIds = new Set(activeDrinks.map((d) => d.id));
   const hasPrices = data.variants.some(
     (v) => activeIds.has(v.drinkId) && v.priceKrw !== null,

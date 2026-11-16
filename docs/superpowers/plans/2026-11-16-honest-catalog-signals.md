@@ -19,4 +19,10 @@
 - [x] RED → GREEN on seam 2 (brand count, "(준비 중)", price sort).
 
 ### Task 3: Verification
-- [ ] Lint, typecheck, unit/DB, browser suite, build; screens at 320/390. Independent review (time-boxed), one fix pass. Commit, push.
+- [x] Lint, typecheck, unit/DB, browser suite, build; screens at 320/390. Independent review (time-boxed), one fix pass. Commit, push.
+
+## Verification and review
+
+Each seam went RED before GREEN: the 30-day window (31 days before today was still shown) and the search signals (the header read "6개 브랜드 탐색"). A mutation check confirms the search test fails when the price sort is always offered. Lint, typecheck, unit/DB (76), the browser suite (69) and the build pass. Prettier's warnings are the existing docs files only. Screens at 320/390 have no horizontal overflow, including a selected "투썸플레이스 (준비 중)".
+
+Independent review: no Critical issues. Fixed Important: the brand count now counts only brands offered as filter choices, so an unknown brand id in Supabase data cannot inflate it. Fixed Minor: an old `sort=price` link keeps the option selected (test added, and removing the guard fails it). The test notes that its expectations follow the local catalog JSON. Not covered: the case where prices exist, since there is no priced data.
