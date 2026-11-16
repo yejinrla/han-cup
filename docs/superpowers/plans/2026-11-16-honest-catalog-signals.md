@@ -13,10 +13,10 @@
 3. **Home heading (existing Playwright tests)** — rename the region "이번주 신메뉴" to "최근 신메뉴" in the existing discovery and home-arrivals tests; the arrivals released 2026-10-29 still show on 2026-11-16 (18 days). Misses: nothing new.
 
 ### Task 1: New-arrival window
-- [ ] RED → GREEN on seam 1; rename the heading with seam 3.
+- [x] RED → GREEN on seam 1; rename the heading with seam 3.
 
 ### Task 2: Search signals
-- [ ] RED → GREEN on seam 2 (brand count, "(준비 중)", price sort).
+- [x] RED → GREEN on seam 2 (brand count, "(준비 중)", price sort).
 
 ### Task 3: Verification
 - [ ] Lint, typecheck, unit/DB, browser suite, build; screens at 320/390. Independent review (time-boxed), one fix pass. Commit, push.

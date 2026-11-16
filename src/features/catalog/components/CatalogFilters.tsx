@@ -2,7 +2,14 @@ import { Search, SlidersHorizontal, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { brands, type Basis } from "../types";
 import type { CatalogQuery } from "../query";
-export function CatalogFilters({ q }: { q: CatalogQuery }) {
+export function CatalogFilters({
+  q,
+  activeBrands,
+}: {
+  q: CatalogQuery;
+  // Brands with at least one drink on sale; the rest are marked "(준비 중)".
+  activeBrands: ReadonlySet<string>;
+}) {
   const limits = [
     ["maxCalories", "칼로리", "kcal", q.maxCalories],
     ["maxSugar", "당류", "g", q.maxSugar],
@@ -58,7 +65,7 @@ export function CatalogFilters({ q }: { q: CatalogQuery }) {
               <option value="">전체 브랜드</option>
               {Object.entries(brands).map(([id, name]) => (
                 <option value={id} key={id}>
-                  {name}
+                  {activeBrands.has(id) ? name : `${name} (준비 중)`}
                 </option>
               ))}
             </select>
@@ -172,7 +179,14 @@ export function BasisToggle({ q }: { q: CatalogQuery }) {
     </div>
   );
 }
-export function SortControl({ q }: { q: CatalogQuery }) {
+export function SortControl({
+  q,
+  hasPrices,
+}: {
+  q: CatalogQuery;
+  // The price sort is offered only when some drink on sale has a known price.
+  hasPrices: boolean;
+}) {
   const p = new URLSearchParams(queryLink(q, {}).split("?")[1]);
   return (
     <form action="/search" className="sort-control">
@@ -186,7 +200,9 @@ export function SortControl({ q }: { q: CatalogQuery }) {
       </label>
       <select id="catalog-sort" name="sort" defaultValue={q.sort}>
         <option value="name">이름순</option>
-        <option value="price">가격 낮은 순</option>
+        {(hasPrices || q.sort === "price") && (
+          <option value="price">가격 낮은 순</option>
+        )}
         <option value="calories">칼로리 낮은 순</option>
         <option value="sugar">당류 낮은 순</option>
         <option value="caffeine">카페인 낮은 순</option>
