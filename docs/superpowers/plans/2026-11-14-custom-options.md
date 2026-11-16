@@ -24,7 +24,7 @@ First failing test: seam 1, "a record keeps the custom options the user chose".
 - [x] Option chips in the form, chips on journal and public feed, nutrition note; readability rules. Verification per seam 3 decision.
 
 ### Task 4: Verification and release
-- [ ] (merge waits for production 009) Lint, typecheck, unit/DB, anonymous browser suite, build. Independent review, one fix pass. Add 009 to production-db.md with its check query. PR; merge only after the user applies 009 in production.
+- [x] (009 applied in production 2026-11-16, check query all true) Lint, typecheck, unit/DB, anonymous browser suite, build. Independent review, one fix pass. Add 009 to production-db.md with its check query. PR; merge only after the user applies 009 in production.
 
 ## Verification and review
 

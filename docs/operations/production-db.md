@@ -10,12 +10,11 @@
 | 초기 공개 도감 | `supabase/initial-catalog.sql` | 운영 도감 표시 |
 | 발견 홈 인기 집계(007) + 메가 겨울 신메뉴 3종 | `supabase/enable-discovery.sql` | `discovery_applied = true`, `winter_drinks = 3`, `/api/discovery/popular` `available: true` (2026-11-14) |
 | 아티클 좋아요(008) | `supabase/migrations/008_article_favorites.sql` | `article_likes_applied = true` (2026-11-14). 로그인 후 동작 확인은 아직 기록 없음 |
+| 기록의 커스텀 옵션(009) | `supabase/migrations/009_review_options.sql` | 009 확인 쿼리 `options_column`·`options_rule`·`public_reviews_has_options` 모두 true (2026-11-16, 코드 배포 전 적용). 로그인 후 옵션 저장·표시 확인은 아직 기록 없음 |
 
 ## 적용 필요
 
-| 내용 | 파일 | 상태 |
-|---|---|---|
-| 기록의 커스텀 옵션(009) | `supabase/migrations/009_review_options.sql` | 아직 운영에 적용 안 됨. **코드를 배포하기 전에** SQL Editor에서 전체 실행한다. 재실행 가능, 기존 기록은 옵션 없음(빈 목록)으로 유지된다. 적용 전에 코드가 배포되면 새 기록 저장과 수정이 실패한다. |
+현재 없음.
 
 009 확인 쿼리 (읽기 전용):
 
@@ -29,7 +28,7 @@ select
      like '%options%')                                        as public_reviews_has_options;
 ```
 
-세 값이 모두 true면 적용된 것이다. 적용 후 이 표를 "적용됨"으로 옮기고 날짜를 적는다.
+세 값이 모두 true면 적용된 것이다.
 
 새 프로젝트용 `setup.sql`은 006까지만 담고 있다. 새 프로젝트를 만들면 `setup.sql` 다음에 007(또는 `enable-discovery.sql`), 008, 009를 차례로 실행한다.
 
