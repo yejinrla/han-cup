@@ -7,10 +7,10 @@ type SkeletonVariant =
   | "catalog"
   | "account";
 
-function Heading() {
+function Heading({ favorites = false }: { favorites?: boolean }) {
   return (
     <div className="skeleton-heading">
-      <span className="skeleton-block skeleton-eyebrow" />
+      {!favorites && <span className="skeleton-block skeleton-eyebrow" />}
       <span className="skeleton-block skeleton-title" />
       <span className="skeleton-block skeleton-description" />
     </div>
@@ -32,10 +32,10 @@ function Cards() {
   );
 }
 
-function Tabs() {
+function Tabs({ count = 3 }: { count?: number }) {
   return (
     <div className="skeleton-tabs">
-      {Array.from({ length: 3 }, (_, index) => (
+      {Array.from({ length: count }, (_, index) => (
         <span className="skeleton-block" key={index} />
       ))}
     </div>
@@ -48,7 +48,10 @@ export function PageSkeleton({
   variant?: SkeletonVariant;
 }) {
   return (
-    <main id="main" className="page-wrap page-skeleton">
+    <main
+      id="main"
+      className={`page-wrap page-skeleton${variant === "favorites" ? " menu-page" : ""}`}
+    >
       <p className="sr-only" role="status">
         화면을 불러오는 중이에요.
       </p>
@@ -56,7 +59,7 @@ export function PageSkeleton({
         aria-hidden="true"
         className={`skeleton-content skeleton-${variant}`}
       >
-        <Heading />
+        <Heading favorites={variant === "favorites"} />
         {variant === "home" ? (
           <>
             <span className="skeleton-block skeleton-search" />
@@ -101,7 +104,9 @@ export function PageSkeleton({
           </>
         ) : (
           <>
-            {variant === "catalog" && <Tabs />}
+            {(variant === "catalog" || variant === "favorites") && (
+              <Tabs count={variant === "favorites" ? 2 : 3} />
+            )}
             <Cards />
           </>
         )}

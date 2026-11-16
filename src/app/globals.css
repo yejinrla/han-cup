@@ -3421,3 +3421,43 @@ p.muted,
 .menu-page .search-discovery-heading {
   align-items: flex-start;
 }
+
+/* Favorites loading follows its title, two tabs and compact drink cards. */
+.skeleton-favorites .skeleton-heading {
+  margin-bottom: 30px;
+}
+.skeleton-favorites .skeleton-title {
+  width: 170px;
+  height: 34px;
+  margin: 4px 0 14px;
+}
+.skeleton-favorites .skeleton-tabs {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 13px;
+  margin-bottom: 25px;
+  gap: 20px;
+}
+.skeleton-favorites .skeleton-tabs > span {
+  width: 54px;
+  height: 24px;
+}
+.skeleton-favorites .skeleton-card {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  background: #fff;
+  padding-bottom: 10px;
+}
+.skeleton-favorites .skeleton-drink-image {
+  aspect-ratio: auto;
+  height: 98px;
+  border-radius: 0;
+  margin-bottom: 9px;
+}
+.skeleton-favorites .skeleton-card-brand,
+.skeleton-favorites .skeleton-card-title,
+.skeleton-favorites .skeleton-card-info {
+  margin-left: 10px;
+  margin-bottom: 8px;
+  max-width: calc(100% - 20px);
+}
