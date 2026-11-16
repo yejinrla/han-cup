@@ -9,7 +9,7 @@
 | 초기 스키마(001·004·005·006) | `supabase/setup.sql` | 확인 쿼리 `setup_applied = true` |
 | 초기 공개 도감 | `supabase/initial-catalog.sql` | 운영 도감 표시 |
 | 발견 홈 인기 집계(007) + 메가 겨울 신메뉴 3종 | `supabase/enable-discovery.sql` | `discovery_applied = true`, `winter_drinks = 3`, `/api/discovery/popular` `available: true` (2026-11-14) |
-| 아티클 좋아요(008) | `supabase/migrations/008_article_favorites.sql` | `article_likes_applied = true` (2026-11-14). 로그인 후 동작 확인은 아직 기록 없음 |
+| 아티클 좋아요(008) | `supabase/migrations/008_article_favorites.sql` | `article_likes_applied = true` (2026-11-14). 사용자가 로그인해서 하트 저장·해제 동작을 확인함(2026-11-16) |
 | 기록의 커스텀 옵션(009) | `supabase/migrations/009_review_options.sql` | 009 확인 쿼리 `options_column`·`options_rule`·`public_reviews_has_options` 모두 true (2026-11-16, 코드 배포 전 적용). 배포 후 사용자가 로그인해서 옵션 저장·표시를 확인함(2026-11-16) |
 
 ## 적용 필요
