@@ -1931,7 +1931,7 @@ body {
   padding: 12px 18px 0;
 }
 .discovery-welcome {
-  padding: 0 2px 22px;
+  padding: 0 2px;
 }
 .discovery-welcome h1 {
   font-size: 28px;
@@ -1961,6 +1961,12 @@ body {
 }
 .discovery-section {
   margin-top: 28px;
+}
+.discovery-welcome + .discovery-section {
+  margin-top: 12px;
+}
+.discovery-welcome + .discovery-section h2 {
+  margin-top: 0;
 }
 .discovery-section-head {
   display: flex;
