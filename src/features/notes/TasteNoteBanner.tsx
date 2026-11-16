@@ -65,7 +65,7 @@ export function TasteNoteBanner() {
               </span>
             </div>
             <span className="taste-note-banner-art" aria-hidden="true">
-              <CupArt name="음료 한 잔" kind={note.illustrationKind} />
+              <CupArt name="음료" kind={note.illustrationKind} />
             </span>
           </Link>
         ))}

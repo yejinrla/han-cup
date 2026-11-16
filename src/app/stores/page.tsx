@@ -11,7 +11,7 @@ export default async function Stores({
     p.brand && p.brand in brands ? (p.brand as BrandId) : "starbucks";
   return (
     <main id="main" className="page-wrap">
-      <h1 className="page-heading">내 주변의 한 잔</h1>
+      <h1 className="page-heading">주변 매장 찾기</h1>
       <p className="page-intro">
         발견한 음료를 만나러 갈 가까운 카페를 찾아보세요.
       </p>

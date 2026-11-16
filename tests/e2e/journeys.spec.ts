@@ -8,9 +8,9 @@ test("anonymous detail and personal-write gate work without pretending login suc
     .first()
     .click();
   await expect(
-    page.getByRole("heading", { name: "이 한 잔, 어땠나요?" }),
+    page.getByRole("heading", { name: "이 음료, 어땠나요?" }),
   ).toBeVisible();
-  await page.getByRole("link", { name: "한 잔 기록하기" }).click();
+  await page.getByRole("link", { name: "음료 기록하기" }).click();
   await expect(page).toHaveURL(/\/login\?next=/);
   await expect(
     page.getByRole("button", { name: "카카오로 시작하기" }),
@@ -25,7 +25,7 @@ test("invalid comparison and unknown product recover with useful UI", async ({
   ).toBeVisible();
   await page.goto("/drinks/does-not-exist");
   await expect(
-    page.getByRole("heading", { name: "이 한 잔을 찾지 못했어요" }),
+    page.getByRole("heading", { name: "페이지를 찾을 수 없어요" }),
   ).toBeVisible();
 });
 test("verified basis conversion does not make up missing price", async ({
@@ -62,6 +62,6 @@ test("repeated URL parameters recover without a server exception", async ({
   ).toBeVisible();
   await page.goto("/login?next=a&next=b");
   await expect(
-    page.getByRole("heading", { name: "나의 한 잔을 모으는 곳" }),
+    page.getByRole("heading", { name: "나의 취향을 모으는 곳" }),
   ).toBeVisible();
 });

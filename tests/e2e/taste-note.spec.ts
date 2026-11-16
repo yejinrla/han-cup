@@ -48,7 +48,7 @@ test("home taste-note card sits after search and opens an article with usable re
   ).toBeVisible();
   await page.goto("/notes/no-such-note");
   await expect(
-    page.getByRole("heading", { name: "이 한 잔을 찾지 못했어요" }),
+    page.getByRole("heading", { name: "페이지를 찾을 수 없어요" }),
   ).toBeVisible();
 });
 

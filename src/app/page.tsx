@@ -44,9 +44,9 @@ export default async function Home({
     <main id="main" className="discovery-home">
       <section className="discovery-welcome">
         <h1>
-          오늘은 어떤 한 잔을
+          오늘은 어떤 음료가
           <br />
-          발견해 볼까요?
+          끌리나요?
         </h1>
         <p>새로운 맛부터 지금 많이 기록하는 음료까지.</p>
         <Link href="/search" className="discovery-search">
@@ -120,9 +120,9 @@ export default async function Home({
       </section>
       <Link href="/me/records" className="discovery-journal">
         <span>
-          오늘 마신 한 잔도
+          오늘 마신 음료도
           <br />
-          <b>나의 한컵에 남겨보세요.</b>
+          <b>기록으로 남겨보세요.</b>
         </span>
         <ArrowUpRight size={20} />
       </Link>

@@ -7,7 +7,7 @@ test("detail page lifts the record action and evens out secondary actions", asyn
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/drinks/mega-11");
-  const record = page.getByRole("link", { name: "한 잔 기록하기" });
+  const record = page.getByRole("link", { name: "음료 기록하기" });
   await expect(record).toHaveCount(1);
   const recordTop = (await record.boundingBox())!.y;
   const nutrientsTop = (await page.locator(".detail-nutrients").boundingBox())!

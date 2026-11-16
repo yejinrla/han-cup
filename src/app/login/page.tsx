@@ -23,11 +23,11 @@ export default async function Login({
         <Link href="/" className="wordmark">
           한컵<span>.</span>
         </Link>
-        <h1>나의 한 잔을 모으는 곳</h1>
+        <h1>나의 취향을 모으는 곳</h1>
         <p>
           마셔보고 싶은 음료를 저장하고,
           <br />
-          오늘의 한 잔을 나만의 기록으로 남겨요.
+          오늘 마신 음료를 기록으로 남겨요.
         </p>
         {!configured() && (
           <div className="status-box">

@@ -108,7 +108,7 @@ export default async function SearchPage({
             <p>
               아직 공식 정보를 확인 중인 브랜드일 수 있어요.
               <br />
-              조건을 줄여 다른 한 잔을 찾아보세요.
+              조건을 줄여 다른 음료를 찾아보세요.
             </p>
             <Link className="primary-button" href="/search">
               조건 초기화
@@ -135,7 +135,7 @@ export default async function SearchPage({
       </section>
       <section className="journal-banner">
         <div>
-          <h2>오늘 마신 한 잔, 어땠나요?</h2>
+          <h2>오늘 마신 음료, 어땠나요?</h2>
           <p>
             좋았던 맛도, 다음엔 다른 걸 고르고 싶은 마음도.
             <br />

@@ -16,7 +16,7 @@ export function ArticleCard({
         className={`magazine-thumbnail taste-note-tone-${index % 3}`}
         aria-hidden="true"
       >
-        <CupArt name="음료 한 잔" kind={note.illustrationKind} />
+        <CupArt name="음료" kind={note.illustrationKind} />
       </span>
       <div className="magazine-card-copy">
         <h2>{note.title}</h2>

@@ -67,7 +67,7 @@ export default async function TasteNotePage({
             <br />
             {note.coverLines[1]}
           </span>
-          <CupArt name="음료 한 잔" kind={note.illustrationKind} />
+          <CupArt name="음료" kind={note.illustrationKind} />
         </div>
         <div className="taste-note-prose">
           {note.paragraphs.map((section) => (
@@ -81,7 +81,7 @@ export default async function TasteNotePage({
           className="taste-note-picks"
           aria-labelledby="note-picks-title"
         >
-          <h2 id="note-picks-title">이런 한 잔은 어때요?</h2>
+          <h2 id="note-picks-title">이런 음료는 어때요?</h2>
           {picks.map(({ pick, item }) => (
             <section className="taste-note-pick" key={item.id}>
               <h3>{pick.heading}</h3>

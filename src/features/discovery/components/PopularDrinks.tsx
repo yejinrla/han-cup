@@ -103,7 +103,7 @@ export function PopularDrinks({
               : "기록이 모이면 지금 많이 기록하는 음료를 보여드릴게요."}
           </p>
           <Link href="/search" className="text-button">
-            음료를 찾아 첫 한 잔 남기기 →
+            음료를 찾아 기록 남기기 →
           </Link>
         </div>
       )}

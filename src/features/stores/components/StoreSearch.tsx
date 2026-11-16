@@ -244,7 +244,7 @@ export function StoreSearch({ initialBrand }: { initialBrand: BrandId }) {
           {!items.length && (
             <div className="empty-state">
               <MapPin size={27} />
-              <h3>가까운 한 잔을 찾아보세요</h3>
+              <h3>가까운 매장을 찾아보세요</h3>
               <p>지역명으로 검색하거나 현재 위치를 사용해 주세요.</p>
             </div>
           )}

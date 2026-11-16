@@ -29,7 +29,7 @@ export default async function MyPage() {
         </span>
         <div>
           <h2>{data.nickname}</h2>
-          <p>오늘도 나다운 한 잔을 찾아보세요.</p>
+          <p>오늘도 내 취향의 음료를 찾아보세요.</p>
         </div>
       </section>
       <Link href="/me/settings" className="my-settings-link">

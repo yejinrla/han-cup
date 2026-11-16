@@ -14,7 +14,7 @@ export function Header() {
           한컵<span>.</span>
           <small>HANCUP</small>
         </Link>
-        <span className="app-header-note">한 잔씩, 나의 취향</span>
+        <span className="app-header-note">나만의 음료 취향</span>
         <Suspense
           fallback={
             <span className="header-auth-placeholder" role="status">

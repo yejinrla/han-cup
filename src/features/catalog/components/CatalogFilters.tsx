@@ -173,7 +173,7 @@ export function BasisToggle({ q }: { q: CatalogQuery }) {
             cursor: "",
           })}
         >
-          {b === "serving" ? "한 잔 기준" : "100ml 기준"}
+          {b === "serving" ? "1회 제공량" : "100ml 기준"}
         </Link>
       ))}
     </div>

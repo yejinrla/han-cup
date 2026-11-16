@@ -90,7 +90,7 @@ export function ReviewForm({
       </div>
       <OptionPicker initial={existing?.options} />
       <label>
-        한 잔의 기억 <span className="muted">선택 · 최대 1,000자</span>
+        음료 메모 <span className="muted">선택 · 최대 1,000자</span>
         <textarea
           name="body"
           maxLength={1000}
@@ -110,7 +110,7 @@ export function ReviewForm({
         {state.success && <p className="status-box">{state.success}</p>}
       </div>
       <button className="primary-button" disabled={pending}>
-        {pending ? "저장 중…" : existing ? "기록 수정하기" : "한 잔 기록하기"}
+        {pending ? "저장 중…" : existing ? "기록 수정하기" : "음료 기록하기"}
       </button>
       {existing && cancelHref && (
         <Link

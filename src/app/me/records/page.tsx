@@ -11,7 +11,7 @@ import { loadJournalData } from "@/features/reviews/load-journal";
 import { koreanDate } from "@/features/reviews/schema";
 import { deleteReview } from "@/features/reviews/service";
 export const metadata = {
-  title: "마신 기록",
+  title: "음료 기록",
   robots: { index: false, follow: false },
 };
 export const dynamic = "force-dynamic";
@@ -72,7 +72,7 @@ export default async function Records({
     : null;
   return (
     <main id="main" className="page-wrap">
-      <h1 className="page-heading">나의 한 잔 기록</h1>
+      <h1 className="page-heading">음료 기록</h1>
       <p className="page-intro">좋았던 한 모금도, 새로운 발견도 차곡차곡.</p>
       <JournalCalendar
         selectedDate={selectedDate}
@@ -99,7 +99,7 @@ export default async function Records({
         )}
         <h2>
           {Number(selectedDate.slice(5, 7))}월 {Number(selectedDate.slice(8))}
-          일의 한 잔
+          일의 기록
         </h2>
         <p className="muted journal-day-caption">
           {selectedDate} · 마신 날짜 기준
@@ -193,7 +193,7 @@ export default async function Records({
             <p>
               {offset > 0
                 ? "아래의 이전 기록 보기로 돌아가 주세요."
-                : "음료를 둘러보고 한 잔의 기억을 남겨보세요."}
+                : "음료를 둘러보고 마신 경험을 기록해 보세요."}
             </p>
             <Link className="primary-button" href="/search">
               음료 둘러보기

@@ -2,7 +2,7 @@ export const metadata = { title: "한컵 이야기" };
 export default function About() {
   return (
     <main id="main" className="page-wrap prose">
-      <h1 className="page-heading">한 잔씩 발견하는 나의 취향</h1>
+      <h1 className="page-heading">음료로 발견하는 나의 취향</h1>
       <p>
         한컵은 여러 카페의 음료를 한곳에서 탐색하고, 영양정보로 비교하고, 마셔본
         경험을 기록하는 개인 프로젝트입니다.

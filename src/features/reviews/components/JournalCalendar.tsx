@@ -82,7 +82,7 @@ export function JournalCalendar({
       </div>
       <p className="journal-calendar-legend">
         <span className="journal-record-dot has-record" aria-hidden="true" />
-        기록이 있는 날 · 날짜를 눌러 한 잔의 기억을 확인하세요.
+        기록이 있는 날 · 날짜를 눌러 기록을 확인하세요.
       </p>
     </section>
   );

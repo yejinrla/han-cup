@@ -46,7 +46,7 @@ export default async function Favorites({
       <main id="main" className="page-wrap">
         <h1 className="page-heading">좋아요한 아티클</h1>
         <p className="page-intro">
-          다시 읽고 싶은 한 잔의 이야기를 모아보세요.
+          다시 읽고 싶은 음료 이야기를 모아보세요.
         </p>
         <FavoriteTabs articles />
         {!favorites.available ? (
@@ -125,7 +125,7 @@ export default async function Favorites({
       ) : (
         <div className="empty-state">
           <h2>아직 좋아요한 음료가 없어요</h2>
-          <p>도감에서 하트를 눌러 다음 한 잔을 골라보세요.</p>
+          <p>도감에서 마음에 드는 음료에 하트를 눌러보세요.</p>
           <Link className="primary-button" href="/search">
             음료 둘러보기
           </Link>

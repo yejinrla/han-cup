@@ -133,7 +133,7 @@ test("search basis and sort controls keep their labels on one line at 320px", as
   await page.setViewportSize({ width: 320, height: 700 });
   await page.goto("/search");
   const controls = [
-    page.getByRole("link", { name: "한 잔 기준" }),
+    page.getByRole("link", { name: "1회 제공량" }),
     page.getByRole("link", { name: "100ml 기준" }),
     page.locator("form.sort-control").getByRole("button", { name: "적용" }),
   ];

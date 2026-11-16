@@ -49,7 +49,7 @@ export async function saveReview(
       return { error: "기록을 저장하지 못했어요. 다시 시도해 주세요." };
     revalidatePath("/me/records");
     revalidatePath("/", "layout");
-    if (!id) return { success: "한 잔을 기록했어요." };
+    if (!id) return { success: "기록을 저장했어요." };
     const cursor = Number(form.get("journalCursor"));
     const keepPage =
       input.consumedOn === form.get("originalDate") &&

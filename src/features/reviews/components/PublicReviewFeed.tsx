@@ -139,7 +139,7 @@ export function PublicReviewFeed({
       <p className="muted">
         {data.summary.count
           ? `★ ${data.summary.average} / 5 · ${data.summary.count}명의 공개 별점`
-          : "아직 공개 평가가 없어요. 첫 한 잔을 기록해 보세요."}
+          : "아직 공개 평가가 없어요. 첫 후기를 남겨보세요."}
       </p>
       {data.items.some((r) => r.options?.length) && (
         <p className="muted">{optionNutritionNote}</p>
@@ -153,7 +153,7 @@ export function PublicReviewFeed({
             <span>{r.consumed_on}</span>
           </div>
           <OptionChips options={r.options} />
-          <p className="record-body">{r.body || "별점으로 남긴 한 잔"}</p>
+          <p className="record-body">{r.body || "별점으로 남긴 후기"}</p>
           <ReportForm reviewId={r.id} />
         </article>
       ))}

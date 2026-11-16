@@ -20,7 +20,7 @@ export default async function Compare({
   const summaries = await getSummaries();
   return (
     <main id="main" className="page-wrap">
-      <h1 className="page-heading">나에게 맞는 한 잔은?</h1>
+      <h1 className="page-heading">내 취향에 맞는 음료는?</h1>
       <p className="page-intro">
         가격부터 영양정보까지, 최대 3개 음료를 한눈에 비교해 보세요.
       </p>
@@ -36,7 +36,7 @@ export default async function Compare({
               b
             }
           >
-            {b === "serving" ? "한 잔 기준" : "100ml 기준"}
+            {b === "serving" ? "1회 제공량" : "100ml 기준"}
           </Link>
         ))}
       </div>
@@ -148,7 +148,7 @@ export default async function Compare({
         </div>
       )}
       <p className="source-note">
-        100ml 값은 확인된 영양 제공량으로 계산하며, 가격은 한 잔 가격을
+        100ml 값은 확인된 영양 제공량으로 계산하며, 가격은 음료 한 개의 가격을
         유지합니다.
       </p>
     </main>

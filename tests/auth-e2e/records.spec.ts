@@ -98,24 +98,24 @@ test("real sessions persist favorites and repeat records without leaking private
   await page.goto("/me/favorites");
   await expect(page.getByRole("link", { name: /상세 보기$/ })).toHaveCount(1);
   await page.goto("/drinks/" + slug);
-  await page.getByRole("link", { name: "한 잔 기록하기" }).click();
+  await page.getByRole("link", { name: "음료 기록하기" }).click();
   await page.getByLabel("별점").selectOption("4");
-  await page.getByLabel("한 잔의 기억").fill("나만 아는 첫 한 잔");
+  await page.getByLabel("음료 메모").fill("나만 아는 첫 한 잔");
   await page
-    .getByRole("button", { name: "한 잔 기록하기", exact: true })
+    .getByRole("button", { name: "음료 기록하기", exact: true })
     .click();
   await expect(
-    page.getByRole("status").filter({ hasText: "한 잔을 기록했어요." }),
-  ).toContainText("한 잔을 기록했어요.");
+    page.getByRole("status").filter({ hasText: "기록을 저장했어요." }),
+  ).toContainText("기록을 저장했어요.");
   const viewer = await browser.newContext();
   const publicPage = await viewer.newPage();
   await publicPage.goto("/drinks/" + slug);
   await expect(publicPage.getByText("나만 아는 첫 한 잔")).toHaveCount(0);
   await page.getByLabel("공개 범위").selectOption("public");
   await page.getByLabel("별점").selectOption("2");
-  await page.getByLabel("한 잔의 기억").fill("공개로 남긴 두 번째 한 잔");
+  await page.getByLabel("음료 메모").fill("공개로 남긴 두 번째 한 잔");
   await page
-    .getByRole("button", { name: "한 잔 기록하기", exact: true })
+    .getByRole("button", { name: "음료 기록하기", exact: true })
     .click();
   await expect(
     page.getByText("공개로 남긴 두 번째 한 잔", { exact: true }),
@@ -245,7 +245,7 @@ test("review fix: history restoration never shows a withdrawn cached review whil
     await expect(p.getByText(body, { exact: true })).toHaveCount(0);
     release();
     await expect(
-      p.getByText("아직 공개 평가가 없어요. 첫 한 잔을 기록해 보세요."),
+      p.getByText("아직 공개 평가가 없어요. 첫 후기를 남겨보세요."),
     ).toBeVisible();
   } finally {
     release();
@@ -486,16 +486,16 @@ test("record editing stays inside its card, cancels without losing the page and 
     await expect(page.locator("article.record")).toHaveCount(2);
     const card = page.locator("article.record").last();
     await card.getByRole("link", { name: "수정 / 공개 범위 변경" }).click();
-    await expect(card.getByLabel("한 잔의 기억")).toBeVisible();
+    await expect(card.getByLabel("음료 메모")).toBeVisible();
     await expect(page).toHaveURL(/cursor=20/);
-    await card.getByLabel("한 잔의 기억").fill("취소할 내용");
+    await card.getByLabel("음료 메모").fill("취소할 내용");
     await card.getByRole("link", { name: "수정 취소", exact: true }).click();
     await expect(page).not.toHaveURL(/edit=/);
     await expect(page).toHaveURL(/cursor=20/);
-    await expect(page.getByLabel("한 잔의 기억")).toHaveCount(0);
+    await expect(page.getByLabel("음료 메모")).toHaveCount(0);
     await expect(page.getByText("취소할 내용", { exact: true })).toHaveCount(0);
     await card.getByRole("link", { name: "수정 / 공개 범위 변경" }).click();
-    await card.getByLabel("한 잔의 기억").fill("같은 날짜의 수정 기록");
+    await card.getByLabel("음료 메모").fill("같은 날짜의 수정 기록");
     await page.screenshot({
       path: "/tmp/hancup-inline-edit-mobile.png",
       fullPage: true,
@@ -509,7 +509,7 @@ test("record editing stays inside its card, cancels without losing the page and 
       card.getByText("같은 날짜의 수정 기록", { exact: true }),
     ).toBeVisible();
     await card.getByRole("link", { name: "수정 / 공개 범위 변경" }).click();
-    await card.getByLabel("한 잔의 기억").fill("날짜를 바꾼 기록");
+    await card.getByLabel("음료 메모").fill("날짜를 바꾼 기록");
     await card.getByLabel("마신 날짜").fill("2024-05-09");
     await card
       .getByRole("button", { name: "기록 수정하기", exact: true })
@@ -523,7 +523,7 @@ test("record editing stays inside its card, cancels without losing the page and 
     await expect(
       page.getByText("날짜를 바꾼 기록", { exact: true }),
     ).toBeVisible();
-    await expect(page.getByLabel("한 잔의 기억")).toHaveCount(0);
+    await expect(page.getByLabel("음료 메모")).toHaveCount(0);
   } finally {
     await admin
       .from("reviews")

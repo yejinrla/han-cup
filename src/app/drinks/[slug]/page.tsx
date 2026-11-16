@@ -94,7 +94,7 @@ export default async function Detail({
             className="primary-button detail-record"
             href={`/me/records?drink=${drink.id}&variant=${v.id}`}
           >
-            한 잔 기록하기
+            음료 기록하기
           </Link>
           <div className="detail-actions">
             <CompareButton id={v.id} />
@@ -119,7 +119,7 @@ export default async function Detail({
                 key={b}
                 href={`?variant=${v.id}&basis=${b}`}
               >
-                {b === "serving" ? "한 잔 기준" : "100ml 기준"}
+                {b === "serving" ? "1회 제공량" : "100ml 기준"}
               </Link>
             ))}
           </div>
