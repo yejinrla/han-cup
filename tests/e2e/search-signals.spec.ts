@@ -8,7 +8,7 @@ import { test, expect } from "@playwright/test";
 test("search shows the real brand count, marks brands in preparation and hides the empty price sort", async ({
   page,
 }) => {
-  await page.goto("/search");
+  await page.goto("/search?all=1");
   await expect(page.locator(".collection-count")).toHaveText("4개 브랜드 탐색");
 
   const brand = page.locator('select[name="brand"]');

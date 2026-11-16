@@ -24,6 +24,7 @@ export function CatalogFilters({
   return (
     <>
       <form className="catalog-form" action="/search" id="catalog-search">
+        <input type="hidden" name="all" value="1" />
         <div className="search-box">
           <Search size={20} />
           <input
@@ -138,6 +139,7 @@ export function CatalogFilters({
 }
 export function queryLink(q: CatalogQuery, changes: Record<string, string>) {
   const p = new URLSearchParams({
+    all: "1",
     q: q.q,
     brand: q.brandIds.join(","),
     category: q.category,

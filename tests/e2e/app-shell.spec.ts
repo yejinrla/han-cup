@@ -50,7 +50,7 @@ test("comparison tray stays above app tabs and comparison scroll remains inside 
   page,
 }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
-  await page.goto("/search");
+  await page.goto("/search?all=1");
   await page
     .getByRole("button", { name: "비교 담기", exact: true })
     .nth(0)

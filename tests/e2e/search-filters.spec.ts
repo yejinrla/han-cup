@@ -18,7 +18,7 @@ const openPanel = async (page: import("@playwright/test").Page) => {
 test("nutrition limits live in a panel that opens with a count when set", async ({
   page,
 }) => {
-  await page.goto("/search");
+  await page.goto("/search?all=1");
   await expect(page.getByLabel("음료명 또는 브랜드 검색")).toHaveAttribute(
     "placeholder",
     "음료명이나 브랜드",
@@ -69,7 +69,7 @@ test("brand and temperature apply without opening the panel and reset stays on s
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 700 });
-  await page.goto("/search");
+  await page.goto("/search?all=1");
   await page.locator('select[name="temperature"]').selectOption("hot");
   await page.getByRole("button", { name: "필터 적용" }).click();
   await expect(page).toHaveURL(/temperature=hot/);
@@ -78,5 +78,5 @@ test("brand and temperature apply without opening the panel and reset stays on s
   const box = (await reset.boundingBox())!;
   expect(box.x + box.width).toBeLessThanOrEqual(320);
   await reset.click();
-  await expect(page).toHaveURL(/\/search\??$/);
+  await expect(page).toHaveURL(/\/search\?all=1$/);
 });

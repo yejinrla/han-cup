@@ -29,7 +29,8 @@ test("home offers new menus and recording trends with search through the home se
     .click();
   await expect(page).toHaveURL(/\/search$/);
   await expect(page.getByLabel("음료명 또는 브랜드 검색")).toBeVisible();
-  // Nutrition limits sit in the collapsible panel on the search page.
+  await page.getByRole("link", { name: "전체 음료 보기", exact: true }).click();
+  // Nutrition limits sit in the collapsible panel on the result page.
   await page.locator("details.nutrition-panel summary").click();
   await page.getByLabel("당류 상한").fill("10");
   await page.getByRole("button", { name: "필터 적용" }).click();

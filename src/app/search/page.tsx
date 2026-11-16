@@ -1,3 +1,10 @@
+import { SearchLanding } from "@/features/search/SearchLanding";
+import { SearchRecorder } from "@/features/search/ActivityRecorders";
+import {
+  isSearchResults,
+  eligibleSearchTerm,
+  recommendedTerms,
+} from "@/features/search/discovery";
 import { getFavoriteIds } from "@/features/favorites/repository";
 import Link from "next/link";
 import { ArrowUpRight, Leaf, BookOpen } from "lucide-react";
@@ -30,6 +37,12 @@ export default async function SearchPage({
       string,
     ][],
   );
+  if (!isSearchResults(p)) {
+    const data = await getCatalog();
+    return (
+      <SearchLanding data={data} recommendations={recommendedTerms(data)} />
+    );
+  }
   const q = parseCatalogQuery(p);
   const [data, summaries, favorites] = await Promise.all([
     getCatalog(),
@@ -54,6 +67,10 @@ export default async function SearchPage({
   );
   return (
     <main id="main" className="search-page">
+      <SearchRecorder query={q.q} keyword={eligibleSearchTerm(q.q, data)} />
+      <Link href="/search" className="search-home-link" aria-label="검색 홈">
+        ← 검색 홈
+      </Link>
       <section className="collection" id="collection">
         <div className="collection-heading">
           <div>
@@ -68,7 +85,7 @@ export default async function SearchPage({
         <div className="results-bar">
           <p>
             총 <b>{result.total}</b>개의 음료
-            <Link className="reset-link" href="/search">
+            <Link className="reset-link" href="/search?all=1">
               조건 초기화
             </Link>
           </p>
@@ -110,7 +127,7 @@ export default async function SearchPage({
               <br />
               조건을 줄여 다른 음료를 찾아보세요.
             </p>
-            <Link className="primary-button" href="/search">
+            <Link className="primary-button" href="/search?all=1">
               조건 초기화
             </Link>
           </div>

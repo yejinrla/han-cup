@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 test("anonymous detail and personal-write gate work without pretending login success", async ({
   page,
 }) => {
-  await page.goto("/search");
+  await page.goto("/search?all=1");
   await page
     .getByRole("link", { name: /상세 보기$/ })
     .first()

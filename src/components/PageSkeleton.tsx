@@ -1,5 +1,11 @@
 type SkeletonVariant =
-  "home" | "favorites" | "journal" | "stores" | "catalog" | "account";
+  | "search"
+  | "home"
+  | "favorites"
+  | "journal"
+  | "stores"
+  | "catalog"
+  | "account";
 
 function Heading() {
   return (
@@ -57,6 +63,16 @@ export function PageSkeleton({
             <span className="skeleton-block skeleton-banner" />
             <span className="skeleton-block skeleton-section-title" />
             <Cards />
+          </>
+        ) : variant === "search" ? (
+          <>
+            <span className="skeleton-block skeleton-search" />
+            {Array.from({ length: 3 }, (_, index) => (
+              <div key={index}>
+                <span className="skeleton-block skeleton-section-title" />
+                <Tabs />
+              </div>
+            ))}
           </>
         ) : variant === "journal" ? (
           <>

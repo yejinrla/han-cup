@@ -51,6 +51,12 @@ beforeAll(async () => {
   await db.query(
     await readFile("supabase/migrations/007_home_popularity.sql", "utf8"),
   );
+  const searchMigration = await readFile(
+    "supabase/migrations/010_search_discovery.sql",
+    "utf8",
+  );
+  await db.query(searchMigration);
+  await db.query(searchMigration);
   const articleMigration = await readFile(
     "supabase/migrations/008_article_favorites.sql",
     "utf8",
@@ -565,4 +571,89 @@ test("custom options: the database rules match the app's option list and allow o
     rows[0].id,
   ]);
   expect(saved.rows[0].options).toEqual(["ice_less"]);
+});
+
+test("rising searches publish no raw signals and need real positive growth", async () => {
+  await expect(as(null, "select * from search_signals")).rejects.toThrow();
+  await expect(
+    as(a, "select record_search_signal('라떼',$1)", ["a".repeat(64)]),
+  ).rejects.toThrow();
+  expect((await as(null, "select * from rising_search_terms()")).rows).toEqual(
+    [],
+  );
+});
+
+test("search writer accepts catalog terms, deduplicates, caps clients and prunes expired signals", async () => {
+  const client = "a".repeat(64);
+  expect(
+    (await db.query("select record_search_signal('라떼',$1) as ok", [client]))
+      .rows[0].ok,
+  ).toBe(true);
+  expect(
+    (await db.query("select record_search_signal('라떼',$1) as ok", [client]))
+      .rows[0].ok,
+  ).toBe(false);
+  expect(
+    (
+      await db.query(
+        "select record_search_signal('private@email.example',$1) as ok",
+        [client],
+      )
+    ).rows[0].ok,
+  ).toBe(false);
+  expect(
+    (await db.query("select record_search_signal('라떼','forged') as ok"))
+      .rows[0].ok,
+  ).toBe(false);
+  for (let i = 0; i < 31; i++) {
+    await db.query(
+      "insert into drinks(brand_id,slug,name,category) values('mega',$1,$2,'tea')",
+      [`search-cap-${i}`, `집계테스트${i}`],
+    );
+    const allowed = (
+      await db.query("select record_search_signal($1,$2) as ok", [
+        `집계테스트${i}`,
+        "b".repeat(64),
+      ])
+    ).rows[0].ok;
+    expect(allowed).toBe(i < 30);
+  }
+  await db.query(
+    "insert into search_signals(term,client_hash,searched_at) values('라떼',$1,now()-interval '49 hours')",
+    ["c".repeat(64)],
+  );
+  await db.query("select record_search_signal('라떼',$1)", ["d".repeat(64)]);
+  expect(
+    (
+      await db.query(
+        "select * from search_signals where searched_at < now()-interval '48 hours'",
+      )
+    ).rows,
+  ).toHaveLength(0);
+});
+
+test("rising aggregation excludes small samples, non-growing terms, expired and future signals", async () => {
+  await db.query("truncate search_signals");
+  const add = async (
+    term: string,
+    count: number,
+    hours: number,
+    prefix: string,
+  ) => {
+    for (let i = 0; i < count; i++)
+      await db.query(
+        "insert into search_signals(term,client_hash,searched_at) values($1,$2,statement_timestamp()-($3::text||' hours')::interval)",
+        [term, (prefix + i.toString(16)).padEnd(64, "0"), hours],
+      );
+  };
+  await add("라떼", 4, 1, "a");
+  await add("라떼", 1, 25, "b");
+  await add("스타벅스", 2, 1, "c"); // Not enough recent signals.
+  await add("메가MGC커피", 3, 1, "d");
+  await add("메가MGC커피", 4, 25, "e");
+  await add("라떼", 3, 49, "f");
+  await add("라떼", 2, -1, "01");
+  expect((await as(null, "select * from rising_search_terms()")).rows).toEqual([
+    { term: "라떼", recent: "4", previous: "1", growth: "3" },
+  ]);
 });

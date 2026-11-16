@@ -14,7 +14,7 @@
 
 ## 적용 필요
 
-현재 없음.
+검색 탐색 집계(010): `supabase/migrations/010_search_discovery.sql` 전체를 SQL Editor에서 실행한다. 운영 적용은 아직 확인되지 않았다. 자세한 기준과 확인 방법은 [검색 탐색 운영](search-discovery.md)을 따른다.
 
 009 확인 쿼리 (읽기 전용):
 
@@ -30,7 +30,7 @@ select
 
 세 값이 모두 true면 적용된 것이다.
 
-새 프로젝트용 `setup.sql`은 006까지만 담고 있다. 새 프로젝트를 만들면 `setup.sql` 다음에 007(또는 `enable-discovery.sql`), 008, 009를 차례로 실행한다.
+새 프로젝트용 `setup.sql`은 006까지만 담고 있다. 새 프로젝트를 만들면 `setup.sql` 다음에 007(또는 `enable-discovery.sql`), 008, 009, 010을 차례로 실행한다.
 
 ## 다시 실행하지 않는 파일
 
@@ -53,5 +53,5 @@ select
 
 ## 다음 마이그레이션을 추가할 때
 
-- `supabase/migrations/`에 다음 번호(010부터)로 추가하고, 기존 프로젝트에 다시 실행해도 안전하게(`IF NOT EXISTS`, `CREATE OR REPLACE`, 트랜잭션) 쓴다.
+- `supabase/migrations/`에 다음 번호(011부터)로 추가하고, 기존 프로젝트에 다시 실행해도 안전하게(`IF NOT EXISTS`, `CREATE OR REPLACE`, 트랜잭션) 쓴다.
 - 적용 방법과 확인 방법을 운영 문서에 적고, 사용자가 실행한 뒤 이 표에 날짜와 근거를 추가한다. 실행되지 않은 설정을 완료로 적지 않는다.

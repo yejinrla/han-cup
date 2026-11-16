@@ -118,7 +118,7 @@ test("search category row fits a 390px screen after the larger type", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/search");
+  await page.goto("/search?all=1");
   const row = page.locator(".category-tabs");
   const { scroll, client } = await row.evaluate((e) => ({
     scroll: e.scrollWidth,
@@ -131,7 +131,7 @@ test("search basis and sort controls keep their labels on one line at 320px", as
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 700 });
-  await page.goto("/search");
+  await page.goto("/search?all=1");
   const controls = [
     page.getByRole("link", { name: "1회 제공량" }),
     page.getByRole("link", { name: "100ml 기준" }),
@@ -175,7 +175,7 @@ test("sentence-length secondary text is 13px and card nutrition numbers are 14px
     });
     expect(small, path).toEqual([]);
   }
-  for (const path of ["/", "/search"]) {
+  for (const path of ["/", "/search?all=1"]) {
     await page.goto(path);
     const numbers = await page.evaluate(() => [
       ...new Set(
@@ -199,7 +199,7 @@ for (const fonts of ["webfont", "fallback font"] as const)
         route.abort(),
       );
     await page.setViewportSize({ width: 320, height: 700 });
-    await page.goto("/search");
+    await page.goto("/search?all=1");
     // Measure with the real webfont: fallback fonts are narrower and hide overflow.
     await page.waitForLoadState("networkidle");
     await page.evaluate(() => document.fonts.ready);

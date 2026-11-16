@@ -61,7 +61,7 @@ export default async function Home({
           <div>
             <h2 id="new-drinks-title">최근 신메뉴</h2>
           </div>
-          <Link href="/search">
+          <Link href="/search?all=1">
             전체 음료 <ArrowUpRight size={13} />
           </Link>
         </div>
@@ -94,7 +94,7 @@ export default async function Home({
         ) : (
           <div className="discovery-empty">
             <p>공식 출시 정보를 확인한 신메뉴를 준비하고 있어요.</p>
-            <Link href="/search" className="text-button">
+            <Link href="/search?all=1" className="text-button">
               전체 음료 둘러보기 →
             </Link>
           </div>

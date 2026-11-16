@@ -6,7 +6,7 @@ test("drink cards are compact and carry variant facts in one line", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/search");
+  await page.goto("/search?all=1");
   const cards = page.locator("[data-drink-card]");
   const heights = await cards.evaluateAll((all) =>
     all.map((card) => Math.round(card.getBoundingClientRect().height)),

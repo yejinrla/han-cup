@@ -1,3 +1,4 @@
+import { ViewedDrinkRecorder } from "@/features/search/ActivityRecorders";
 import { getFavoriteIds } from "@/features/favorites/repository";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -43,6 +44,7 @@ export default async function Detail({
   const favorites = await getFavoriteIds();
   return (
     <main id="main" className="page-wrap">
+      <ViewedDrinkRecorder slug={drink.slug} variant={v.id} />
       <div className="breadcrumb">
         <Link href="/search">
           <ArrowLeft size={14} /> 음료 도감
