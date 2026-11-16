@@ -59,7 +59,7 @@ export default async function Home({
       <section className="discovery-section" aria-labelledby="new-drinks-title">
         <div className="discovery-section-head">
           <div>
-            <h2 id="new-drinks-title">이번주 신메뉴</h2>
+            <h2 id="new-drinks-title">최근 신메뉴</h2>
           </div>
           <Link href="/search">
             전체 음료 <ArrowUpRight size={13} />

@@ -13,17 +13,31 @@ const entrySchema = z.object({
   releasedOn: z.iso.date(),
   sourceUrl: z.url(),
 });
+export const NEW_ARRIVAL_DAYS = 30;
+// Calendar arithmetic on YYYY-MM-DD in UTC, so the host timezone never shifts it.
+function daysBefore(day: string, days: number) {
+  const d = new Date(day + "T00:00:00Z");
+  d.setUTCDate(d.getUTCDate() - days);
+  return d.toISOString().slice(0, 10);
+}
 export function selectNewArrivals(
   data: CatalogData,
   input: unknown,
   today: string,
 ) {
   if (!Array.isArray(input)) return [];
+  // Arrivals stay for 30 days after release (release day is day 0).
+  const earliest = daysBefore(today, NEW_ARRIVAL_DAYS);
   const seen = new Set<string>();
   return input
     .flatMap((entry) => {
       const parsed = entrySchema.safeParse(entry);
-      if (!parsed.success || parsed.data.releasedOn > today) return [];
+      if (
+        !parsed.success ||
+        parsed.data.releasedOn > today ||
+        parsed.data.releasedOn < earliest
+      )
+        return [];
       const { drinkId, releasedOn, sourceUrl } = parsed.data;
       const drink = data.drinks.find(
         (d) => d.id === drinkId && d.status === "active",

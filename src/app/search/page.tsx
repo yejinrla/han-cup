@@ -14,6 +14,7 @@ import {
   parseCatalogQuery,
 } from "@/features/catalog/repository";
 import { queryCatalog } from "@/features/catalog/query";
+import { brands } from "@/features/catalog/types";
 import { getSummaries } from "@/features/reviews/repository";
 import { configured } from "@/lib/supabase/server";
 export const metadata = { title: "음료 검색" };
@@ -35,6 +36,15 @@ export default async function SearchPage({
     getSummaries(),
     getFavoriteIds(),
   ]);
+  const activeDrinks = data.drinks.filter((d) => d.status === "active");
+  // Only brands we offer as filter choices count, even if the data has others.
+  const activeBrands = new Set(
+    activeDrinks.map((d) => d.brandId).filter((id) => id in brands),
+  );
+  const activeIds = new Set(activeDrinks.map((d) => d.id));
+  const hasPrices = data.variants.some(
+    (v) => activeIds.has(v.drinkId) && v.priceKrw !== null,
+  );
   const result = queryCatalog(
     joinCatalog(data, q.temperature).map((x) => ({
       ...x,
@@ -51,10 +61,10 @@ export default async function SearchPage({
           </div>
           <span className="collection-count">
             <BookOpen size={16} />
-            6개 브랜드 탐색
+            {activeBrands.size}개 브랜드 탐색
           </span>
         </div>
-        <CatalogFilters q={q} />
+        <CatalogFilters q={q} activeBrands={activeBrands} />
         <div className="results-bar">
           <p>
             총 <b>{result.total}</b>개의 음료
@@ -64,7 +74,7 @@ export default async function SearchPage({
           </p>
           <div>
             <BasisToggle q={q} />
-            <SortControl q={q} />
+            <SortControl q={q} hasPrices={hasPrices} />
           </div>
         </div>
         {!configured() && (

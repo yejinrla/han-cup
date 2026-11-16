@@ -96,3 +96,21 @@ test("legacy home searches retain supported repeated parameters and ignore unrel
   );
   expect(legacySearchUrl({ utm_source: "share" })).toBeNull();
 });
+
+test("new arrivals stay for 30 days after release and then leave the home", () => {
+  const a = data.drinks[0]; // an Ediya drink, matching the source URL below
+  const arrival = (releasedOn: string) => [
+    {
+      drinkId: a.id,
+      releasedOn,
+      sourceUrl: "https://www.ediya.com/contents/drink.html",
+    },
+  ];
+  // 2026-10-17 is exactly 30 days before 2026-11-16; 2026-10-16 is 31.
+  expect(
+    selectNewArrivals(data, arrival("2026-10-17"), "2026-11-16"),
+  ).toHaveLength(1);
+  expect(selectNewArrivals(data, arrival("2026-10-16"), "2026-11-16")).toEqual(
+    [],
+  );
+});
