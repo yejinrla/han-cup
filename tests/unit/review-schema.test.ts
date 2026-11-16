@@ -25,3 +25,75 @@ test("validates scores, Korean date and private default", () => {
     validateReview({ ...base, consumedOn: "2026-02-30" }, now),
   ).toThrow();
 });
+
+test("a record keeps the custom options the user chose", () => {
+  expect(
+    validateReview({ ...base, options: ["shot_extra", "ice_less"] }, now)
+      .options,
+  ).toEqual(["shot_extra", "ice_less"]);
+});
+
+test("an option outside the fixed list is refused", () => {
+  expect(() =>
+    validateReview({ ...base, options: ["gold_flakes"] }, now),
+  ).toThrow();
+});
+
+test("five options are accepted and a sixth is refused", () => {
+  const five = [
+    "shot_extra",
+    "syrup_less",
+    "milk_change",
+    "ice_less",
+    "whip_none",
+  ];
+  expect(validateReview({ ...base, options: five }, now).options).toEqual(five);
+  expect(() =>
+    validateReview({ ...base, options: [...five, "decaf"] }, now),
+  ).toThrow();
+});
+
+test("the same option twice is refused", () => {
+  expect(() =>
+    validateReview({ ...base, options: ["decaf", "decaf"] }, now),
+  ).toThrow();
+});
+
+test("opposite options cannot be chosen together", () => {
+  for (const pair of [
+    ["shot_extra", "shot_light"],
+    ["syrup_extra", "syrup_less"],
+    ["syrup_less", "syrup_none"],
+    ["syrup_extra", "syrup_none"],
+    ["ice_less", "ice_extra"],
+    ["whip_extra", "whip_none"],
+  ])
+    expect(() => validateReview({ ...base, options: pair }, now)).toThrow();
+  // Options from different groups combine freely.
+  expect(
+    validateReview({ ...base, options: ["shot_extra", "syrup_none"] }, now)
+      .options,
+  ).toEqual(["shot_extra", "syrup_none"]);
+});
+
+test("option problems are explained in their own words", () => {
+  expect(() =>
+    validateReview({ ...base, options: ["ice_less", "ice_extra"] }, now),
+  ).toThrow("서로 반대인 옵션은 함께 고를 수 없어요.");
+  expect(() =>
+    validateReview(
+      {
+        ...base,
+        options: [
+          "shot_extra",
+          "syrup_less",
+          "milk_change",
+          "ice_less",
+          "whip_none",
+          "decaf",
+        ],
+      },
+      now,
+    ),
+  ).toThrow("옵션은 5개까지 고를 수 있어요.");
+});

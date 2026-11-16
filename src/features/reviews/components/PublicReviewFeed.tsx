@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { flushSync } from "react-dom";
 import type { PublicReviewPayload } from "../types";
 import { ReportForm } from "./ReviewForm";
+import { OptionChips } from "./OptionChips";
+import { optionNutritionNote } from "../options";
 
 // Review bodies never enter Next's server-component route cache. Clear them
 // before departure and require a fresh authorized response on restoration.
@@ -139,6 +141,9 @@ export function PublicReviewFeed({
           ? `★ ${data.summary.average} / 5 · ${data.summary.count}명의 공개 별점`
           : "아직 공개 평가가 없어요. 첫 한 잔을 기록해 보세요."}
       </p>
+      {data.items.some((r) => r.options?.length) && (
+        <p className="muted">{optionNutritionNote}</p>
+      )}
       {data.items.map((r) => (
         <article className="record" key={r.id}>
           <div className="record-head">
@@ -147,6 +152,7 @@ export function PublicReviewFeed({
             </span>
             <span>{r.consumed_on}</span>
           </div>
+          <OptionChips options={r.options} />
           <p className="record-body">{r.body || "별점으로 남긴 한 잔"}</p>
           <ReportForm reviewId={r.id} />
         </article>
