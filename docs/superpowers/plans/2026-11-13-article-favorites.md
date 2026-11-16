@@ -23,6 +23,6 @@ Files: new `src/features/notes/ArticleCard.tsx`; magazine page, favorites page, 
 - [x] Observe missing article subnav regression; implement default drinks and article link tabs, save confirmation, most-recent-first article cards with remove action and empty state.
 - [x] Run unit/DB, both browser suites, lint/build/type; inspect mobile screenshot; independent review.
 - [x] Prepare and commit/push tested implementation with production migration instructions.
-- [ ] User applies migration 008 to production; verify persistence after setup. Production credentials are not available in this execution environment.
+- [x] User applies migration 008 to production; verify persistence after setup. Production credentials are not available in this execution environment. (2026-11-14 applied, check query true; 2026-11-16 the user confirmed saving and removing article likes in production.)
 
 Verification: missing-table and missing-tab regressions observed RED before implementation. Unit/DB 62/62, public browser 26/26, authenticated browser 8/8 pass. Lint, production build, typecheck and whitespace checks pass. Saved-article screenshot inspected. Fresh reviewer found no blockers. Migration was applied twice locally and RLS, forgery prevention, owner deletion and account cascade tested. One dev stream cancellation message appeared during rapid authenticated navigation; all visible save/reload/unlike checks passed.
