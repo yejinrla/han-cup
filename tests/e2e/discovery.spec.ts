@@ -4,19 +4,19 @@ test("home offers new menus and recording trends with search through the home se
 }) => {
   await page.goto("/");
   await expect(
-    page.getByRole("heading", { name: "이번주 신메뉴", exact: true }),
+    page.getByRole("heading", { name: "최근 신메뉴", exact: true }),
   ).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "실시간 인기 메뉴", exact: true }),
   ).toBeVisible();
   await expect(
     page
-      .getByRole("region", { name: "이번주 신메뉴" })
+      .getByRole("region", { name: "최근 신메뉴" })
       .getByRole("link", { name: "딥 초코 체리 프라페 상세 보기" }),
   ).toBeVisible();
   await expect(
     page
-      .getByRole("region", { name: "이번주 신메뉴" })
+      .getByRole("region", { name: "최근 신메뉴" })
       .locator("[data-drink-card]"),
   ).toHaveCount(3);
   const nav = page.getByRole("navigation", { name: "주 메뉴" });

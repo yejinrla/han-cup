@@ -7,7 +7,7 @@ for (const width of [320, 390]) {
   }) => {
     await page.setViewportSize({ width, height: 844 });
     await page.goto("/");
-    const region = page.getByRole("region", { name: "이번주 신메뉴" });
+    const region = page.getByRole("region", { name: "최근 신메뉴" });
     await expect(
       region.getByRole("link", { name: "공식 출시 정보" }),
     ).toHaveCount(1);
