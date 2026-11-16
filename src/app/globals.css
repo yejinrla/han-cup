@@ -1607,6 +1607,9 @@ body {
   margin: 0 auto;
   background: var(--paper);
   box-shadow: 0 0 70px #2b422015;
+  padding-bottom: calc(var(--tab-height) + env(safe-area-inset-bottom));
+}
+.app-shell:has(.compare-tray) {
   padding-bottom: calc(var(--tab-height) + env(safe-area-inset-bottom) + 90px);
 }
 .app-shell > main {
