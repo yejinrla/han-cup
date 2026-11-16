@@ -162,6 +162,7 @@ export function SearchLanding({
             placeholder="음료명이나 브랜드를 검색해 보세요"
             maxLength={100}
             autoComplete="off"
+            autoFocus
             required
           />
           <button type="submit" aria-label="검색">
