@@ -48,10 +48,10 @@ export function TasteNoteBanner() {
             href={"/notes/" + note.slug}
             className={`taste-note-banner taste-note-tone-${index % 3}`}
           >
+            <span className="taste-note-kicker">
+              <Leaf size={12} aria-hidden="true" /> 한컵의 취향 노트
+            </span>
             <div className="taste-note-banner-copy">
-              <span className="taste-note-kicker">
-                <Leaf size={12} aria-hidden="true" /> 한컵의 취향 노트
-              </span>
               <h2>{note.title}</h2>
               <p>{note.bannerDescription}</p>
               <span className="taste-note-read">

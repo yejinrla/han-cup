@@ -2258,14 +2258,23 @@ body {
   margin-top: 0;
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  padding: 24px 20px;
+  padding: 66px 20px 24px;
+}
+.taste-note-track .taste-note-kicker {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1;
+  padding: 5px 9px;
+  border-radius: 7px;
+  background: #ffffff99;
 }
 .taste-note-track .taste-note-banner-copy {
   width: calc(100% - 118px);
 }
 .taste-note-track .taste-note-banner h2 {
   font-size: 22px;
-  margin-top: 13px;
+  margin-top: 0;
   line-height: 1.5;
 }
 .taste-note-track .taste-note-banner p {
