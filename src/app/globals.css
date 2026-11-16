@@ -1925,16 +1925,16 @@ body {
   font-size: 11px;
 }
 .discovery-home {
-  padding: 24px 18px 0;
+  padding: 12px 18px 0;
 }
 .discovery-welcome {
-  padding: 8px 2px 22px;
+  padding: 0 2px 22px;
 }
 .discovery-welcome h1 {
   font-size: 28px;
   line-height: 1.5;
   letter-spacing: -1.2px;
-  margin: 12px 0;
+  margin: 4px 0 12px;
 }
 .discovery-welcome > p {
   font-size: 12px;
