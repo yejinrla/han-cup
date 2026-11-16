@@ -139,7 +139,7 @@ export function SearchLanding({
     return variant ? [{ drink, variant }] : [];
   });
   return (
-    <main id="main" className="page-wrap search-discovery">
+    <main id="main" className="page-wrap menu-page search-discovery">
       <div className="search-discovery-heading">
         <h1 className="page-heading">음료 검색</h1>
         <Link href="/search?all=1">

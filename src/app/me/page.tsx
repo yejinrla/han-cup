@@ -20,7 +20,7 @@ export default async function MyPage() {
     .single();
   if (error) throw new Error("프로필을 불러오지 못했어요.");
   return (
-    <main id="main" className="page-wrap my-page">
+    <main id="main" className="page-wrap menu-page my-page">
       <h1 className="page-heading">마이페이지</h1>
       <p className="page-intro">나의 취향을 담은 한컵.</p>
       <section className="panel my-profile" aria-label="내 프로필">

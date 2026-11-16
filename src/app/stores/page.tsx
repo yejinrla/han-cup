@@ -10,7 +10,7 @@ export default async function Stores({
   const brand: BrandId =
     p.brand && p.brand in brands ? (p.brand as BrandId) : "starbucks";
   return (
-    <main id="main" className="page-wrap">
+    <main id="main" className="page-wrap menu-page">
       <h1 className="page-heading">주변 매장 찾기</h1>
       <p className="page-intro">
         발견한 음료를 만나러 갈 가까운 카페를 찾아보세요.

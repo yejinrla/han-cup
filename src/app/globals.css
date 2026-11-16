@@ -3403,3 +3403,21 @@ p.muted,
   color: var(--green);
   font-size: 13px;
 }
+
+/* Main menu headings share the home welcome heading's top and left inset. */
+.page-wrap.menu-page {
+  margin: 0 auto 36px;
+  padding: 16px 20px 0;
+}
+.menu-page > .page-heading,
+.menu-page .search-discovery-heading > .page-heading {
+  margin: 0 0 10px;
+  font-size: 28px;
+  line-height: 1.5;
+}
+.menu-page .search-discovery-heading > .page-heading {
+  margin-bottom: 0;
+}
+.menu-page .search-discovery-heading {
+  align-items: flex-start;
+}

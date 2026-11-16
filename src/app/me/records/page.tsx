@@ -71,7 +71,7 @@ export default async function Records({
     ? data.variants.find((v) => v.drinkId === selected.id && v.id === p.variant)
     : null;
   return (
-    <main id="main" className="page-wrap">
+    <main id="main" className="page-wrap menu-page">
       <h1 className="page-heading">음료 기록</h1>
       <p className="page-intro">좋았던 한 모금도, 새로운 발견도 차곡차곡.</p>
       <JournalCalendar

@@ -43,7 +43,7 @@ export default async function Favorites({
       redirect("/me/favorites?tab=articles");
     }
     return (
-      <main id="main" className="page-wrap">
+      <main id="main" className="page-wrap menu-page">
         <h1 className="page-heading">좋아요한 아티클</h1>
         <p className="page-intro">
           다시 읽고 싶은 음료 이야기를 모아보세요.
@@ -100,7 +100,7 @@ export default async function Favorites({
     await setFavorite(String(form.get("drinkId")), true);
   }
   return (
-    <main id="main" className="page-wrap">
+    <main id="main" className="page-wrap menu-page">
       <h1 className="page-heading">좋아요한 음료</h1>
       <p className="page-intro">하트를 누른 음료를 한곳에서 다시 만나보세요.</p>
       <FavoriteTabs />
