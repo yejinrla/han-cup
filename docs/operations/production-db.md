@@ -53,5 +53,5 @@ select
 
 ## 다음 마이그레이션을 추가할 때
 
-- `supabase/migrations/`에 다음 번호(009부터)로 추가하고, 기존 프로젝트에 다시 실행해도 안전하게(`IF NOT EXISTS`, `CREATE OR REPLACE`, 트랜잭션) 쓴다.
+- `supabase/migrations/`에 다음 번호(010부터)로 추가하고, 기존 프로젝트에 다시 실행해도 안전하게(`IF NOT EXISTS`, `CREATE OR REPLACE`, 트랜잭션) 쓴다.
 - 적용 방법과 확인 방법을 운영 문서에 적고, 사용자가 실행한 뒤 이 표에 날짜와 근거를 추가한다. 실행되지 않은 설정을 완료로 적지 않는다.
