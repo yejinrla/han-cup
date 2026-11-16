@@ -1,8 +1,8 @@
 import { test, expect } from "@playwright/test";
 
-// New arrivals released together share one source line and one horizontal rail.
+// Arrival cards remain in one horizontal rail without release metadata.
 for (const width of [320, 390]) {
-  test(`same-release arrivals share one source line and one rail at ${width}px`, async ({
+  test(`arrivals hide release metadata and keep one rail at ${width}px`, async ({
     page,
   }) => {
     await page.setViewportSize({ width, height: 844 });
@@ -10,10 +10,7 @@ for (const width of [320, 390]) {
     const region = page.getByRole("region", { name: "최근 신메뉴" });
     await expect(
       region.getByRole("link", { name: "공식 출시 정보" }),
-    ).toHaveCount(1);
-    await expect(region.locator(".arrival-group-head")).toHaveText(
-      "메가MGC커피 · 2026-10-29 출시 · 공식 출시 정보",
-    );
+    ).toHaveCount(0);
     const tops = await region
       .locator("[data-drink-card]")
       .evaluateAll((cards) =>

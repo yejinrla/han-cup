@@ -69,12 +69,6 @@ export default async function Home({
           <div className="arrival-groups">
             {arrivalGroups.map((group) => (
               <div className="arrival-group" key={group.key}>
-                <p className="arrival-group-head">
-                  {group.brandNames} · {group.releasedOn} 출시 ·{" "}
-                  <a href={group.sourceUrl} target="_blank" rel="noreferrer">
-                    공식 출시 정보
-                  </a>
-                </p>
                 <div className="arrival-rail">
                   {group.items.map((item) => (
                     <DrinkCard
