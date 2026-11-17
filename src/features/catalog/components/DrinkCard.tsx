@@ -11,20 +11,30 @@ export function DrinkCard({
   item,
   basis,
   isFavorite = false,
+  layout = "card",
 }: {
   item: CatalogItem;
   basis: Basis;
   isFavorite?: boolean;
+  // "row" is the compact search-result line; every other screen uses the card.
+  layout?: "card" | "row";
 }) {
   const n = getNutrition(item.variant, basis);
+  const row = layout === "row";
+  const favorite = (
+    <FavoriteButton
+      key={item.id + String(isFavorite)}
+      drinkId={item.id}
+      initial={isFavorite}
+    />
+  );
   return (
-    <article data-drink-card className="drink-card">
+    <article
+      data-drink-card
+      className={row ? "drink-card drink-row" : "drink-card"}
+    >
       <div className={`drink-visual ${item.category}`}>
-        <FavoriteButton
-          key={item.id + String(isFavorite)}
-          drinkId={item.id}
-          initial={isFavorite}
-        />
+        {!row && favorite}
         <Link
           href={"/drinks/" + item.slug}
           className="drink-image-link"
@@ -81,17 +91,21 @@ export function DrinkCard({
           </div>
         </div>
         <div className="card-bottom">
-          <span className="rating">
-            <Star size={12} />
-            {item.rating.average ?? "평가 없음"}
-            {item.rating.count > 0 && <small>({item.rating.count})</small>}
-          </span>
+          {/* A row leaves out "평가 없음"; the detail page still says it. */}
+          {(!row || item.rating.count > 0) && (
+            <span className="rating">
+              <Star size={12} />
+              {item.rating.average ?? "평가 없음"}
+              {item.rating.count > 0 && <small>({item.rating.count})</small>}
+            </span>
+          )}
           {item.variant.priceKrw !== null && (
             <span className="card-price">
               {fmt(item.variant.priceKrw, "원")}
             </span>
           )}
           <CompareButton id={item.variant.id} />
+          {row && favorite}
         </div>
       </div>
     </article>

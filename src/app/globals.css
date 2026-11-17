@@ -3461,3 +3461,104 @@ p.muted,
   margin-bottom: 8px;
   max-width: calc(100% - 20px);
 }
+
+/* Search result rows: a compact line per drink (small cup, facts, three
+   figures, compare and favorite) so more drinks fit on a phone screen.
+   Selectors carry .drink-row to outrank the card layers above. */
+.drink-grid.drink-rows {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+}
+.drink-card.drink-row {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 8px 6px 8px 12px;
+  border-radius: 14px;
+}
+.drink-card.drink-row:hover {
+  transform: none;
+}
+.drink-row .drink-visual {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+}
+.drink-row .drink-image-link {
+  padding-top: 0;
+}
+.drink-row .drink-image-link > * {
+  max-width: 100%;
+  max-height: 100%;
+}
+.drink-row .drink-info {
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "meta actions"
+    "title actions"
+    "figures figures";
+  gap: 0 4px;
+  min-width: 0;
+}
+.drink-row .drink-meta {
+  grid-area: meta;
+  margin: 0;
+  min-width: 0;
+  line-height: 1.3;
+}
+.drink-row .drink-title {
+  grid-area: title;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  min-height: 0;
+  margin: 1px 0 2px;
+  font-size: 15px;
+  line-height: 1.3;
+}
+.drink-row .drink-info .nutrition-strip {
+  grid-area: figures;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  padding: 0;
+  border: 0;
+  background: none;
+  line-height: 1.3;
+}
+.drink-row .drink-info .nutrition-strip > div {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  padding: 0;
+  border: 0;
+}
+.drink-row .drink-info .nutrition-strip small {
+  display: inline;
+  margin: 0;
+}
+.drink-row .drink-info .nutrition-strip b,
+.drink-row .drink-info .nutrition-strip em {
+  display: inline;
+  font-size: 13px;
+}
+.drink-row .drink-info .nutrition-strip em {
+  font-size: 11px;
+  margin-left: 1px;
+}
+.drink-row .card-bottom {
+  grid-area: actions;
+  align-self: start;
+  margin: 0;
+  gap: 0;
+  justify-content: flex-end;
+}
+.drink-row .favorite-button {
+  position: static;
+  /* Keeps the 44px touch area while taking less height in the row. */
+  margin: -4px 0;
+}

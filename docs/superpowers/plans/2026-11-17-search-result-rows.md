@@ -13,7 +13,7 @@
 3. **Readability and narrow screens (existing Playwright suite)** — extend the 320px/fallback-font nutrition fit test and the ≥11px text check to rows. Catches: clipped figures and small text. Misses: nothing new.
 
 ### Task 1: Row layout
-- [ ] RED → GREEN on seam 1, then seam 2.
+- [x] RED → GREEN on seam 1, then seam 2.
 
 ### Task 2: Readability and skeleton
 - [ ] Seam 3 on rows; search skeleton as rows.

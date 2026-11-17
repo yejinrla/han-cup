@@ -108,9 +108,10 @@ export default async function SearchPage({
           </p>
         )}
         {result.items.length ? (
-          <div className="drink-grid">
+          <div className="drink-grid drink-rows">
             {result.items.map((item) => (
               <DrinkCard
+                layout="row"
                 key={item.id}
                 item={item}
                 isFavorite={favorites.includes(item.id)}
