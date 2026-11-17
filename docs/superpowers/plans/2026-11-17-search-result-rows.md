@@ -19,4 +19,14 @@
 - [x] Seam 3 on rows; search skeleton as rows (no change: the pulled search landing already replaced the card-grid skeleton).
 
 ### Task 3: Verification
-- [ ] Lint, typecheck, unit/DB, browser suite, build; screens at 320/390 (with and without the compare tray). Independent review (time-boxed), one fix pass. Commit, push.
+- [x] Lint, typecheck, unit/DB, browser suite, build; screens at 320/390 (with and without the compare tray). Independent review (time-boxed), one fix pass. Commit, push.
+
+## Verification and review
+
+Seam 1 went RED first (0 complete rows above the tab bar, then 2 after the first row styles; the row was tightened to 72px with 44px touch areas kept). Seam 2 passed as a guard, and putting rows on the home fails it. Seam 3: the 320px fit test now covers rows and home cards, and the readability screens include `/search?all=1`. It caught the row figures at 13px (fixed to 14px), and dropping row labels to 10px fails it. The first-screen test removes the local-catalog notice, which production does not render. Lint, typecheck, unit/DB (86), the browser suite (78) and the build pass. At 390px rows are 72px and three fit above the tab bar. At 320px a row is about 126px (meta and name wrap) with no horizontal overflow. The compare tray does not cover the last row.
+
+Search skeleton: no change. The pulled search landing had already replaced the card-grid skeleton.
+
+Also fixed: `home-arrivals.spec.ts` counted cards before they rendered (flaky). It now waits for three cards.
+
+Independent review: no Critical. Fixed Important: rating and price move to their own row line, and the compare limit message wraps in a fixed 100px action column instead of squeezing the name (test-first: the name width was 0 at 320px). The compare button gets a 44px touch area. Fixed Minor: the cup sizing applies only to the illustration, so photos keep their contain fit; a clamped name shows the full name as a title; the row test checks every row and finds the tab bar by its name. Not covered: rows with a rating or price, because the local data has neither.

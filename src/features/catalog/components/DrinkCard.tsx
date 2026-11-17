@@ -64,7 +64,12 @@ export function DrinkCard({
             .filter(Boolean)
             .join(" · ")}
         </p>
-        <Link href={"/drinks/" + item.slug} className="drink-title">
+        <Link
+          href={"/drinks/" + item.slug}
+          className="drink-title"
+          // Rows clamp long names to two lines; the title shows the rest.
+          title={row ? item.name : undefined}
+        >
           {item.name}
         </Link>
         <div className="nutrition-strip">
@@ -90,23 +95,46 @@ export function DrinkCard({
             </b>
           </div>
         </div>
-        <div className="card-bottom">
-          {/* A row leaves out "평가 없음"; the detail page still says it. */}
-          {(!row || item.rating.count > 0) && (
+        {row ? (
+          <>
+            {/* Rating and price get their own line so the action column
+                stays narrow; "평가 없음" is left to the detail page. */}
+            {(item.rating.count > 0 || item.variant.priceKrw !== null) && (
+              <p className="row-extra">
+                {item.rating.count > 0 && (
+                  <span className="rating">
+                    <Star size={12} />
+                    {item.rating.average}
+                    <small>({item.rating.count})</small>
+                  </span>
+                )}
+                {item.variant.priceKrw !== null && (
+                  <span className="card-price">
+                    {fmt(item.variant.priceKrw, "원")}
+                  </span>
+                )}
+              </p>
+            )}
+            <div className="card-bottom">
+              <CompareButton id={item.variant.id} />
+              {favorite}
+            </div>
+          </>
+        ) : (
+          <div className="card-bottom">
             <span className="rating">
               <Star size={12} />
               {item.rating.average ?? "평가 없음"}
               {item.rating.count > 0 && <small>({item.rating.count})</small>}
             </span>
-          )}
-          {item.variant.priceKrw !== null && (
-            <span className="card-price">
-              {fmt(item.variant.priceKrw, "원")}
-            </span>
-          )}
-          <CompareButton id={item.variant.id} />
-          {row && favorite}
-        </div>
+            {item.variant.priceKrw !== null && (
+              <span className="card-price">
+                {fmt(item.variant.priceKrw, "원")}
+              </span>
+            )}
+            <CompareButton id={item.variant.id} />
+          </div>
+        )}
       </div>
     </article>
   );

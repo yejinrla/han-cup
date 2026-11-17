@@ -3488,9 +3488,10 @@ p.muted,
 .drink-row .drink-image-link {
   padding-top: 0;
 }
-.drink-row .drink-image-link > * {
-  max-width: 100%;
-  max-height: 100%;
+.drink-row .drink-image-link > svg {
+  /* Scale the illustration down whole; a photo keeps its own contain fit. */
+  width: auto;
+  height: 46px;
 }
 .drink-row .drink-info {
   padding: 0;
@@ -3499,7 +3500,8 @@ p.muted,
   grid-template-areas:
     "meta actions"
     "title actions"
-    "figures figures";
+    "figures figures"
+    "extra extra";
   gap: 0 4px;
   min-width: 0;
 }
@@ -3556,6 +3558,27 @@ p.muted,
   margin: 0;
   gap: 0;
   justify-content: flex-end;
+  /* A fixed column: the compare limit message wraps here instead of
+     squeezing the name. */
+  flex-wrap: wrap;
+  width: 100px;
+}
+.drink-row .card-bottom .inline-error {
+  flex-basis: 100%;
+  margin: 4px 0 0;
+}
+.drink-row .compare-button {
+  /* 44px touch area, drawn smaller so the row stays compact. */
+  min-height: 44px;
+  margin: -4px 0;
+}
+.drink-row .row-extra {
+  grid-area: extra;
+  display: flex;
+  gap: 10px;
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--muted);
 }
 .drink-row .favorite-button {
   position: static;

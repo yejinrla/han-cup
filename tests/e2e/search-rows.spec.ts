@@ -15,8 +15,7 @@ test("search results fit at least three complete rows above the tab bar", async 
     .locator(".data-notice")
     .evaluateAll((all) => all.forEach((n) => n.remove()));
   const tabTop = await page
-    .locator("nav")
-    .last()
+    .getByRole("navigation", { name: "주 메뉴" })
     .evaluate((n) => n.getBoundingClientRect().top);
   const complete = await rows.evaluateAll(
     (all, limit) =>
@@ -42,6 +41,42 @@ test("search results fit at least three complete rows above the tab bar", async 
     latte.getByRole("button", { name: "음료 찜하기" }),
   ).toBeVisible();
   await expect(latte).not.toContainText("평가 없음");
+
+  // Every row keeps its facts and both actions, not just the first one.
+  const count = await rows.count();
+  for (let i = 0; i < count; i++) {
+    const row = rows.nth(i);
+    await expect(row.locator(".drink-meta")).not.toBeEmpty();
+    await expect(row.locator(".drink-title")).not.toBeEmpty();
+    await expect(row.locator(".nutrition-strip > div")).toHaveCount(3);
+    await expect(row.locator(".compare-button")).toHaveCount(1);
+    await expect(row.locator(".favorite-button")).toHaveCount(1);
+  }
+});
+
+test("the compare limit message keeps a narrow row readable", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 700 });
+  await page.goto("/search?all=1");
+  const buttons = page.getByRole("button", { name: "비교 담기", exact: true });
+  for (let i = 0; i < 3; i++) await buttons.first().click();
+  const fourth = page
+    .locator("[data-drink-card]")
+    .filter({
+      has: page.getByRole("button", { name: "비교 담기", exact: true }),
+    })
+    .first();
+  await fourth.getByRole("button", { name: "비교 담기", exact: true }).click();
+  await expect(fourth.locator(".inline-error")).toContainText("최대 3개");
+  // The message wraps inside the action column instead of squeezing the name.
+  const titleWidth = await fourth
+    .locator(".drink-title")
+    .evaluate((t) => t.getBoundingClientRect().width);
+  expect(titleWidth).toBeGreaterThanOrEqual(90);
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth),
+  ).toBeLessThanOrEqual(320);
 });
 
 test("home arrivals keep the image card", async ({ page }) => {
