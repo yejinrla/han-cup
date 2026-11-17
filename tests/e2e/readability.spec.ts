@@ -10,6 +10,7 @@ const compareIds = [
 const screens = [
   "/",
   "/search",
+  "/search?all=1",
   "/drinks/mega-11",
   "/drinks/mega-green-plum-quince-tea",
   `/compare?ids=${compareIds}`,
@@ -103,7 +104,7 @@ for (const width of [390, 1440]) {
   test.describe(`readable public screens at ${width}px`, () => {
     test.use({ viewport: { width, height: 900 } });
     for (const path of screens) {
-      test(`${path.split("?")[0]} has no tiny or low-contrast text`, async ({
+      test(`${path.includes("all=1") ? path : path.split("?")[0]} has no tiny or low-contrast text`, async ({
         page,
       }) => {
         await page.goto(path);
@@ -190,7 +191,7 @@ test("sentence-length secondary text is 13px and card nutrition numbers are 14px
 });
 
 for (const fonts of ["webfont", "fallback font"] as const)
-  test(`card nutrition labels and figures fit two-column cards at 320px (${fonts})`, async ({
+  test(`card and row nutrition labels and figures fit at 320px (${fonts})`, async ({
     page,
   }) => {
     // The fallback run blocks the webfont, as when it is slow or unavailable.
@@ -199,45 +200,49 @@ for (const fonts of ["webfont", "fallback font"] as const)
         route.abort(),
       );
     await page.setViewportSize({ width: 320, height: 700 });
-    await page.goto("/search?all=1");
-    // Measure with the real webfont: fallback fonts are narrower and hide overflow.
-    await page.waitForLoadState("networkidle");
-    await page.evaluate(() => document.fonts.ready);
-    const problems = await page.evaluate(() => {
-      const lines = (element: Element) => {
-        const range = document.createRange();
-        range.selectNodeContents(element);
-        return new Set(
-          [...range.getClientRects()].map((r) => Math.round(r.top)),
-        ).size;
-      };
-      return [...document.querySelectorAll(".nutrition-strip")].flatMap(
-        (strip) => [
-          ...(strip.scrollWidth > strip.clientWidth + 1
-            ? ["strip overflows"]
-            : []),
-          // Compare the drawn figure with the cell's inner width and require a
-          // 2px margin: scrollWidth rounds away overflows of about a pixel, and
-          // other browsers' font metrics differ by about that much.
-          ...[...strip.children]
-            .filter((cell) => {
-              const figure = cell.querySelector("b")?.firstChild;
-              if (!figure) return false;
-              const range = document.createRange();
-              range.selectNodeContents(figure);
-              const style = getComputedStyle(cell);
-              const inner =
-                cell.clientWidth -
-                parseFloat(style.paddingLeft) -
-                parseFloat(style.paddingRight);
-              return range.getBoundingClientRect().width > inner - 2;
-            })
-            .map((cell) => `figure overflows: ${cell.textContent}`),
-          ...[...strip.querySelectorAll("small")]
-            .filter((label) => lines(label) > 1)
-            .map((label) => `label wraps: ${label.textContent}`),
-        ],
-      );
-    });
-    expect(problems).toEqual([]);
+    // Search results use rows; the home keeps cards. Both must fit.
+    for (const path of ["/search?all=1", "/"]) {
+      await page.goto(path);
+      await expect(page.locator(".nutrition-strip").first()).toBeVisible();
+      // Measure with the real webfont: fallback fonts are narrower and hide overflow.
+      await page.waitForLoadState("networkidle");
+      await page.evaluate(() => document.fonts.ready);
+      const problems = await page.evaluate(() => {
+        const lines = (element: Element) => {
+          const range = document.createRange();
+          range.selectNodeContents(element);
+          return new Set(
+            [...range.getClientRects()].map((r) => Math.round(r.top)),
+          ).size;
+        };
+        return [...document.querySelectorAll(".nutrition-strip")].flatMap(
+          (strip) => [
+            ...(strip.scrollWidth > strip.clientWidth + 1
+              ? ["strip overflows"]
+              : []),
+            // Compare the drawn figure with the cell's inner width and require a
+            // 2px margin: scrollWidth rounds away overflows of about a pixel, and
+            // other browsers' font metrics differ by about that much.
+            ...[...strip.children]
+              .filter((cell) => {
+                const figure = cell.querySelector("b")?.firstChild;
+                if (!figure) return false;
+                const range = document.createRange();
+                range.selectNodeContents(figure);
+                const style = getComputedStyle(cell);
+                const inner =
+                  cell.clientWidth -
+                  parseFloat(style.paddingLeft) -
+                  parseFloat(style.paddingRight);
+                return range.getBoundingClientRect().width > inner - 2;
+              })
+              .map((cell) => `figure overflows: ${cell.textContent}`),
+            ...[...strip.querySelectorAll("small")]
+              .filter((label) => lines(label) > 1)
+              .map((label) => `label wraps: ${label.textContent}`),
+          ],
+        );
+      });
+      expect(problems, path).toEqual([]);
+    }
   });

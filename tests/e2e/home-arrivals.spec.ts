@@ -11,6 +11,8 @@ for (const width of [320, 390]) {
     await expect(
       region.getByRole("link", { name: "공식 출시 정보" }),
     ).toHaveCount(0);
+    // Wait for the cards: the home may still show its loading skeleton.
+    await expect(region.locator("[data-drink-card]")).toHaveCount(3);
     const tops = await region
       .locator("[data-drink-card]")
       .evaluateAll((cards) =>

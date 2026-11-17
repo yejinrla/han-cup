@@ -16,7 +16,7 @@
 - [x] RED → GREEN on seam 1, then seam 2.
 
 ### Task 2: Readability and skeleton
-- [ ] Seam 3 on rows; search skeleton as rows.
+- [x] Seam 3 on rows; search skeleton as rows (no change: the pulled search landing already replaced the card-grid skeleton).
 
 ### Task 3: Verification
 - [ ] Lint, typecheck, unit/DB, browser suite, build; screens at 320/390 (with and without the compare tray). Independent review (time-boxed), one fix pass. Commit, push.
